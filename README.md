@@ -5,3 +5,7 @@ Gamemod DM do gry San Andreas Multiplayer. Jest on napisany głównie w języku 
 
 Autorzy
 ============
+l0nger, l0nger.programmer@gmail.com
+Pamdex, <do uzupelnienia>
+Andrew, <do uzupelnienia>
+Robertson, <do uzupelnienia>
