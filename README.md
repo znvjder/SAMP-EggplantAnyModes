@@ -10,6 +10,7 @@ Autorzy
 - Andrew, andx98@wp.pl
 - Robertson, <do uzupelnienia>
 - Bantu, bantu3i5@tlen.pl
+- _l0stfake7, barpon@gmail.com
 
 Dlaczego ten kod jest publiczny?
 ============
