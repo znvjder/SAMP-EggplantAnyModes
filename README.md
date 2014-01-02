@@ -7,7 +7,7 @@ Autorzy
 ============
 - l0nger, l0nger.programmer@gmail.com
 - Pamdex, <do uzupelnienia>
-- Andrew, <do uzupelnienia>
+- Andrew, andx98@wp.pl
 - Robertson, <do uzupelnienia>
 
 Dlaczego ten kod jest publiczny?
