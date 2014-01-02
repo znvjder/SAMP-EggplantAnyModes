@@ -13,7 +13,7 @@ Autorzy
 
 Dlaczego ten kod jest publiczny?
 ============
-Nie wydaliśmy tego kodu od tak. Prawdopodobnie jest jakiś sentyment w tych serwerach i chcemy, żeby po prostu się rozwijały i korzystały z profesjonalnego kodu. Przed rozpoczęciem modyfikacji - należy poczytać trochę o licencji, którą zastosowaliśmy w kodzie.
+Nie wydaliśmy tego kodu ot tak. Prawdopodobnie jest jakiś sentyment w tych serwerach i chcemy, żeby po prostu się rozwijały i korzystały z profesjonalnego kodu. Przed rozpoczęciem modyfikacji - należy poczytać trochę o licencji, którą zastosowaliśmy w kodzie.
 
 Licencja
 ============
