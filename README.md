@@ -9,6 +9,7 @@ Autorzy
 - Pamdex, pamdex@myotherworld.net
 - Andrew, andx98@wp.pl
 - Robertson, <do uzupelnienia>
+- Bantu, bantu3i5@tlen.pl
 
 Dlaczego ten kod jest publiczny?
 ============
