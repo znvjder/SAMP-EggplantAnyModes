@@ -6,7 +6,7 @@ Napisany głównie w języku PAWN, stworzony na potrzeby serwera Infinity-Gaming
 Autorzy
 ============
 - l0nger, l0nger.programmer@gmail.com
-- Pamdex, <do uzupelnienia>
+- Pamdex, pamdex@myotherworld.net
 - Andrew, andx98@wp.pl
 - Robertson, <do uzupelnienia>
 
