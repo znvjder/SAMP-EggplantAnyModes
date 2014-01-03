@@ -8,6 +8,7 @@
 
 #define RAND() random(cellmax-1)
 
+#undef strcpy
 stock strcpy(dest[], const source[], length = sizeof(source)) // by promsters
 {
 	strins((dest[0] = EOS, dest), source, 0, length);
@@ -36,7 +37,7 @@ stock math::calculateVelocity3D(Float:x, Float:y, Float:z, Float:mod) {
 	return floatsqroot((x*x)+(y*y)+(z*z))*mod;
 }
 
-stock math::abs(val) return (v<0)? -v: v;
+stock math::abs(val) return (val<0)? -val: val;
 
 stock Float:math::floatrandom(Float:max, Float:min = 0.0, dp = 4)
 {

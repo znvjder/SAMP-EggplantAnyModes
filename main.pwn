@@ -17,6 +17,7 @@
 
 #define SCRIPT_VERSION "0.1 pre-alpha"
 #define _DEBUG 1
+#pragma dynamic 4096
 
 #include <a_samp>
 
@@ -30,9 +31,10 @@
 #include "external/audio"
 #include "external/regex"
 #include "external/djson"
-#include "external/YSI/y_va"
+#include "external/YSI\y_va"
 
 #include "header"
+#include "internal/CLogging.p"
 #include "internal/CUtility.p"
 #include "internal/CMySQL.p"
 #include "internal/CConfigData.p"
@@ -45,15 +47,18 @@ public OnGameModeInit() {
 	djson_GameModeInit();
 	djStyled(true);
 	
+	CLogging_Init();
 	CConfigData_Init();
 	CConfigData_Load();
 	
 	printf("[EggplantDM "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
+	CLogging_Insert(CLOG_SERVER, "Starting logging...");
 	return 1;
 }
 
 public OnGameModeExit() {
-
+	CLogging_Insert(CLOG_SERVER, "Terminating logging...");
+	CLogging_Exit();
 	CMySQL_Exit();
 	djson_GameModeExit();
 	return 1;
