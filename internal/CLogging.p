@@ -78,3 +78,8 @@ stock CLogging_Insert(logtype, txt[], va_args<>) {
 	fclose(logFile);
 	return 1;
 }
+
+#undef CLOG_SERVER_NAME
+#undef CLOG_SQL_NAME
+#undef CLOG_CMDS_NAME
+#undef CLOG_DEBUG_NAME
