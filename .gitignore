@@ -1,1 +1,8 @@
+# Ignore all amxfiles
 /*.amx
+
+# Ignore all logfiles
+/*.log
+
+# Ignore all tmpfiles
+/*.tmp
