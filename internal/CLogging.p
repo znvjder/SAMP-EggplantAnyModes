@@ -25,7 +25,7 @@ static stock
 	logTime[3],
 	logDate[3];
 
-// 	CLogging_Init: inicjajcja klasy
+// CLogging_Init: inicjajcja klasy
 stock CLogging_Init() {
 	printf("[CLogging]: Loaded and recreated all logging files...");
 }
@@ -36,28 +36,28 @@ stock CLogging_Exit() {
 
 stock CLogging_Insert(logtype, txt[], va_args<>) {
 	if(isnull(txt))
-    {
-        print("[CLogging]: Input text is null");
+	{
+		print("[CLogging]: Input text is null");
 		return 0;
-    }
+	}
 
     new fName[48];
 		
-    switch(logtype)
-    {
-        case CLOG_SERVER: strcat(fName, CLOG_SERVER_NAME);
-        case CLOG_SQL: strcat(fName, CLOG_SQL_NAME);
-        case CLOG_CMDS: strcat(fName, CLOG_CMDS_NAME);
+	switch(logtype)
+	{
+		case CLOG_SERVER: strcat(fName, CLOG_SERVER_NAME);
+		case CLOG_SQL: strcat(fName, CLOG_SQL_NAME);
+		case CLOG_CMDS: strcat(fName, CLOG_CMDS_NAME);
 		case CLOG_DEBUG: strcat(fName, CLOG_DEBUG_NAME);
-        default: strcat(fName, "unkown");
-    }
-    
+		default: strcat(fName, "unkown");
+	}
+	
 	gettime(logTime[0], logTime[1], logTime[2]);
 	getdate(logDate[0], logDate[1], logDate[2]);
 	
 	format(fName, sizeof(fName), "%s%s-%04d%02d%02d.log", PATH_logs, fName, logDate[0], logDate[1], logDate[2]);
 	logFile = fopen(fName, io_append);
-	
+
 	if(!logFile)
 	{
 		// tworzymy plik, jezeli go nie ma
