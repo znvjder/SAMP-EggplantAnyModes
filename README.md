@@ -1,4 +1,4 @@
-SAMP-redbyteDM
+SAMP-EggplantDM
 ============
 Gamemod DM do gry San Andreas Multiplayer, oparty o strukturę bazy danych MySQL. 
 Napisany głównie w języku PAWN, stworzony na potrzeby serwera Infinity-Gaming DM.
