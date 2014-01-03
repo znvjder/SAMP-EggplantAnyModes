@@ -41,7 +41,7 @@ stock CLogging_Insert(logtype, txt[], va_args<>) {
 		return 0;
 	}
 
-    new fName[48];
+	new fName[48];
 		
 	switch(logtype)
 	{
