@@ -1,0 +1,1 @@
+-- schema dla eggplantDM - na razie tu pusto :)
