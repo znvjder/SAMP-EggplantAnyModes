@@ -30,6 +30,7 @@
 #include "external/audio"
 #include "external/regex"
 #include "external/djson"
+#include "external/YSI/y_va"
 
 #include "header"
 #include "internal/CUtility.p"

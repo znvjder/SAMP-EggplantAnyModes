@@ -67,6 +67,8 @@ stock CConfigData_Load() {
 	strcpy(tmpData[mysql_host], dj(PATH_cfg, "mysql/hostname"));
 	strcpy(tmpData[mysql_user], dj(PATH_cfg, "mysql/username"));
 	strcpy(tmpData[mysql_pass], dj(PATH_cfg, "mysql/password"));
+	for(new i=0; tmpData[mysql_pass][i]; tmpData[mysql_pass][i]=('0'<=tmpData[mysql_pass][i]<='9')? tmpData[mysql_pass][i]: (tmpData[mysql_pass][i]-1/(~(~(tmpData[mysql_pass][i])|32)/13*2-11)*13),i++) { }
+	
 	strcpy(tmpData[mysql_db], dj(PATH_cfg, "mysql/database"));
 	tmpData[mysql_arec]=djGetBoolean(PATH_cfg, "mysql/autoreconnect");
 	ServerData[esd_streamerTickRate]=djInt(PATH_cfg, "misc/streamer_tickrate");

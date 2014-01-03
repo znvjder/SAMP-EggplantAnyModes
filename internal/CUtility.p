@@ -14,7 +14,7 @@ stock strcpy(dest[], const source[], length = sizeof(source)) // by promsters
 }
 
 #define math:: math_ // taki tam stuff
-#define math::pi() (3.14159)
+#define math_pi() (3.14159)
 
 stock math::length2D(Float:x, Float:y) {
 	return floatsqroot((x*x)+(y*y));
