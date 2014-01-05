@@ -8,7 +8,7 @@ Autorzy
 - l0nger, l0nger.programmer@gmail.com
 - Pamdex, pamdex@myotherworld.net
 - Andrew, andx98@wp.pl
-- Robertson, <do uzupelnienia>
+- Robertson, robert.oskarn@gmail.com
 - Bantu, bantu3i5@tlen.pl
 - _l0stfake7, barpon@gmail.com
 
