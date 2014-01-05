@@ -83,6 +83,10 @@ stock utility::getWeaponSlot(weaponid)
 
 }
 
+stock utility::isValidSkin(skinid) {
+	return (0 <= skinid <= 299);
+}
+
 // Kick fix
 forward KickCalled(pid);
 public KickCalled(pid) {

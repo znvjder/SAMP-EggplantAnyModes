@@ -44,6 +44,9 @@ main() return 0;
 public OnGameModeInit() {
 	CExecTick_begin(scriptInit);
 	
+	// przyklad uzywania duracji:
+	printf("duration time: %d", DURATION(2 days, 3 hour, 20 minutes, 40 seconds));
+	
 	djson_GameModeInit();
 	djStyled(true);
 	
