@@ -60,6 +60,7 @@ public OnGameModeExit() {
 	CLogging_Insert(CLOG_SERVER, "Terminating logging...");
 	CLogging_Exit();
 	CMySQL_Exit();
+	regex_delete_all();
 	djson_GameModeExit();
 	return 1;
 }

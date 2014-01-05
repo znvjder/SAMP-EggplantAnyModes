@@ -31,6 +31,9 @@ stock CLogging_Init() {
 }
 
 stock CLogging_Exit() {
+	if(logFile) {
+		fclose(logFile);
+	}
 	printf("[CLogging]: Deactived logging");
 }
 
@@ -61,7 +64,8 @@ stock CLogging_Insert(logtype, txt[], va_args<>) {
 	if(!logFile)
 	{
 		// tworzymy plik, jezeli go nie ma
-		fclose(fopen(fName, io_write));
+		logFile=fopen(fName, io_write);
+		fclose(logFile);
 		// otwieramy ponownie plik - tym razem innym parametrem
 		logFile = fopen(fName, io_append);
 	}

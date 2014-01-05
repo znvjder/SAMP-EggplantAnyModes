@@ -1,6 +1,9 @@
 /*
 	@file: /internal/CUtility.p
-	@author: l0nger <l0nger.programmer@gmail.com>
+	@author: 
+		l0nger <l0nger.programmer@gmail.com>,
+		Andrew <andx@wp.pl>
+		
 	@licence: GPLv2
 	
 	(c) 2013, l0nger.programmer@gmail.com
@@ -52,22 +55,32 @@ stock Float:math::floatrandom(Float:max, Float:min = 0.0, dp = 4)
 #define theplayer:: theplayer_ // taki tam stuff, cos z player:: bylo zjebane
 
 stock theplayer::removeWeapon(playerid, weaponid) {
-	static weaponData[2][12];
-	weaponData[0]=EOS;
-	weaponData[1]=EOS;
-	
-	for(new i; i<sizeof(weaponData[]); i++) {
-		GetPlayerWeaponData(playerid, i, weapondData[0][i], weaponData[1][i]);
-		if(weaponData[0][i]==weaponid) {
-			weaponData[0][i]=0;
-			weaponData[0][i]=0;
+	new slot = GetWeaponSlot(weaponid), weapon, ammo;
+	if(!slot) return;
+	ResetPlayerWeapons(playerid);
+	for (new i=1; i<=12; i++) {
+		if (slot != i) {
+			GetPlayerWeaponData(playerid, i, weapon, ammo);
+			GivePlayerWeapon(playerid, weapon, ammo);
 		}
 	}
-	ResetPlayerWeapons(playerid);
-	for(new i; i!=12; i++) {
-		GivePlayerWeapon(playerid, weaponData[0][i], weaponData[1][i]);
-	}
-	// nie mam pomyslu na optymalniejsza metode... 
+}
+
+#define utility:: utility_
+
+stock utility::getWeaponSlot(weaponid)
+{
+	static const
+		s_weaponSlots[] =
+		{
+			0x00000101, 0x01010101, 0x01010A0A, 0x0A0A0A0A,
+			0x080808FF, 0xFFFF0202, 0x02030303, 0x04040505,
+			0x04060607, 0x07070708, 0x0C090909, 0x0B0B0B00
+		};
+	
+	if(0 <= weaponid <= 46) return (s_weaponSlots{weaponid}==0xFF)? WEAPONSLOT_NONE: s_weaponSlots{weaponid};
+	return WEAPONSLOT_NONE;
+
 }
 
 // Kick fix
