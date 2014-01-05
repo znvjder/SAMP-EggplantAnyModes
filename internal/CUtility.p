@@ -2,7 +2,7 @@
 	@file: /internal/CUtility.p
 	@author: 
 		l0nger <l0nger.programmer@gmail.com>,
-		Andrew <andx@wp.pl>
+		Andrew <andx98@wp.pl>
 		
 	@licence: GPLv2
 	
