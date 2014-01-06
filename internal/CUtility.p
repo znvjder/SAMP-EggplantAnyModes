@@ -68,6 +68,7 @@ stock theplayer::removeWeapon(playerid, weaponid) {
 }
 
 #define utility:: utility_
+#define utility_resetVariablesInEnum(%0,%1) for(new __rvine; %1:__rvine != %1; __rvine++) %0[%1:__rvine]=0
 
 stock utility::getWeaponSlot(weaponid)
 {

@@ -6,6 +6,16 @@
 	(c) 2013, l0nger.programmer@gmail.com
 */
 
+// Poziom debugowania 
+/*
+	1) Debugowanie podstawowych rzeczy 
+	(tu moga wystepowac lagi) 2) Debugowanie mniej waznych elementow 
+	(i tu tez moga byc lagi) 3) Debugowanie wszystkiego
+*/
+#define _DEBUG_EASY (1)
+#define _DEBUG_NORMAL (2)
+#define _DEBUG_HARD (3)
+
 #define CExecTick_begin(%0) new %0=GetTickCount()
 #define CExecTick_end(%0) (GetTickCount()-%0)
 
