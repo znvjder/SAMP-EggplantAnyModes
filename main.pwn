@@ -70,27 +70,47 @@ public OnGameModeExit() {
 }
 
 public OnPlayerConnect(playerid) {
-
+	if(playerid>MAX_PLAYERS) {
+		SendClientMessage(playerid, -1, "Serwer osiagnal limit graczy. This server is full.");
+		theplayer::kick(playerid);
+		return 0;
+	}
+	
+	utility::resetVariablesInEnum();
+	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
+	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
+	
+	if(ServerData[esd_codeDebugger]>2) {
+		CLogging_Insert(CLOG_DEBUG, "Player %s (ID: %d) (IP: %s) has connect to the server", PlayerData[playerid][epd_nickname], playerid, PlayerData[playerid][epd_addressIP]);
+	}
 	return 1;
 }
 
 public OnPlayerDisconnect(playerid, reason) {
-
+	if(ServerData[esd_codeDebugger]>2) {
+		CLogging_Inset(CLOG_DEBUG, "Player %s (R: %d) (ID: %d) (IP: %s) leave from server", PlayerData[playerid][epd_nickname], reason, playerid, PlayerData[playerid][epd_addressIP]);
+	}
 	return 1;
 }
 
 public OnPlayerSpawn(playerid) {
-
+	if(ServerData[esd_codeDebugger]>2) {
+		CLogging_Insert(CLOG_DEBUG, "Player %d spawned", playerid);
+	}
 	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid) {
-
+	if(ServerData[esd_codeDebugger]>2) {
+		CLogging_Insert(CLOG_DEBUG, "Player %d requesting class needed", playerid);
+	}
 	return 1;
 }
 
 public OnPlayerRequestSpawn(playerid) {
-
+	if(ServerData[esd_codeDebugger]>2) {
+		CLogging_Insert(CLOG_DEBUG, "Player %d requesting spawn needed", playerid);
+	}
 	return 1;
 }
 

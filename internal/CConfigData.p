@@ -22,6 +22,7 @@ stock CConfigData_Init() {
 	djSetDefault(PATH_cfg, "server/mapname", "EGG SA");
 	djSetDefault(PATH_cfg, "server/weburl", "www.your_url.com/");
 	djSetDefault(PATH_cfg, "server/mode", "EggplantDM " SCRIPT_VERSION);
+	djSetDefault(PATH_cfg, "server/debugger", "1");
 	// MySQL
 	djSetDefault(PATH_cfg, "mysql/hostname", "localhost");
 	djSetDefault(PATH_cfg, "mysql/username", "username");
@@ -72,6 +73,7 @@ stock CConfigData_Load() {
 	strcpy(tmpData[mysql_db], dj(PATH_cfg, "mysql/database"));
 	tmpData[mysql_arec]=djGetBoolean(PATH_cfg, "mysql/autoreconnect");
 	ServerData[esd_streamerTickRate]=djInt(PATH_cfg, "misc/streamer_tickrate");
+	ServerData[esd_codeDebugger]=djInt(PATH_cfg, "server/debugger");
 	
 	printf("[CConfigData]: Get all config data in %.2f ms", float(CExecTick_end(startLoading))/1000.0);
 	if(strlen(tmpData[mysql_host])<=0 || strlen(tmpData[mysql_user])<=0 || strlen(tmpData[mysql_pass])<=0) {

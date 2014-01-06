@@ -53,6 +53,7 @@ stock Float:math::floatrandom(Float:max, Float:min = 0.0, dp = 4)
 }
 
 #define theplayer:: theplayer_ // taki tam stuff, cos z player:: bylo zjebane
+#define theplayer_kick(%0) SetTimerEx("KickCalled", 150, false, "d", %0)
 
 stock theplayer::removeWeapon(playerid, weaponid) {
 	new slot = utility::getWeaponSlot(weaponid), weapon, ammo;

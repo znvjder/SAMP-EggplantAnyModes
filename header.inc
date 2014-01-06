@@ -82,14 +82,25 @@ enum {
 };
 
 enum (<<=1) {
-	// Admin stuff
+	// Properties player stuff
+	
 	
 };
 
 enum e_ServerData {
 	MySQL:esd_MySQLHandler,
 	esd_streamerTickRate,
+	esd_codeDebugger
 	
 };
 
-new ServerData[e_ServerData];
+enum e_PlayerData {
+	epd_nickname[MAX_PLAYER_NAME],
+	epd_addressIP[16],
+	epd_accountID,
+	epd_logonAttempts,
+	epd_properties, // stuff do przechowywania wartosci 'specjalnych'
+};
+
+new PlayerData[MAX_PLAYERS][e_PlayerData],
+	ServerData[e_ServerData];
