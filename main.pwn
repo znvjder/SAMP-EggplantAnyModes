@@ -38,6 +38,7 @@
 #include "internal/CUtility.p"
 #include "internal/CMySQL.p"
 #include "internal/CConfigData.p"
+#include "internal/CAccounts.p"
 
 main() return 0;
 
