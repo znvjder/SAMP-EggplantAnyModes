@@ -9,7 +9,7 @@
 		- Robertson <do uzupelnienia>
 		- Bantu <bantu3i5@tlen.pl>
 		- _l0stfake7 <barpon@gmail.com>
-		- Very special thanks to: SA-MP Team, Y_Less, Incognito, Sacky, Promsters, and others...
+		- Very special thanks to: SA-MP Team, Y_Less, Incognito, Slice, Sacky, Promsters, and others...
 	
 	@version: 0.1 pre-alpha
 	@licence: GPLv2
