@@ -1,4 +1,4 @@
--- 	@name: schema dla eggplantDM
+--	@name: schema dla eggplantDM
 --	@author: l0nger <l0nger.programmer@gmail.com>
 --	@licence: GPLv2
 --	(c) 2013-2014, <l0nger.programmer@gmail.com>
@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- TODO: dodac konto dewelopera
+-- TODO: tabela z bronmi gracza i amunicja!
 
 -- table houses
 CREATE TABLE IF NOT EXISTS houses (
