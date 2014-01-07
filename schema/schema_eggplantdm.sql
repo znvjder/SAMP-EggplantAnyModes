@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS houses (
 	`price` INT NOT NULL DEFAULT '100',
 	`priceType` TINYINT NOT NULL DEFAULT '0', -- 0 == kupno za kase, 1 == kupno za RP (respect)
 	PRIMARY KEY (`id`),
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- table vehicles
 CREATE TABLE IF NOT EXISTS vehicles (

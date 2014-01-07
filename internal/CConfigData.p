@@ -3,7 +3,7 @@
 	@author: l0nger <l0nger.programmer@gmail.com>
 	@licence: GPLv2
 	
-	(c) 2013-2014, l0nger.programmer@gmail.com
+	(c) 2013-2014, <l0nger.programmer@gmail.com>
 */
 
 #define PATH_cfg "/EggplantDM/config/global.cfg"
@@ -18,10 +18,10 @@ stock CConfigData_Init() {
 	}
 	
 	// Server infos
-	djSetDefault(PATH_cfg, "server/hostname", "Infinity-Gaming.net [DM]");
-	djSetDefault(PATH_cfg, "server/mapname", "EGG SA");
-	djSetDefault(PATH_cfg, "server/weburl", "www.your_url.com/");
-	djSetDefault(PATH_cfg, "server/mode", "EggplantDM " SCRIPT_VERSION);
+	djSetDefault(PATH_cfg, "server/hostname", "[PL] "SCRIPT_PROJECTNAME"");
+	djSetDefault(PATH_cfg, "server/mapname", "");
+	djSetDefault(PATH_cfg, "server/weburl", "www.stronaprojektu.com/");
+	djSetDefault(PATH_cfg, "server/mode", ""SCRIPT_NAME" " SCRIPT_VERSION);
 	djSetDefault(PATH_cfg, "server/debugger", "1");
 	// MySQL
 	djSetDefault(PATH_cfg, "mysql/hostname", "localhost");

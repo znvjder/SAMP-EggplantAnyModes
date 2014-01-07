@@ -15,6 +15,8 @@
 	@licence: GPLv2
 */
 
+#define SCRIPT_PROJECTNAME "Infinity-Gaming.net DM"
+#define SCRIPT_NAME	"EggplantDM"
 #define SCRIPT_VERSION "0.1 pre-alpha"
 #pragma dynamic 4096
 
@@ -54,7 +56,7 @@ public OnGameModeInit() {
 	CConfigData_Init();
 	CConfigData_Load();
 	
-	printf("[EggplantDM "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
+	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
 	CLogging_Insert(CLOG_SERVER, "Starting logging...");
 	if(ServerData[esd_codeDebugger] >= _DEBUG_EASY) {
 		printf("Debug is on. Level debugging: %d", ServerData[esd_codeDebugger]);
