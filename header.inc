@@ -23,6 +23,12 @@
 #define bit_unset(%0,%1) %0&=~%1
 #define bit_if(%0,%1) ((%0) & (%1))
 
+// Admins ranks
+#define RANK_GAMEMASTER (1)
+#define RANK_ADMIN (2)
+#define RANK_MASTERADMIN (2)
+#define RANK_DEV (3)
+
 // Durations macros
 /*
 	Compile-time duration
@@ -93,6 +99,9 @@ enum {
 
 enum (<<=1) {
 	// Properties player stuff
+	PLAYER_NULL=0,
+	PLAYER_NOTHAVEACCOUNT=1,
+	PLAYER_ISLOGGED,
 	
 	
 };
@@ -110,6 +119,8 @@ enum e_PlayerData {
 	epd_accountID,
 	epd_logonAttempts,
 	epd_properties, // stuff do przechowywania wartosci 'specjalnych'
+	epd_admin, // 0=nic, 1=mod, 2=admin, 3=master admin, 4=owner/developer
+	bool:epd_haveVip
 };
 
 new PlayerData[MAX_PLAYERS][e_PlayerData],

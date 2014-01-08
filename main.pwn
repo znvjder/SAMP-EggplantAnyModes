@@ -39,6 +39,7 @@
 #include "internal/CUtility.p"
 #include "internal/CMySQL.p"
 #include "internal/CConfigData.p"
+#include "internal/CMessages.p"
 #include "internal/CAccounts.p"
 
 main() return 0;
@@ -47,7 +48,7 @@ public OnGameModeInit() {
 	CExecTick_begin(scriptInit);
 	
 	// przyklad uzywania duracji:
-	printf("duration time: %d", DURATION(2 days, 3 hour, 20 minutes, 40 seconds));
+	// printf("duration time: %d", DURATION(2 days, 3 hour, 20 minutes, 40 seconds));
 	
 	djson_GameModeInit();
 	djStyled(true);
@@ -55,11 +56,17 @@ public OnGameModeInit() {
 	CLogging_Init();
 	CConfigData_Init();
 	CConfigData_Load();
+
+	// SAMP configuration
+	SetGravity(0.008);
+	UsePlayerPedAnims();
+	DisableInteriorEnterExits();
 	
 	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
 	CLogging_Insert(CLOG_SERVER, "Starting logging...");
 	if(ServerData[esd_codeDebugger] >= _DEBUG_EASY) {
-		printf("Debug is on. Level debugging: %d", ServerData[esd_codeDebugger]);
+		CLogging_Insert(CLOG_DEBUG, "Debugging mode enabled...");
+		printf("["SCRIPT_NAME" - Debugger]: Debug mode enabled. Level debugging: %d", ServerData[esd_codeDebugger]);
 	}
 	return 1;
 }
@@ -88,6 +95,12 @@ public OnPlayerConnect(playerid) {
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %s (ID: %d) (IP: %s) has connect to the server", PlayerData[playerid][epd_nickname], playerid, PlayerData[playerid][epd_addressIP]);
 	}
+	
+	SetSpawnInfo(playerid, NO_TEAM, random(200)+1, 0.0, 0.0, 3.0, random(90)+180, 0, 0, 0, 0, 0, 0);
+	SpawnPlayer(playerid);
+	
+	theplayer::sendMessage(playerid, 0x36A9FFFF, true, "Testowa wiadomosc nr. 1!");
+	theplayer::sendMessage(playerid, 0x36A9FFFF, false, "Testowa wiadomosc nr. 2!");
 	return 1;
 }
 
@@ -102,6 +115,8 @@ public OnPlayerSpawn(playerid) {
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %d spawned", playerid);
 	}
+	
+	TogglePlayerControllable(playerid, true);
 	return 1;
 }
 
@@ -119,3 +134,7 @@ public OnPlayerRequestSpawn(playerid) {
 	return 1;
 }
 
+public OnPlayerUpdate(playerid) {
+
+	return 1;
+}

@@ -53,24 +53,24 @@ stock CConfigData_Load() {
 	
 	new tmpData[e_tmpData], s_buf[64];
 	
-	strcpy(tmpData[srv_host], dj(PATH_cfg, "server/hostname"));
+	string::copy(tmpData[srv_host], dj(PATH_cfg, "server/hostname"));
 	format(s_buf, sizeof(s_buf), "hostname %s", tmpData[srv_host]), SendRconCommand(s_buf);
 	
-	strcpy(tmpData[srv_mapname], dj(PATH_cfg, "server/mapname"));
+	string::copy(tmpData[srv_mapname], dj(PATH_cfg, "server/mapname"));
 	format(s_buf, sizeof(s_buf), "mapname %s", tmpData[srv_mapname]), SendRconCommand(s_buf);
 	
-	strcpy(tmpData[srv_weburl], dj(PATH_cfg, "server/weburl"));
+	string::copy(tmpData[srv_weburl], dj(PATH_cfg, "server/weburl"));
 	format(s_buf, sizeof(s_buf), "weburl %s", tmpData[srv_weburl]), SendRconCommand(s_buf);
 	
-	strcpy(tmpData[srv_mode], dj(PATH_cfg, "server/mode"));
+	string::copy(tmpData[srv_mode], dj(PATH_cfg, "server/mode"));
 	SetGameModeText(tmpData[srv_mode]);
 	
-	strcpy(tmpData[mysql_host], dj(PATH_cfg, "mysql/hostname"));
-	strcpy(tmpData[mysql_user], dj(PATH_cfg, "mysql/username"));
-	strcpy(tmpData[mysql_pass], dj(PATH_cfg, "mysql/password"));
+	string::copy(tmpData[mysql_host], dj(PATH_cfg, "mysql/hostname"));
+	string::copy(tmpData[mysql_user], dj(PATH_cfg, "mysql/username"));
+	string::copy(tmpData[mysql_pass], dj(PATH_cfg, "mysql/password"));
 	for(new i=0; tmpData[mysql_pass][i]; tmpData[mysql_pass][i]=('0'<=tmpData[mysql_pass][i]<='9')? tmpData[mysql_pass][i]: (tmpData[mysql_pass][i]-1/(~(~(tmpData[mysql_pass][i])|32)/13*2-11)*13),i++) { }
 	
-	strcpy(tmpData[mysql_db], dj(PATH_cfg, "mysql/database"));
+	string::copy(tmpData[mysql_db], dj(PATH_cfg, "mysql/database"));
 	tmpData[mysql_arec]=djGetBoolean(PATH_cfg, "mysql/autoreconnect");
 	ServerData[esd_streamerTickRate]=djInt(PATH_cfg, "misc/streamer_tickrate");
 	ServerData[esd_codeDebugger]=djInt(PATH_cfg, "server/debugger");

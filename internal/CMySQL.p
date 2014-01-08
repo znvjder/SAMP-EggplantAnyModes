@@ -44,6 +44,7 @@ stock CMySQL_Exit() {
 		(standardowe wartosci z mysql_query)
 */
 stock CMySQL_Query(query[], resultid=(-1), va_args<>) {
+	string_MySQLBuffer[0]=EOS;
 	if(numargs()>2) {
 		va_format(string_MySQLBuffer, sizeof(string_MySQLBuffer), query, va_start<2>);
 		return mysql_query(string_MySQLBuffer, resultid);

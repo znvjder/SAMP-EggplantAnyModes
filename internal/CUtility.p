@@ -11,8 +11,10 @@
 
 #define RAND() random(cellmax-1)
 
-#undef strcpy
-stock strcpy(dest[], const source[], length = sizeof(source)) // by promsters
+#undef string
+#define string:: string_
+
+stock string::copy(dest[], const source[], length = sizeof(source)) // by promsters
 {
 	strins((dest[0] = EOS, dest), source, 0, length);
 }
@@ -54,6 +56,16 @@ stock Float:math::floatrandom(Float:max, Float:min = 0.0, dp = 4)
 
 #define theplayer:: theplayer_ // taki tam stuff, cos z player:: bylo zjebane
 #define theplayer_kick(%0) SetTimerEx("KickCalled", 150, false, "d", %0)
+
+stock theplayer::isGamemaster(playerid) {
+	if(!IsPlayerConnected(playerid)) return false;
+	return (PlayerData[playerid][epd_admin]>=RANK_GAMEMASTER);
+}
+
+stock theplayer::isAdmin(playerid) {
+	if(!IsPlayerConnected(playerid)) return false;
+	return (PlayerData[playerid][epd_admin]>=RANK_ADMIN);
+}
 
 stock theplayer::removeWeapon(playerid, weaponid) {
 	new slot = utility::getWeaponSlot(weaponid), weapon, ammo;
