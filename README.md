@@ -10,7 +10,7 @@ Autorzy
 - _Andrew_, andx98@wp.pl
 - _Roberson_, robert.oskarn@gmail.com
 - _Bantu_, bantu3i5@tlen.pl
-- _l0stfake7_, barpon@gmail.com,
+- _l0stfake7_, barpon@gmail.com
 - _Macias_, maciekgl@o2.pl
 
 Dlaczego ten kod jest publiczny?
