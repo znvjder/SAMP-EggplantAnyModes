@@ -11,11 +11,13 @@
 #define CLOG_SQL (1)
 #define CLOG_CMDS (2)
 #define CLOG_DEBUG (3)
+#define CLOG_PAYMENTS (4)
 
 #define CLOG_SERVER_NAME "server"
 #define CLOG_SQL_NAME "sql"
 #define CLOG_CMDS_NAME "commands"
 #define CLOG_DEBUG_NAME "debug"
+#define CLOG_PAYMENTS_NAME "payments"
 
 #define flushFile(%0) fclose(fopen(%0))
 
@@ -52,6 +54,7 @@ stock CLogging_Insert(logtype, txt[], va_args<>) {
 		case CLOG_SQL: strcat(fName, CLOG_SQL_NAME);
 		case CLOG_CMDS: strcat(fName, CLOG_CMDS_NAME);
 		case CLOG_DEBUG: strcat(fName, CLOG_DEBUG_NAME);
+		case CLOG_PAYMENTS: strcat(fName, CLOG_PAYMENTS_NAME);
 		default: strcat(fName, "unkown");
 	}
 	

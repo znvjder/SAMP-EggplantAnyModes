@@ -26,8 +26,8 @@
 // Admins ranks
 #define RANK_GAMEMASTER (1)
 #define RANK_ADMIN (2)
-#define RANK_MASTERADMIN (2)
-#define RANK_DEV (3)
+#define RANK_MASTERADMIN (3)
+#define RANK_DEV (4)
 
 // Durations macros
 /*

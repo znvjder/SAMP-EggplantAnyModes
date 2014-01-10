@@ -6,13 +6,15 @@
 		- l0nger <l0nger.programmer@gmail.com>
 		- Pamdex <pamdex@myotherworld.net>
 		- Andrew <andx98@wp.pl>
-		- Robertson <do uzupelnienia>
+		- Roberson <do uzupelnienia>
 		- Bantu <bantu3i5@tlen.pl>
 		- _l0stfake7 <barpon@gmail.com>
+		- _Macias_, <maciekgl@o2.pl>
 		- Very special thanks to: SA-MP Team, Y_Less, Incognito, Slice, Sacky, Promsters, and others...
 	
 	@version: 0.1 pre-alpha
 	@licence: GPLv2
+	@link package: https://github.com/l0nger/SAMP-EggplantDM
 */
 
 #define SCRIPT_PROJECTNAME "Infinity-Gaming.net DM"
