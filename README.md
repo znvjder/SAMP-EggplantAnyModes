@@ -5,13 +5,13 @@ Napisany głównie w języku PAWN, stworzony na potrzeby serwera Infinity-Gaming
 
 Autorzy
 ============
-- l0nger, l0nger.programmer@gmail.com
-- Pamdex, pamdex@myotherworld.net
-- Andrew, andx98@wp.pl
-- Roberson, robert.oskarn@gmail.com
-- Bantu, bantu3i5@tlen.pl
-- _l0stfake7, barpon@gmail.com,
-- _Macias_, maciekgl@o2.pl
+- _l0nger_, l0nger.programmer@gmail.com
+- _Pamdex_, pamdex@myotherworld.net
+- _Andrew_, andx98@wp.pl
+- _Roberson_, robert.oskarn@gmail.com
+- _Bantu_, bantu3i5@tlen.pl
+- __l0stfake7_, barpon@gmail.com,
+- __Macias__, maciekgl@o2.pl
 
 Dlaczego ten kod jest publiczny?
 ============
