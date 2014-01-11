@@ -10,23 +10,23 @@ CREATE TABLE IF NOT EXISTS accounts (
 	`password` VARCHAR(48) NOT NULL,
 	`ip_register` VARCHAR(16) NOT NULL DEFAULT '0.0.0.0',
 	`ip_last` VARCHAR(16) NOT NULL DEFAULT '0.0.0.0',
-	`ts_register` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`ts_last` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`ts_register` TIMESTAMP DEFAULT 0,
+	`ts_last` TIMESTAMP DEFAULT 0,
 	`isonline` TINYINT(1) NOT NULL DEFAULT '1',
 	`skin` SMALLINT NOT NULL DEFAULT '1',
-	`respect` UNSIGNED INT NOT NULL DEFAULT '0',
-	`level` UNSIGNED SMALLINT NOT NULL DEFAULT '1',
+	`respect` INT NOT NULL DEFAULT '0',
+	`level` INT NOT NULL DEFAULT '1',
 	`hp` DECIMAL(4,1) NOT NULL DEFAULT '99.9', -- potrzebne do CAC'a
 	`armour` DECIMAL(4,1) NOT NULL DEFAULT '99.9', -- potrzebne do CAC'a
 	`bank_money` INT NOT NULL DEFAULT '0',
 	`wallet_money` INT NOT NULL DEFAULT '150',
 	`pos` VARCHAR(64) NOT NULL DEFAULT '0.0;0.0;3.0;90.0;',
-	`spawnType` TINYNT(1) NOT NULL DEFAULT '0', -- 1) Spawn w ostatnim miejscu 2) Spawn w domu
+	`spawnType` TINYINT(1) NOT NULL DEFAULT '0', -- 1) Spawn w ostatnim miejscu 2) Spawn w domu
 	`admin` TINYINT(4) NOT NULL DEFAULT '0', -- 1) Moderator 2) Admin 3) Master admin 4) Owner/developer
-	`vip` TIMESTAMP NOT NULL DEFAULT '0',
+	`vip` TIMESTAMP DEFAULT 0,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY (`nickname`),
-	KEY `respect and money` (`respect`, `money`)
+	KEY `respect and money` (`respect`, `wallet_money`, `bank_money`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- TODO: dodac konto dewelopera
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS houses (
 	`owner` INT NOT NULL DEFAULT '0', -- brak wlasciciela jezeli 0
 	`price` INT NOT NULL DEFAULT '100',
 	`priceType` TINYINT NOT NULL DEFAULT '0', -- 0 == kupno za kase, 1 == kupno za RP (respect)
-	PRIMARY KEY (`id`),
+	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- table vehicles
@@ -68,8 +68,8 @@ CREATE TABLE IF NOT EXISTS vehicles (
 	`dmgTires` SMALLINT NOT NULL DEFAULT '0', -- uszkodzenia opon
 	`color1` SMALLINT NOT NULL DEFAULT '200',
 	`color2` SMALLINT NOT NULL DEFAULT '201',
-	`tuning` VARCHAR(255) NOT NULL DEFAULT '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;'
-	`hp` DECIMAL(10,6) NOT NULL DEFAULT '3000.0', -- zycie pojazdu
-	`owner` INT NOT NULL DEFAULT '0', -- 0 == brak wlasiciciela
+	`tuning` VARCHAR(255) NOT NULL DEFAULT '0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;',
+	`hp` DECIMAL(10,6) NOT NULL DEFAULT '3000.0',
+	`owner` INT NOT NULL DEFAULT '0', -- brak wlasciciela jezeli 0
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
