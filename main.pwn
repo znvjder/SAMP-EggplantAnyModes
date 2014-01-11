@@ -48,7 +48,7 @@ main() return 0;
 
 public OnGameModeInit() {
 	CExecTick_begin(scriptInit);
-	
+		
 	// przyklad uzywania duracji:
 	// printf("duration time: %d", DURATION(2 days, 3 hour, 20 minutes, 40 seconds));
 	
@@ -69,6 +69,9 @@ public OnGameModeInit() {
 	SetGravity(0.008);
 	UsePlayerPedAnims();
 	DisableInteriorEnterExits();
+	EnableStuntBonusForAll(false);
+	ShowPlayerMarkers(PLAYER_MARKERS_MODE_GLOBAL);
+	SendRconCommand("unbanip *.*.*.*");
 	
 	// Modules initialize
 	CAccounts_Init();
@@ -186,9 +189,10 @@ public OnPlayerSpawn(playerid) {
 		if(PlayerData[playerid][epd_spawnType]==0) {
 			SetPlayerHealth(playerid, PlayerData[playerid][epd_lastHealth]);
 			if(PlayerData[playerid][epd_lastArmour]>0) SetPlayerArmour(playerid, PlayerData[playerid][epd_lastArmour]);
-		
-			SetSpawnInfo(playerid, NO_TEAM, PlayerData[playerid][epd_lastSkin], PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2], PlayerData[playerid][epd_lastPos][3], 0, 0, 0, 0, 0, 0);
-			SpawnPlayer(playerid);
+			
+			SetPlayerSkin(playerid, PlayerData[playerid][epd_lastSkin]);
+			SetPlayerPos(playerid, PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2]);
+			SetPlayerFacingAngle(playerid, PlayerData[playerid][epd_lastPos][3]);
 		} else {
 			// TODO: Wyszukanie domu i zespawnowanie gracza w domu
 		}
@@ -196,7 +200,7 @@ public OnPlayerSpawn(playerid) {
 	} else {
 		SetPlayerPos(playerid, 0.0, 0.0, 3.0);
 	}
-	TogglePlayerControllable(playerid, true);
+	SetCameraBehindPlayer(playerid);
 	return 1;
 }
 
@@ -369,26 +373,32 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ) {
 
 public OnVehicleDamageStatusUpdate(vehicleid, playerid) {
 
+	return true;
 }
 
 public OnVehicleSpawn(vehicleid) {
 
+	return true;
 }
 
 public OnVehicleDeath(vehicleid, killerid) {
 
+	return true;
 }
 
 public OnVehicleMod(playerid, vehicleid, componentid) {
 
+	return true;
 }
 
 public OnVehicleRespray(playerid, vehicleid, color1, color2) {
 
+	return true;
 }
 
 public OnVehiclePaintjob(playerid, vehicleid, paintjobid) {
 
+	return true;
 }
 
 public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat) {
