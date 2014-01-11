@@ -90,3 +90,4 @@ stock CLogging_Insert(logtype, txt[], va_args<>) {
 #undef CLOG_SQL_NAME
 #undef CLOG_CMDS_NAME
 #undef CLOG_DEBUG_NAME
+#undef CLOG_PAYMENTS_NAME
