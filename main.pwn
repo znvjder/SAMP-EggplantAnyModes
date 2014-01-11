@@ -200,6 +200,7 @@ public OnPlayerSpawn(playerid) {
 	} else {
 		SetPlayerPos(playerid, 0.0, 0.0, 3.0);
 	}
+	
 	SetCameraBehindPlayer(playerid);
 	return 1;
 }

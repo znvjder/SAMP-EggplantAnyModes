@@ -66,6 +66,6 @@ public OnMysqlQuery(resultid, spareid, MySQL:handle) {
 public OnMysqlError(error[], errorid, MySQL:handle) {
 	if(errorid == 8) return;
 	if(ServerData[esd_codeDebugger]>=_DEBUG_NORMAL) {
-		CLogging_Insert(CLOG_DEBUG, "Error MySQL: %s (%d)", error, errorid);
+		CLogging_Insert(CLOG_SQL, "Error MySQL: %s (%d)", error, errorid);
 	}
 }
