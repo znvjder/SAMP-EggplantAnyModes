@@ -103,5 +103,4 @@ stock CMessages_BoldText(szColors[2], text[]) {
 	string::replace(text, "<b>", tmpBufColor);
 	format(tmpBufColor, sizeof(tmpBufColor), "{%06x}", szColors[0]>>>8);
 	string::replace(text, "</b>", tmpBufColor);
-	return 1;
 }
