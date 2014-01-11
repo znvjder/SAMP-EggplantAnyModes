@@ -93,6 +93,51 @@ stock theplayer::sendMessageToAll(color, text[], va_args<>) {
 	}
 }
 
+#define theadmins:: theadmins_
+
+stock theadmins::sendMessage(color, levelmin=RANK_ADMIN, msg[], va_args<>) {
+	new tmpBuffer[128];
+	string::copy(tmpBuffer, text, sizeof(tmpBuffer));
+	
+	new szColor[2]; // 0=normal, 1=highlight
+	switch(color) {
+		case COLOR_INFO1: {
+			szColor[0]=ConfigColorData[COLOR_INFO1][0];
+			szColor[1]=ConfigColorData[COLOR_INFO1][1];
+		}
+		case COLOR_INFO2: {
+			szColor[0]=ConfigColorData[COLOR_INFO2][0];
+			szColor[1]=ConfigColorData[COLOR_INFO2][1];
+		}
+		case COLOR_INFO3: {
+			szColor[0]=ConfigColorData[COLOR_INFO3][0];
+			szColor[1]=ConfigColorData[COLOR_INFO3][1];
+		}
+		case COLOR_ERROR: {
+			szColor[0]=ConfigColorData[COLOR_ERROR][0];
+			szColor[1]=ConfigColorData[COLOR_ERROR][1];
+		}
+		case COLOR_PM: {
+			szColor[0]=ConfigColorData[COLOR_PM][0];
+			szColor[1]=ConfigColorData[COLOR_PM][1];
+		}
+		case COLOR_LOCAL: {
+			szColor[0]=ConfigColorData[COLOR_LOCAL][0];
+			szColor[1]=ConfigColorData[COLOR_LOCAL][1];
+		}
+	}
+	
+	CMessages_BoldText(szColor, tmpBuffer);
+	if(numargs()>3) {
+		va_format(tmpBuffer, sizeof(tmpBuffer), msg, va_start<3>);
+	}
+	theplayer::foreach(i) {
+		if(theplayer::isAdmin(i, levelmin)) {
+			SendClientMessage(i, szColor[0], tmpBuffer);
+		}
+	}
+}
+
 stock CMessages_BoldText(szColors[2], text[]) {
 	new 
 		tmpBufColor[9],

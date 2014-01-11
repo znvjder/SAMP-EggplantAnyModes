@@ -67,12 +67,16 @@ stock theplayer::onEventLogin(playerid, input[]) {
 		bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
 		bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
 		
+		SetPlayerHealth(playerid, PlayerData[playerid][epd_lastHealth]);
+		if(PlayerData[playerid][epd_lastArmour]>0) SetPlayerArmour(playerid, PlayerData[playerid][epd_lastArmour]);
+		
 		// TODO: Wczytywanie broni/amunicji w tym skilla z tabeli broni/amunicji ;p
 		if(PlayerData[playerid][epd_spawnType]==0) {
 			SetSpawnInfo(playerid, NO_TEAM, PlayerData[playerid][epd_lastSkin], PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2], PlayerData[playerid][epd_lastPos][3], 0, 0, 0, 0, 0, 0);
 			SpawnPlayer(playerid);
+			
 		} else {
-			// TODO: Wyszukanie domu i zespawnowanie go w domu
+			// TODO: Wyszukanie domu i zespawnowanie gracza w domu
 		}
 		
 	} else {

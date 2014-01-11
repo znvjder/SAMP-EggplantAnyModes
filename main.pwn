@@ -90,6 +90,8 @@ public OnPlayerConnect(playerid) {
 		return 0;
 	}
 	
+	if(playerid > ServerData[esd_highestPlayerID]) ServerData[esd_highestPlayerID]=playerid;
+	
 	utility::resetVariablesInEnum(PlayerData[playerid], e_PlayerData);
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
@@ -109,6 +111,14 @@ public OnPlayerConnect(playerid) {
 }
 
 public OnPlayerDisconnect(playerid, reason) {
+	new tmpRecountPlayers;
+	for(new i; i<ServerData[esd_highestPlayerID] && IsPlayerConnected(i); i++) {
+		if(i != playerid) {
+			tmpRecountPlayers++;
+		}
+	}
+	ServerData[esd_highestPlayerID]=tmpRecountPlayers;
+	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %s (R: %d) (ID: %d) (IP: %s) leave from server", PlayerData[playerid][epd_nickname], reason, playerid, PlayerData[playerid][epd_addressIP]);
 	}
