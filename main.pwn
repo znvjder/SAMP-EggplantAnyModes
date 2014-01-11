@@ -101,8 +101,8 @@ public OnPlayerConnect(playerid) {
 	SetSpawnInfo(playerid, NO_TEAM, random(200)+1, 0.0, 0.0, 3.0, random(90)+180, 0, 0, 0, 0, 0, 0);
 	SpawnPlayer(playerid);
 	
-	theplayer::sendMessage(playerid, 0x36A9FFFF, true, "Testowa wiadomosc nr. 1!");
-	theplayer::sendMessage(playerid, 0x36A9FFFF, false, "Testowa wiadomosc nr. 2!");
+	theplayer::sendMessage(playerid, COLOR_INFO1, "Testowa <b>wiadomosc</b> nr. 1!");
+	theplayer::sendMessage(playerid, COLOR_INFO3, "Testowa <b>wiadomosc</b> nr. 2!");
 	return 1;
 }
 

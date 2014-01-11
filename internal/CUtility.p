@@ -19,6 +19,18 @@ stock string::copy(dest[], const source[], length = sizeof(source)) // by promst
 	strins((dest[0] = EOS, dest), source, 0, length);
 }
 
+stock string::replace(subject[], const search[], const replace[]) { // w przyszlosci zostanie ta funkcja napisana w pluginie
+	new start_pos,
+		searchLen=strlen(search),
+		replaceLen=strlen(replace),
+		subjectLen=strlen(subject);
+	while((start_pos=strfind(subject, search)) != -1) {
+		strdel(subject, start_pos, start_pos+searchLen);
+		strins(subject, replace, start_pos, subjectLen+replaceLen);
+		start_pos+=replaceLen;
+	}
+}
+
 #define math:: math_ // taki tam stuff
 #define math_pi() (3.14159)
 

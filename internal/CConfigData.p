@@ -31,6 +31,20 @@ stock CConfigData_Init() {
 	djSetDefault(PATH_cfg, "mysql/autoreconnect", "1");
 	// Misc
 	djSetDefault(PATH_cfg, "misc/streamer_tickrate", "35");
+	// Chat colours
+	// TODO: Poprawic kolory na jakies bardziej kompozycyjne
+	djSetDefault(PATH_cfg, "chat_colors/normINFO1", "0xD9A689FF");
+	djSetDefault(PATH_cfg, "chat_colors/normINFO2", "0xBF8654FF");
+	djSetDefault(PATH_cfg, "chat_colors/normINFO3", "0xE0C070FF");
+	djSetDefault(PATH_cfg, "chat_colors/normERROR", "0x5E121DFF");
+	djSetDefault(PATH_cfg, "chat_colors/normPM", "0x325B80FF");
+	djSetDefault(PATH_cfg, "chat_colors/normLOCAL", "0x314747FF");
+	djSetDefault(PATH_cfg, "chat_colors/hlightINFO1", "0xF2DEA2FF");
+	djSetDefault(PATH_cfg, "chat_colors/hlightINFO2", "0xF2B138FF");
+	djSetDefault(PATH_cfg, "chat_colors/hlightINFO3", "0xFFF5A9FF");
+	djSetDefault(PATH_cfg, "chat_colors/hlightERROR", "0xB42736FF");
+	djSetDefault(PATH_cfg, "chat_colors/hlightPM", "0x5AA3E6FF");
+	djSetDefault(PATH_cfg, "chat_colors/hlightLOCAL", "0x5D856CFF");
 }
 
 // CConfig_LoadData - wczytuje dane z pliku i zapisuje do zmiennych
@@ -51,7 +65,9 @@ stock CConfigData_Load() {
 		bool:mysql_arec
 	};
 	
-	new tmpData[e_tmpData], s_buf[64];
+	new tmpData[e_tmpData], s_buf[64], 
+		tmpColorNormal[][] = {"normINFO1", "normINFO2", "normINFO3", "normERROR", "normPM", "normLOCAL"},
+		tmpColorHighlight[][] = {"hlightINFO1", "hlightINFO2", "hlightINFO3", "hlightERROR", "hlightPM", "hlightLOCAL"};
 	
 	string::copy(tmpData[srv_host], dj(PATH_cfg, "server/hostname"));
 	format(s_buf, sizeof(s_buf), "hostname %s", tmpData[srv_host]), SendRconCommand(s_buf);
@@ -65,6 +81,18 @@ stock CConfigData_Load() {
 	string::copy(tmpData[srv_mode], dj(PATH_cfg, "server/mode"));
 	SetGameModeText(tmpData[srv_mode]);
 	
+	ServerData[esd_codeDebugger]=djInt(PATH_cfg, "server/debugger");
+	
+	for(new i=sizeof(tmpColorNormal)-1; i>=0; i--) {
+		format(s_buf, sizeof(s_buf), "chat_colors/%s", tmpColorNormal[i]);
+		sscanf(dj(PATH_cfg, s_buf), "x", ConfigColorData[i][0]);
+	}
+	
+	for(new i=sizeof(tmpColorHighlight)-1; i>=0; i--) {
+		format(s_buf, sizeof(s_buf), "chat_colors/%s", tmpColorHighlight[i]);
+		sscanf(dj(PATH_cfg, s_buf), "x", ConfigColorData[i][1]);
+	}
+	
 	string::copy(tmpData[mysql_host], dj(PATH_cfg, "mysql/hostname"));
 	string::copy(tmpData[mysql_user], dj(PATH_cfg, "mysql/username"));
 	string::copy(tmpData[mysql_pass], dj(PATH_cfg, "mysql/password"));
@@ -73,7 +101,6 @@ stock CConfigData_Load() {
 	string::copy(tmpData[mysql_db], dj(PATH_cfg, "mysql/database"));
 	tmpData[mysql_arec]=djGetBoolean(PATH_cfg, "mysql/autoreconnect");
 	ServerData[esd_streamerTickRate]=djInt(PATH_cfg, "misc/streamer_tickrate");
-	ServerData[esd_codeDebugger]=djInt(PATH_cfg, "server/debugger");
 	
 	printf("[CConfigData]: Get all config data in %.2f ms", float(CExecTick_end(startLoading))/1000.0);
 	if(strlen(tmpData[mysql_host])<=0 || strlen(tmpData[mysql_user])<=0 || strlen(tmpData[mysql_pass])<=0) {

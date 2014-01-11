@@ -23,6 +23,16 @@
 #define bit_unset(%0,%1) %0&=~%1
 #define bit_if(%0,%1) ((%0) & (%1))
 
+// Color chat
+#define COLOR_INFO1 (0)
+#define COLOR_INFO2 (1)
+#define COLOR_INFO3 (2)
+#define COLOR_ERROR (3)
+#define COLOR_PM (4)
+#define COLOR_LOCAL (5)
+
+#define MAX_COLORS_CHAT (6)
+
 // Admins ranks
 #define RANK_GAMEMASTER (1)
 #define RANK_ADMIN (2)
@@ -110,7 +120,6 @@ enum e_ServerData {
 	MySQL:esd_MySQLHandler,
 	esd_streamerTickRate,
 	esd_codeDebugger
-	
 };
 
 enum e_PlayerData {
@@ -123,5 +132,7 @@ enum e_PlayerData {
 	bool:epd_haveVip
 };
 
-new PlayerData[MAX_PLAYERS][e_PlayerData],
-	ServerData[e_ServerData];
+new 
+	PlayerData[MAX_PLAYERS][e_PlayerData],
+	ServerData[e_ServerData],
+	ConfigColorData[MAX_COLORS_CHAT][2];

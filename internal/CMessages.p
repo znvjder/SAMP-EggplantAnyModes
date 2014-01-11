@@ -9,60 +9,99 @@
 */
 
 static stock
-	string_MessagesBuffer[160];
+	gs_sBufferMessages[160];
 	
-stock theplayer::sendMessage(playerid, color, bool:makeBrighter=true, text[], va_args<>) {
-	string_MessagesBuffer[0]=EOS;
+stock theplayer::sendMessage(playerid, color, text[], va_args<>) {
+	gs_sBufferMessages[0]=EOS;
+	string::copy(gs_sBufferMessages, text, sizeof(gs_sBufferMessages));
+	
+	new szColor[2]; // 0=normal, 1=highlight
+	switch(color) {
+		case COLOR_INFO1: {
+			szColor[0]=ConfigColorData[COLOR_INFO1][0];
+			szColor[1]=ConfigColorData[COLOR_INFO1][1];
+		}
+		case COLOR_INFO2: {
+			szColor[0]=ConfigColorData[COLOR_INFO2][0];
+			szColor[1]=ConfigColorData[COLOR_INFO2][1];
+		}
+		case COLOR_INFO3: {
+			szColor[0]=ConfigColorData[COLOR_INFO3][0];
+			szColor[1]=ConfigColorData[COLOR_INFO3][1];
+		}
+		case COLOR_ERROR: {
+			szColor[0]=ConfigColorData[COLOR_ERROR][0];
+			szColor[1]=ConfigColorData[COLOR_ERROR][1];
+		}
+		case COLOR_PM: {
+			szColor[0]=ConfigColorData[COLOR_PM][0];
+			szColor[1]=ConfigColorData[COLOR_PM][1];
+		}
+		case COLOR_LOCAL: {
+			szColor[0]=ConfigColorData[COLOR_LOCAL][0];
+			szColor[1]=ConfigColorData[COLOR_LOCAL][1];
+		}
+	}
+	
+	CMessages_BoldText(szColor, gs_sBufferMessages);
 	if(numargs()>4) {
-		//CMessages_BoldText(color, makeBrighter, text);
-		return SendClientMessage(playerid, color, va_return(string_MessagesBuffer, va_start<4>));
+		va_format(gs_sBufferMessages, sizeof(gs_sBufferMessages), text, va_start<4>);
+		return SendClientMessage(playerid, szColor[0], gs_sBufferMessages);
 	} else {
-		//CMessages_BoldText(color, makeBrighter, text);
-		return SendClientMessage(playerid, color, text);
+		return SendClientMessage(playerid, szColor[0], gs_sBufferMessages);
 	}
 }
 
-stock theplayer::sendMessageToAll(color, bool:makeBrighter=true, text[], va_args<>) {
-	string_MessagesBuffer[0]=EOS;
+stock theplayer::sendMessageToAll(color, text[], va_args<>) {
+	gs_sBufferMessages[0]=EOS;
+	string::copy(gs_sBufferMessages, text, sizeof(gs_sBufferMessages));
+	
+	new szColor[2]; // 0=normal, 1=highlight
+	switch(color) {
+		case COLOR_INFO1: {
+			szColor[0]=ConfigColorData[COLOR_INFO1][0];
+			szColor[1]=ConfigColorData[COLOR_INFO1][1];
+		}
+		case COLOR_INFO2: {
+			szColor[0]=ConfigColorData[COLOR_INFO2][0];
+			szColor[1]=ConfigColorData[COLOR_INFO2][1];
+		}
+		case COLOR_INFO3: {
+			szColor[0]=ConfigColorData[COLOR_INFO3][0];
+			szColor[1]=ConfigColorData[COLOR_INFO3][1];
+		}
+		case COLOR_ERROR: {
+			szColor[0]=ConfigColorData[COLOR_ERROR][0];
+			szColor[1]=ConfigColorData[COLOR_ERROR][1];
+		}
+		case COLOR_PM: {
+			szColor[0]=ConfigColorData[COLOR_PM][0];
+			szColor[1]=ConfigColorData[COLOR_PM][1];
+		}
+		case COLOR_LOCAL: {
+			szColor[0]=ConfigColorData[COLOR_LOCAL][0];
+			szColor[1]=ConfigColorData[COLOR_LOCAL][1];
+		}
+	}
+	
+	CMessages_BoldText(szColor, gs_sBufferMessages);
 	if(numargs()>3) {
-		//CMessages_BoldText(color, makeBrighter, text);
-		return SendClientMessageToAll(color, va_return(string_MessagesBuffer, va_start<3>));
+		va_format(gs_sBufferMessages, sizeof(gs_sBufferMessages), text, va_start<3>);
+		return SendClientMessageToAll(szColor[0], gs_sBufferMessages);
 	} else {
-		//CMessages_BoldText(color, makeBrighter, text);
-		return SendClientMessageToAll(color, text);
+		return SendClientMessageToAll(szColor[0], gs_sBufferMessages);
 	}
 }
 
-// TODO: funkcja do poprawy
-stock CMessages_BoldText(color, bool:makeBrighter=true, text[]) {
-	new color_transform[1];
-	color_transform[0]=color;
-
-	if(makeBrighter) {
-		// brighter
-		color_transform{0}=floatround((float(255-color_transform{0})*0.18)+float(color_transform{0}));
-		color_transform{1}=floatround((float(255-color_transform{1})*0.18)+float(color_transform{1}));
-		color_transform{2}=floatround((float(255-color_transform{2})*0.18)+float(color_transform{2}));
-	} else {
-		// darker
-		color_transform{0}=floatround(float(color_transform{0})-(float(color_transform{0})*0.60));
-		color_transform{1}=floatround(float(color_transform{1})-(float(color_transform{1})*0.60));
-		color_transform{2}=floatround(float(color_transform{2})-(float(color_transform{2})*0.60));
-	}
+stock CMessages_BoldText(szColors[2], text[]) {
+	new 
+		tmpBufColor[9],
+		szBuffer[160];
 	
-	new findpos=-1, tmpBuf[9];
-	while((findpos=strfind(text, "<b>")) != -1) {
-		format(tmpBuf, sizeof(tmpBuf), "{%06x}", color_transform[0]>>>8);
-		strdel(text, findpos, findpos+3);
-		strins(text, tmpBuf, findpos, strlen(text)+sizeof(tmpBuf));
-		findpos=strfind(text, "<b>");
-	}
-	
-	findpos=-1;
-	while((findpos=strfind(text, "</b>")) != -1) {
-		format(tmpBuf, sizeof(tmpBuf), "{%06x}", color>>>8);
-		strdel(text, findpos, findpos+4);
-		strins(text, tmpBuf, findpos, strlen(text)+sizeof(tmpBuf));
-		findpos=strfind(text, "</b>");
-	}
+	string::copy(szBuffer, text, sizeof(szBuffer));
+	format(tmpBufColor, sizeof(tmpBufColor), "{%06x}", szColors[1]>>>8);
+	string::replace(text, "<b>", tmpBufColor);
+	format(tmpBufColor, sizeof(tmpBufColor), "{%06x}", szColors[0]>>>8);
+	string::replace(text, "</b>", tmpBufColor);
+	return 1;
 }
