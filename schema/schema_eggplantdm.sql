@@ -30,8 +30,15 @@ CREATE TABLE IF NOT EXISTS accounts (
 	KEY `respect and money` (`respect`, `wallet_money`, `bank_money`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
--- TODO: dodac konto dewelopera
--- TODO: tabela z bronmi gracza i amunicja!
+-- table players_weapons
+CREATE TABLE IF NOT EXISTS players_weapons (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`owner` INT NOT NULL DEFAULT '0',
+	`weapons` VARCHAR(64) NOT NULL DEFAULT '0;0;0;0;0;0;0;0;0;0;0;0;0;',
+	`ammo` VARCHAR(128) NOT NULL DEFAULT '0;0;0;0;0;0;0;0;0;0;0;0;0;',
+	`skills` VARCHAR(64) NOT NULL DEFAULT '0;0;0;0;0;0;0;0;0;0;',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- table houses
 CREATE TABLE IF NOT EXISTS houses (

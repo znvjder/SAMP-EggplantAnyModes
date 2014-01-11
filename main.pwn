@@ -192,6 +192,7 @@ public OnPlayerSpawn(playerid) {
 		} else {
 			// TODO: Wyszukanie domu i zespawnowanie gracza w domu
 		}
+		theplayer::loadWeaponsData(playerid);
 	} else {
 		SetPlayerPos(playerid, 0.0, 0.0, 3.0);
 	}

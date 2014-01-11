@@ -62,7 +62,15 @@ stock theplayer::isAccountExists(playerid, szAccount[]) {
 }
 
 stock theplayer::onEventLogin(playerid, input[]) {
-	if(isnull(input)) return false;
+	if(isnull(input)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie wpisano has³a.");
+		theplayer::showLoginDialog(playerid);
+		return false;
+	} else if(!(6<=strlen(input)<=16)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest zbyt krótkie lub za d³ugie...");
+		theplayer::showLoginDialog(playerid);
+		return false;
+	}
 	
 	new bool:success=false, esc_input[32];
 	mysql_real_escape_string(input, esc_input);
@@ -82,9 +90,6 @@ stock theplayer::onEventLogin(playerid, input[]) {
 		bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
 		bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
 		OnPlayerRequestClass(playerid, 0);
-		
-		// TODO: Wczytywanie broni/amunicji w tym skilla z tabeli broni/amunicji ;p
-		
 	} else {
 		if(++PlayerData[playerid][epd_loginAttempts]>=MAX_LOGIN_ATTEMPTS) {
 			theplayer::hideDialog(playerid);
@@ -142,7 +147,7 @@ stock theplayer::loadAccountData(playerid) {
 	new tmpBuf[128], tmpPos[32], haveVIP;
 	CMySQL_Query("SELECT skin, respect, level, hp, armour, pos, bank_money, wallet_money, spawnType, admin, IFNULL(DATEDIFF(vip, NOW()), '-1') FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
 	mysql_store_result();
-	mysql_fetch_row(tmpBuf, "|");
+	if(mysql_num_rows()) mysql_fetch_row(tmpBuf, "|");
 	mysql_free_result();
 	sscanf(tmpBuf, "p<|>dddffs[32]ddddd", 
 		PlayerData[playerid][epd_lastSkin],
@@ -159,6 +164,23 @@ stock theplayer::loadAccountData(playerid) {
 	);
 	sscanf(tmpPos, "p<;>ffff", PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2], PlayerData[playerid][epd_lastPos][3]);
 	if(haveVIP>0) PlayerData[playerid][epd_haveVip]=true;
+}
+
+stock theplayer::loadWeaponsData(playerid) {
+	new tmpBuf[64+128];
+	CMySQL_Query("SELECT weapons, ammo FROM players_weapons WHERE owner='%d' LIMIT 1;", -1, PlayerData[playerid][epd_accountID]);
+	mysql_store_result();
+	if(mysql_num_rows()) mysql_fetch_row(tmpBuf, "|");
+	mysql_free_result();
+	new tmpBufWeapons[64], tmpBufAmmo[128], tmpWeapons[13], tmpAmmo[13];
+	sscanf(tmpBuf, "p<|>s[64]s[128]", tmpBufWeapons, tmpBufAmmo);
+	sscanf(tmpBufWeapons, "p<;>a<d>[13]", tmpWeapons);
+	sscanf(tmpBufAmmo, "p<;>a<d>[13]", tmpAmmo);
+	
+	for(new i; i<=sizeof(tmpWeapons)-1; i++) {
+		GivePlayerWeapon(playerid, tmpWeapons[i], tmpAmmo[i]);
+	}
+	SetPlayerArmedWeapon(playerid, 0);
 }
 
 stock theplayer::setAccountDataInt(playerid, data, column[]) {

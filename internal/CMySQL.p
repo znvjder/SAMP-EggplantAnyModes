@@ -11,11 +11,11 @@ static stock
 	
 // CMySQL_Init: Nawiazuje polaczenie z MySQL - handler zapisujemy do zmiennej globalnej
 stock CMySQL_Init(const hostname[], const username[], const password[], const dbname[], auto_reconnect=1) {
-#if _DEBUG > 2
-	ServerData[esd_MySQLHandler]=mysql_init(LOG_ALL);
-#else 
-	ServerData[esd_MySQLHandler]=mysql_init(LOG_ONLY_ERRORS);
-#endif
+	if(ServerData[esd_codeDebugger]<=_DEBUG_NORMAL)
+		ServerData[esd_MySQLHandler]=mysql_init(LOG_ALL);
+	else
+		ServerData[esd_MySQLHandler]=mysql_init(LOG_ONLY_ERRORS);
+		
 	new handler=mysql_connect(hostname, username, password, dbname, ServerData[esd_MySQLHandler], auto_reconnect);
 	if(handler) {
 		return 1;
@@ -50,5 +50,22 @@ stock CMySQL_Query(query[], resultid=(-1), va_args<>) {
 		return mysql_query(string_MySQLBuffer, resultid);
 	} else {
 		return mysql_query(query, resultid);
+	}
+}
+
+public OnMysqlQuery(resultid, spareid, MySQL:handle) {
+	switch(resultid) {
+		case -1: {
+			if(mysql_result_stored()) mysql_free_result();
+			return 1;
+		}
+	}
+	return 1;
+}
+
+public OnMysqlError(error[], errorid, MySQL:handle) {
+	if(errorid == 8) return;
+	if(ServerData[esd_codeDebugger]>=_DEBUG_NORMAL) {
+		CLogging_Insert(CLOG_DEBUG, "Error MySQL: %s (%d)", error, errorid);
 	}
 }
