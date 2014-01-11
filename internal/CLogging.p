@@ -40,10 +40,9 @@ stock CLogging_Exit() {
 }
 
 stock CLogging_Insert(logtype, txt[], va_args<>) {
-	if(isnull(txt))
-	{
+	if(isnull(txt)) {
 		print("[CLogging]: Input text is null");
-		return 0;
+		return;
 	}
 
 	new fName[48];
@@ -83,7 +82,6 @@ stock CLogging_Insert(logtype, txt[], va_args<>) {
 		fwrite(logFile, string_LoggingBuffer);
 	}
 	fclose(logFile);
-	return 1;
 }
 
 #undef CLOG_SERVER_NAME

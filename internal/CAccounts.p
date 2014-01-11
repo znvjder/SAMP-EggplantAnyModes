@@ -9,10 +9,25 @@
 */
 
 // TODO:
-// 1) Wykonac tabele z uzytkownikami
-// 2) Oprogramowac te funkcje
+// (gotowe) 1) Wykonac tabele z uzytkownikami
+// (wip) 2) Oprogramowac te funkcje
 
 #define MAX_LOGIN_ATTEMPTS (4)
+
+stock CAccounts_Init() {
+	new tmpResult[32];
+	CMySQL_Query("SELECT COUNT(*) FROM accounts;", -1);
+	mysql_store_result();
+	mysql_fetch_row(tmpResult);
+	mysql_free_result();
+	printf("[CAccounts]: Number of registered accounts %d", strval(tmpResult));
+}
+
+stock CAccounts_Exit() {
+	// TODO:
+	// Zapisywanie statystyk wszystkich graczy
+	//theplayer::CAccounts_saveData(playerid);
+}
 
 stock theplayer::isRegistered(playerid) {
 	new bool:v=false;
@@ -60,31 +75,22 @@ stock theplayer::onEventLogin(playerid, input[]) {
 		theplayer::loadAccountData(playerid);
 		PlayerData[playerid][epd_accountID]=theplayer::getAccountID(playerid);
 		theplayer::setAccountDataString(playerid, "NOW()", false, "ts_last");
+		theplayer::setAccountDataString(playerid, "visits+1", false, "visits");
 		theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_addressIP], true, "ip_last");
-		theplayer::setAccountDataInt(playerid, 1, "isonline");
 		theplayer::sendMessage(playerid, COLOR_INFO1, "Zalogowano pomyœlnie. Ostatnia wizyta na serwerze: %s", theplayer::getAccountDataString(playerid, "ts_last"));
 		
 		bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
 		bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
-		
-		SetPlayerHealth(playerid, PlayerData[playerid][epd_lastHealth]);
-		if(PlayerData[playerid][epd_lastArmour]>0) SetPlayerArmour(playerid, PlayerData[playerid][epd_lastArmour]);
+		OnPlayerRequestClass(playerid, 0);
 		
 		// TODO: Wczytywanie broni/amunicji w tym skilla z tabeli broni/amunicji ;p
-		if(PlayerData[playerid][epd_spawnType]==0) {
-			SetSpawnInfo(playerid, NO_TEAM, PlayerData[playerid][epd_lastSkin], PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2], PlayerData[playerid][epd_lastPos][3], 0, 0, 0, 0, 0, 0);
-			SpawnPlayer(playerid);
-			
-		} else {
-			// TODO: Wyszukanie domu i zespawnowanie gracza w domu
-		}
 		
 	} else {
 		if(++PlayerData[playerid][epd_loginAttempts]>=MAX_LOGIN_ATTEMPTS) {
 			theplayer::hideDialog(playerid);
 			theplayer::sendMessage(playerid, COLOR_ERROR, "Wykorzysta³eœ maksymaln¹ iloœæ prób zalogowañ na to konto.");
 			// TODO: Informowanie administracji o tym przypadku
-			theadmins::sendMessage(COLOR_ERROR, RANK_ADMIN, "Próba zalogowania na konto <b>%s<b> z adresu IP: <b>%s</b> - wyrzucony.", PlayerData[playerid][epd_nickname], PlayerData[playerid][epd_addressIP]);
+			theadmins::sendMessage(COLOR_ERROR, RANK_MASTERADMIN, "Próba zalogowania na konto <b>%s<b> z adresu IP: <b>%s</b> - wyrzucony.", PlayerData[playerid][epd_nickname], PlayerData[playerid][epd_addressIP]);
 			theplayer::kick(playerid);
 			return false;
 		}
@@ -113,8 +119,8 @@ stock theplayer::showLoginDialog(playerid) {
 		"Panel logowania", 
 		"Witaj ponownie!\nKonto o tym nicku zosta³o ju¿ zarejestrowane.\n\
 		Je¿eli nie jesteœ w³aœcicielem tego konta, wyjdŸ z serwera i zmieñ nick.\n\
-		Pamietaj, ¿e ka¿da próba logowania jest rejestrowana. W wiêkszoœci przypadków mo¿e to wi¹zaæ siê z poniesiem odpowiednich konsekwencji.\n\
-		Poni¿ej wpisz swoje has³o podane przy rejestracji. Je¿eli nie pamiêtasz has³a - zg³oœ ten przypadek do administracji lub sprawdŸ swojego e-maila.", 
+		Pamietaj, ¿e ka¿da próba logowania jest rejestrowana.\nW wiêkszoœci przypadków mo¿e to wi¹zaæ siê z poniesiem odpowiednich konsekwencji.\n\
+		Poni¿ej wpisz swoje has³o podane przy rejestracji.", 
 		"Zaloguj", "Wyjdz");
 }
 

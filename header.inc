@@ -16,14 +16,14 @@
 #define _DEBUG_NORMAL (2)
 #define _DEBUG_HARD (3)
 
-#define CheckVehicleBounds(%0) if((%0)>(MAX_VEHICLES-1))
-#define CheckPlayerBounds(%0) if((%0)>(MAX_PLAYERS-1))
+#define CheckVehicleBounds(%0) if((%0)>(MAX_VEHICLES-1)) return false
+#define CheckPlayerBounds(%0) if((%0)>(MAX_PLAYERS-1)) return false
 
 #define CExecTick_begin(%0) new %0=GetTickCount()
 #define CExecTick_end(%0) (GetTickCount()-%0)
 
-#define bit_set(%0,%1) %0|=%1
-#define bit_unset(%0,%1) %0&=~%1
+#define bit_set(%0,%1) (%0)|=(%1)
+#define bit_unset(%0,%1) (%0)&=~(%1)
 #define bit_if(%0,%1) ((%0) & (%1))
 
 // Color chat

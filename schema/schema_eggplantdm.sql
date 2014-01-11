@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 	`ts_last` TIMESTAMP DEFAULT 0,
 	`isonline` TINYINT(1) NOT NULL DEFAULT '1',
 	`skin` SMALLINT NOT NULL DEFAULT '1',
+	`visits` INT NOT NULL DEFAULT '1',
 	`respect` INT NOT NULL DEFAULT '0',
 	`level` INT NOT NULL DEFAULT '1',
 	`hp` DECIMAL(4,1) NOT NULL DEFAULT '99.9', -- potrzebne do CAC'a

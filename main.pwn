@@ -52,17 +52,27 @@ public OnGameModeInit() {
 	// przyklad uzywania duracji:
 	// printf("duration time: %d", DURATION(2 days, 3 hour, 20 minutes, 40 seconds));
 	
+	/*new level=1;
+	new RP=1000;
+	level = 1*floatround(floatsqroot(RP)/10/2);
+	new nextRP=RP+RP*4/2;
+	printf("RP: %d, nextRP: %d, level: %d", RP, nextRP, level);*/
+	
 	djson_GameModeInit();
 	djStyled(true);
 	
 	CLogging_Init();
 	CConfigData_Init();
 	CConfigData_Load();
-
+	
 	// SAMP configuration
 	SetGravity(0.008);
 	UsePlayerPedAnims();
 	DisableInteriorEnterExits();
+	
+	// Modules initialize
+	CAccounts_Init();
+	utility::addAllSkins();
 	
 	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
 	CLogging_Insert(CLOG_SERVER, "Starting logging...");
@@ -76,6 +86,7 @@ public OnGameModeInit() {
 public OnGameModeExit() {
 	CLogging_Insert(CLOG_SERVER, "Terminating logging...");
 	CLogging_Exit();
+	CAccounts_Exit();
 	CMySQL_Exit();
 	regex_delete_all();
 	djson_GameModeExit();
@@ -87,10 +98,10 @@ public OnPlayerConnect(playerid) {
 		SendClientMessage(playerid, -1, "[PL]: Serwer osiagnal limit graczy.");
 		SendClientMessage(playerid, -1, "[ENG]: This server is full. Try again.");
 		theplayer::kick(playerid);
-		return 0;
+		return false;
 	}
 	
-	if(playerid > ServerData[esd_highestPlayerID]) ServerData[esd_highestPlayerID]=playerid;
+	if(ServerData[esd_highestPlayerID]<playerid) ServerData[esd_highestPlayerID]=playerid;
 	
 	utility::resetVariablesInEnum(PlayerData[playerid], e_PlayerData);
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
@@ -102,7 +113,7 @@ public OnPlayerConnect(playerid) {
 	
 	if(theplayer::isRegistered(playerid)) {
 		theplayer::showLoginDialog(playerid);
-		bit_set(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
+		PlayerData[playerid][epd_properties]=PLAYER_INLOGINDIALOG;
 	} else {
 		theplayer::sendMessage(playerid, COLOR_INFO1, "Witamy na serwerze "SCRIPT_PROJECTNAME"!");
 		theplayer::sendMessage(playerid, COLOR_INFO1, "System wykry³, ¿e nie posiadasz u nas konta. Aby je za³o¿yæ wpisz: <b>/rejestracja</b>");
@@ -125,32 +136,25 @@ public OnPlayerDisconnect(playerid, reason) {
 	return 1;
 }
 
-public OnPlayerSpawn(playerid) {
-	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
-		theplayer::hideDialog(playerid);
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie ma tak ³atwo.");
-		theplayer::kick(playerid);
-		return false;
-	}
-	
-	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
-		CLogging_Insert(CLOG_DEBUG, "Player %d spawned", playerid);
-	}
-	
-	TogglePlayerControllable(playerid, true);
-	return 1;
-}
-
 public OnPlayerRequestClass(playerid, classid) {
+	CheckPlayerBounds(playerid);
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) return false;
 	
-	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
-		CLogging_Insert(CLOG_DEBUG, "Player %d requesting class needed", playerid);
+	if(classid==0 && PlayerData[playerid][epd_lastSkin]>0) {
+		// Wczytanie ostatniego skina
+		SetPlayerSkin(playerid, PlayerData[playerid][epd_lastSkin]);
 	}
+	
+	SetPlayerPos(playerid, 2004.7404,1913.8379,40.3516);
+	SetPlayerFacingAngle(playerid,264.7556);
+	//SetPlayerTime(playerid, 0,0);
+	SetPlayerCameraPos(playerid,2013.6698,1913.9120,35.0304);	
+	SetPlayerCameraLookAt(playerid, 2004.7404,1913.8379,40.3516);
 	return 1;
 }
 
 public OnPlayerRequestSpawn(playerid) {
+	CheckPlayerBounds(playerid);
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
 		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
 		return false;
@@ -162,7 +166,101 @@ public OnPlayerRequestSpawn(playerid) {
 	return 1;
 }
 
+public OnPlayerSpawn(playerid) {
+	CheckPlayerBounds(playerid);
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
+		theplayer::hideDialog(playerid);
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie ma tak ³atwo!");
+		theplayer::kick(playerid);
+		return false;
+	}
+	
+	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
+		CLogging_Insert(CLOG_DEBUG, "Player %d spawned", playerid);
+	}
+
+	new tmpSkin=GetPlayerSkin(playerid);
+	if(PlayerData[playerid][epd_lastSkin]!=tmpSkin) PlayerData[playerid][epd_lastSkin]=tmpSkin;
+	
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED)) {
+		if(PlayerData[playerid][epd_spawnType]==0) {
+			SetPlayerHealth(playerid, PlayerData[playerid][epd_lastHealth]);
+			if(PlayerData[playerid][epd_lastArmour]>0) SetPlayerArmour(playerid, PlayerData[playerid][epd_lastArmour]);
+		
+			SetSpawnInfo(playerid, NO_TEAM, PlayerData[playerid][epd_lastSkin], PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2], PlayerData[playerid][epd_lastPos][3], 0, 0, 0, 0, 0, 0);
+			SpawnPlayer(playerid);
+		} else {
+			// TODO: Wyszukanie domu i zespawnowanie gracza w domu
+		}
+	} else {
+		SetPlayerPos(playerid, 0.0, 0.0, 3.0);
+	}
+	TogglePlayerControllable(playerid, true);
+	return 1;
+}
+
+public OnPlayerDeath(playerid, killerid, reason) {
+	CheckPlayerBounds(playerid);
+	if(killerid != INVALID_PLAYER_ID) {
+		CheckVehicleBounds(killerid);
+	} else {
+	
+	}
+	return true;
+}
+
+public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger) {
+	CheckPlayerBounds(playerid);
+	CheckVehicleBounds(vehicleid);
+	
+	return true;
+}
+
+public OnPlayerExitVehicle(playerid, vehicleid) {
+	CheckPlayerBounds(playerid);
+	CheckVehicleBounds(vehicleid);
+	
+	return true;
+}
+
+public OnPlayerStateChange(playerid, newstate, oldstate) {
+	CheckPlayerBounds(playerid);
+	switch(newstate) {
+		case PLAYER_STATE_NONE: {
+			// TODO:
+			// Poinformowac adminow o problemie
+		}
+		case PLAYER_STATE_DRIVER: {
+		
+		}
+		case PLAYER_STATE_PASSENGER: {
+		
+		}
+		case PLAYER_STATE_ONFOOT: {
+		
+		}
+		case PLAYER_STATE_SPAWNED: {
+		
+		}
+		case PLAYER_STATE_WASTED: {
+		
+		}
+		case PLAYER_STATE_SPECTATING: {
+		
+		}
+	}
+	return true;
+}
+
+public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
+	CheckPlayerBounds(playerid);
+	
+	return true;
+}
+
 public OnPlayerText(playerid, text[]) {
+	CheckPlayerBounds(playerid);
+	
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
 		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
 		return false;
@@ -171,7 +269,14 @@ public OnPlayerText(playerid, text[]) {
 	return 0;
 }
 
+public OnPlayerUpdate(playerid) {
+
+	return 1;
+}
+
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
+	CheckPlayerBounds(playerid);
+	
 	switch(dialogid) {
 		case DIALOG_BLANK: {
 			return true;
@@ -197,7 +302,94 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 	return false;
 }
 
-public OnPlayerUpdate(playerid) {
+public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid) {
+	CheckPlayerBounds(playerid);
+	
+	return true;
+}
 
-	return 1;
+public OnPlayerStreamIn(playerid, forplayerid) {
+	CheckPlayerBounds(playerid);
+	CheckPlayerBounds(forplayerid);
+	
+	return true;
+}
+
+public OnPlayerStreamOut(playerid, forplayerid) {
+	CheckPlayerBounds(playerid);
+	CheckPlayerBounds(forplayerid);
+	
+	return true;
+}
+
+public OnVehicleStreamIn(vehicleid, forplayerid) {
+	CheckPlayerBounds(forplayerid);
+	CheckVehicleBounds(vehicleid);
+	
+	return true;
+}
+
+public OnVehicleStreamOut(vehicleid, forplayerid) {
+	CheckPlayerBounds(forplayerid);
+	CheckVehicleBounds(vehicleid);
+	
+	return true;
+}
+
+public OnPlayerClickTextDraw(playerid, Text:clickedid) {
+	CheckPlayerBounds(playerid);
+	
+	return true;
+}
+
+public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
+	CheckPlayerBounds(playerid);
+	
+	return true;
+}
+
+public OnPlayerClickPlayer(playerid, clickedplayerid, source) {
+	CheckPlayerBounds(playerid);
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		return false;
+	}
+	return true;
+}
+
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ) {
+	CheckPlayerBounds(playerid);
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		return false;
+	}
+	return true;
+}
+
+public OnVehicleDamageStatusUpdate(vehicleid, playerid) {
+
+}
+
+public OnVehicleSpawn(vehicleid) {
+
+}
+
+public OnVehicleDeath(vehicleid, killerid) {
+
+}
+
+public OnVehicleMod(playerid, vehicleid, componentid) {
+
+}
+
+public OnVehicleRespray(playerid, vehicleid, color1, color2) {
+
+}
+
+public OnVehiclePaintjob(playerid, vehicleid, paintjobid) {
+
+}
+
+public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat) {
+
 }

@@ -68,7 +68,7 @@ stock Float:math::floatrandom(Float:max, Float:min = 0.0, dp = 4)
 
 #define theplayer:: theplayer_ // taki tam stuff, cos z player:: bylo zjebane
 #define theplayer_kick(%0) SetTimerEx("KickCalled", 150, false, "d", %0)
-#define theplayer_foreach(%0) for(new %0; %0<ServerData[esd_highestPlayerID] && IsPlayerConnected(%0); %0++) 
+#define theplayer_foreach(%0) for(new %0; %0<=ServerData[esd_highestPlayerID] && IsPlayerConnected(%0); %0++) 
 
 stock theplayer::isGamemaster(playerid) {
 	if(!IsPlayerConnected(playerid)) return false;
@@ -108,6 +108,12 @@ stock utility::getWeaponSlot(weaponid)
 	if(0 <= weaponid <= 46) return (s_weaponSlots{weaponid}==0xFF)? WEAPONSLOT_NONE: s_weaponSlots{weaponid};
 	return WEAPONSLOT_NONE;
 
+}
+
+stock utility::addAllSkins() {
+	for(new i=0; i<=298; i++) {
+		AddPlayerClass(i, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0);
+	}
 }
 
 stock utility::isValidSkin(skinid) {
