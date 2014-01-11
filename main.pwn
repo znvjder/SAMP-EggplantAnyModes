@@ -98,11 +98,13 @@ public OnPlayerConnect(playerid) {
 		CLogging_Insert(CLOG_DEBUG, "Player %s (ID: %d) (IP: %s) has connect to the server", PlayerData[playerid][epd_nickname], playerid, PlayerData[playerid][epd_addressIP]);
 	}
 	
-	SetSpawnInfo(playerid, NO_TEAM, random(200)+1, 0.0, 0.0, 3.0, random(90)+180, 0, 0, 0, 0, 0, 0);
-	SpawnPlayer(playerid);
-	
-	theplayer::sendMessage(playerid, COLOR_INFO1, "Testowa <b>wiadomosc</b> nr. 1!");
-	theplayer::sendMessage(playerid, COLOR_INFO3, "Testowa <b>wiadomosc</b> nr. 2!");
+	if(theplayer::isRegistered(playerid)) {
+		theplayer::showLoginDialog(playerid);
+		bit_set(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
+	} else {
+		theplayer::sendMessage(playerid, COLOR_INFO1, "Witamy na serwerze "SCRIPT_PROJECTNAME"!");
+		theplayer::sendMessage(playerid, COLOR_INFO1, "System wykry³, ¿e nie posiadasz u nas konta. Aby je za³o¿yæ wpisz: <b>/rejestracja</b>");
+	}
 	return 1;
 }
 
@@ -114,6 +116,13 @@ public OnPlayerDisconnect(playerid, reason) {
 }
 
 public OnPlayerSpawn(playerid) {
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
+		theplayer::hideDialog(playerid);
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie ma tak ³atwo.");
+		theplayer::kick(playerid);
+		return false;
+	}
+	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %d spawned", playerid);
 	}
@@ -123,6 +132,8 @@ public OnPlayerSpawn(playerid) {
 }
 
 public OnPlayerRequestClass(playerid, classid) {
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) return false;
+	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %d requesting class needed", playerid);
 	}
@@ -130,10 +141,50 @@ public OnPlayerRequestClass(playerid, classid) {
 }
 
 public OnPlayerRequestSpawn(playerid) {
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		return false;
+	}
+	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %d requesting spawn needed", playerid);
 	}
 	return 1;
+}
+
+public OnPlayerText(playerid, text[]) {
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		return false;
+	}
+	
+	return 0;
+}
+
+public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
+	switch(dialogid) {
+		case DIALOG_BLANK: {
+			return true;
+		}
+		case DIALOG_LOGIN: {
+			if(!response) {
+				theplayer::hideDialog(playerid);
+				theplayer::sendMessage(playerid, COLOR_INFO1, "Anulowa³eœ logowanie - do zobaczenia ponownie!");
+				theplayer::kick(playerid);
+				return true;
+			}
+			theplayer::onEventLogin(playerid, inputtext);
+		}
+		case DIALOG_REGISTER: {
+			if(!response) {
+				theplayer::sendMessage(playerid, COLOR_INFO1, "Anulowa³eœ rejestracje konta, pomyœl o tym jeszcze!");
+				theplayer::hideDialog(playerid);
+				return true;
+			}
+			theplayer::onEventRegister(playerid, inputtext);
+		}
+	}
+	return false;
 }
 
 public OnPlayerUpdate(playerid) {

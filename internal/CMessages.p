@@ -9,7 +9,7 @@
 */
 
 static stock
-	gs_sBufferMessages[160];
+	gs_sBufferMessages[200];
 	
 stock theplayer::sendMessage(playerid, color, text[], va_args<>) {
 	gs_sBufferMessages[0]=EOS;
@@ -44,8 +44,8 @@ stock theplayer::sendMessage(playerid, color, text[], va_args<>) {
 	}
 	
 	CMessages_BoldText(szColor, gs_sBufferMessages);
-	if(numargs()>4) {
-		va_format(gs_sBufferMessages, sizeof(gs_sBufferMessages), text, va_start<4>);
+	if(numargs()>3) {
+		va_format(gs_sBufferMessages, sizeof(gs_sBufferMessages), text, va_start<3>);
 		return SendClientMessage(playerid, szColor[0], gs_sBufferMessages);
 	} else {
 		return SendClientMessage(playerid, szColor[0], gs_sBufferMessages);
@@ -85,8 +85,8 @@ stock theplayer::sendMessageToAll(color, text[], va_args<>) {
 	}
 	
 	CMessages_BoldText(szColor, gs_sBufferMessages);
-	if(numargs()>3) {
-		va_format(gs_sBufferMessages, sizeof(gs_sBufferMessages), text, va_start<3>);
+	if(numargs()>2) {
+		va_format(gs_sBufferMessages, sizeof(gs_sBufferMessages), text, va_start<2>);
 		return SendClientMessageToAll(szColor[0], gs_sBufferMessages);
 	} else {
 		return SendClientMessageToAll(szColor[0], gs_sBufferMessages);

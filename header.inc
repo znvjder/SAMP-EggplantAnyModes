@@ -110,7 +110,7 @@ enum {
 enum (<<=1) {
 	// Properties player stuff
 	PLAYER_NULL=0,
-	PLAYER_NOTHAVEACCOUNT=1,
+	PLAYER_INLOGINDIALOG=1,
 	PLAYER_ISLOGGED,
 	
 	
@@ -126,10 +126,19 @@ enum e_PlayerData {
 	epd_nickname[MAX_PLAYER_NAME],
 	epd_addressIP[16],
 	epd_accountID,
-	epd_logonAttempts,
+	epd_loginAttempts,
+	epd_lastSkin,
+	epd_respect,
+	epd_levelRP,
+	epd_walletMoney,
+	epd_bankMoney,
+	epd_spawnType, // 0=ostatnie miejsce, 1=dom jezeli go ma ;-)
 	epd_properties, // stuff do przechowywania wartosci 'specjalnych'
 	epd_admin, // 0=nic, 1=mod, 2=admin, 3=master admin, 4=owner/developer
-	bool:epd_haveVip
+	bool:epd_haveVip,
+	Float:epd_lastArmour,
+	Float:epd_lastHealth,
+	Float:epd_lastPos[4], // X, Y, Z, ROT
 };
 
 new 
