@@ -84,6 +84,7 @@ stock theplayer::onEventLogin(playerid, input[]) {
 			theplayer::hideDialog(playerid);
 			theplayer::sendMessage(playerid, COLOR_ERROR, "Wykorzysta³eœ maksymaln¹ iloœæ prób zalogowañ na to konto.");
 			// TODO: Informowanie administracji o tym przypadku
+			theadmins::sendMessage(COLOR_ERROR, RANK_ADMIN, "Próba zalogowania na konto <b>%s<b> z adresu IP: <b>%s</b> - wyrzucony.", PlayerData[playerid][epd_nickname], PlayerData[playerid][epd_addressIP]);
 			theplayer::kick(playerid);
 			return false;
 		}

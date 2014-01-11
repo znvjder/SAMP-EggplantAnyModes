@@ -97,7 +97,7 @@ stock theplayer::sendMessageToAll(color, text[], va_args<>) {
 
 stock theadmins::sendMessage(color, levelmin=RANK_ADMIN, msg[], va_args<>) {
 	new tmpBuffer[128];
-	string::copy(tmpBuffer, text, sizeof(tmpBuffer));
+	string::copy(tmpBuffer, msg, sizeof(tmpBuffer));
 	
 	new szColor[2]; // 0=normal, 1=highlight
 	switch(color) {
