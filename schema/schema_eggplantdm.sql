@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 	PRIMARY KEY (`id`),
 	UNIQUE KEY (`nickname`),
 	KEY `respect and money` (`respect`, `wallet_money`, `bank_money`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- table players_weapons
 CREATE TABLE IF NOT EXISTS players_weapons (
