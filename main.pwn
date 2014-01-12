@@ -125,13 +125,12 @@ public OnPlayerConnect(playerid) {
 }
 
 public OnPlayerDisconnect(playerid, reason) {
-	new tmpRecountPlayers;
-	for(new i; i<ServerData[esd_highestPlayerID] && IsPlayerConnected(i); i++) {
-		if(i != playerid) {
-			tmpRecountPlayers++;
+	for(new i=ServerData[esd_highestPlayerID]; i>=0 && IsPlayerConnected(i); i--) {
+		if(i != playerid || i==0) {
+			ServerData[esd_highestPlayerID]=i;
+			break;
 		}
 	}
-	ServerData[esd_highestPlayerID]=tmpRecountPlayers;
 	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %s (R: %d) (ID: %d) (IP: %s) leave from server", PlayerData[playerid][epd_nickname], reason, playerid, PlayerData[playerid][epd_addressIP]);
