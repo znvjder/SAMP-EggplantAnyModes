@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS accounts (
 	`ip_last` VARCHAR(16) NOT NULL DEFAULT '0.0.0.0',
 	`ts_register` TIMESTAMP DEFAULT 0,
 	`ts_last` TIMESTAMP DEFAULT 0,
+	`serial_registered` VARCHAR(32) NOT NULL DEFAULT 'unkown',
+	`serial_last` VARCHAR(32) NOT NULL DEFAULT 'unkown',
 	`isonline` TINYINT(1) NOT NULL DEFAULT '1',
 	`skin` SMALLINT NOT NULL DEFAULT '1',
 	`visits` INT NOT NULL DEFAULT '1',

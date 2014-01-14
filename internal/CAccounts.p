@@ -61,46 +61,60 @@ stock theplayer::isAccountExists(playerid, szAccount[]) {
 	return v;
 }
 
-stock theplayer::onEventLogin(playerid, input[]) {
-	if(isnull(input)) {
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie wpisano has³a.");
-		theplayer::showLoginDialog(playerid);
-		return false;
-	} else if(!(6<=strlen(input)<=16)) {
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest zbyt krótkie lub za d³ugie...");
-		theplayer::showLoginDialog(playerid);
-		return false;
-	}
-	
-	new bool:success=false, esc_input[32];
-	mysql_real_escape_string(input, esc_input);
-	CMySQL_Query("SELECT (password=SHA1(MD5('%s'))) AS validpwd FROM accounts WHERE nickname='%s';", -1, esc_input, PlayerData[playerid][epd_nickname]);
-	mysql_store_result();
-	success=!!mysql_fetch_int();
-	mysql_free_result();
-	
-	if(success) {
+stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
+	if(!autologin) {
+		if(isnull(input)) {
+			theplayer::sendMessage(playerid, COLOR_ERROR, "Nie wpisano has³a.");
+			theplayer::showLoginDialog(playerid);
+			return false;
+		} else if(!(6<=strlen(input)<=16)) {
+			theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest zbyt krótkie lub za d³ugie...");
+			theplayer::showLoginDialog(playerid);
+			return false;
+		}
+		
+		new bool:success=false, esc_input[32];
+		mysql_real_escape_string(input, esc_input);
+		CMySQL_Query("SELECT (password=SHA1(MD5('%s'))) AS validpwd FROM accounts WHERE nickname='%s';", -1, esc_input, PlayerData[playerid][epd_nickname]);
+		mysql_store_result();
+		success=!!mysql_fetch_int();
+		mysql_free_result();
+		
+		if(success) {
+			theplayer::loadAccountData(playerid);
+			PlayerData[playerid][epd_accountID]=theplayer::getAccountID(playerid);
+			theplayer::setAccountDataString(playerid, "NOW()", false, "ts_last");
+			theplayer::setAccountDataString(playerid, "visits+1", false, "visits");
+			theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_addressIP], true, "ip_last");
+			theplayer::sendMessage(playerid, COLOR_INFO1, "Zalogowano pomyœlnie. Ostatnia wizyta na serwerze: %s", theplayer::getAccountDataString(playerid, "ts_last"));
+			
+			bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
+			bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
+			OnPlayerRequestClass(playerid, 0);
+		} else {
+			if(++PlayerData[playerid][epd_loginAttempts]>=MAX_LOGIN_ATTEMPTS) {
+				theplayer::hideDialog(playerid);
+				theplayer::sendMessage(playerid, COLOR_ERROR, "Wykorzysta³eœ maksymaln¹ iloœæ prób zalogowañ na to konto.");
+				// TODO: Informowanie administracji o tym przypadku
+				theadmins::sendMessage(COLOR_ERROR, RANK_MASTERADMIN, "Próba zalogowania na konto <b>%s<b> z adresu IP: <b>%s</b> - wyrzucony.", PlayerData[playerid][epd_nickname], PlayerData[playerid][epd_addressIP]);
+				theplayer::kick(playerid);
+				return false;
+			}
+			theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest nieprawid³owe. Spróbuj ponownie.");
+			theplayer::showLoginDialog(playerid);
+		}
+	} else {
 		theplayer::loadAccountData(playerid);
 		PlayerData[playerid][epd_accountID]=theplayer::getAccountID(playerid);
 		theplayer::setAccountDataString(playerid, "NOW()", false, "ts_last");
 		theplayer::setAccountDataString(playerid, "visits+1", false, "visits");
 		theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_addressIP], true, "ip_last");
+		theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_serialID], true, "serial_last");
 		theplayer::sendMessage(playerid, COLOR_INFO1, "Zalogowano pomyœlnie. Ostatnia wizyta na serwerze: %s", theplayer::getAccountDataString(playerid, "ts_last"));
-		
+			
 		bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
 		bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
 		OnPlayerRequestClass(playerid, 0);
-	} else {
-		if(++PlayerData[playerid][epd_loginAttempts]>=MAX_LOGIN_ATTEMPTS) {
-			theplayer::hideDialog(playerid);
-			theplayer::sendMessage(playerid, COLOR_ERROR, "Wykorzysta³eœ maksymaln¹ iloœæ prób zalogowañ na to konto.");
-			// TODO: Informowanie administracji o tym przypadku
-			theadmins::sendMessage(COLOR_ERROR, RANK_MASTERADMIN, "Próba zalogowania na konto <b>%s<b> z adresu IP: <b>%s</b> - wyrzucony.", PlayerData[playerid][epd_nickname], PlayerData[playerid][epd_addressIP]);
-			theplayer::kick(playerid);
-			return false;
-		}
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest nieprawid³owe. Spróbuj ponownie.");
-		theplayer::showLoginDialog(playerid);
 	}
 	return true;
 }
@@ -109,7 +123,8 @@ stock theplayer::onEventRegister(playerid, input[]) {
 	if(isnull(input)) return false;
 	
 	// TODO:
-	// Dokonczyc rejestracje konta
+	// 1) Dokonczyc rejestracje konta
+	// 2) Przy rejestracji tworzyc rekord dla tabeli players_weapons - tylko podac id konta
 	return true;
 }
 

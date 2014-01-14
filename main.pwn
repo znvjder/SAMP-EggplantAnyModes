@@ -112,14 +112,23 @@ public OnPlayerConnect(playerid) {
 	utility::resetVariablesInEnum(PlayerData[playerid], e_PlayerData);
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
+	GetPlayerClientId(playerid, PlayerData[playerid][epd_serialID], 32);
 	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) {
 		CLogging_Insert(CLOG_DEBUG, "Player %s (ID: %d) (IP: %s) has connect to the server", PlayerData[playerid][epd_nickname], playerid, PlayerData[playerid][epd_addressIP]);
 	}
 	
 	if(theplayer::isRegistered(playerid)) {
-		theplayer::showLoginDialog(playerid);
-		PlayerData[playerid][epd_properties]=PLAYER_INLOGINDIALOG;
+		new serialLast[32], ipLast[16];
+		string::copy(ipLast, theplayer::getAccountDataString(playerid, "ip_last"));
+		string::copy(serialLast, theplayer::getAccountDataString(playerid, "serial_last"));
+		
+		if(!strcmp(PlayerData[playerid][epd_serialID], serialLast) && !strcmp(PlayerData[playerid][epd_addressIP], ipLast)) {
+			theplayer::onEventLogin(playerid, "autologin", true);
+		} else {
+			theplayer::showLoginDialog(playerid);
+			PlayerData[playerid][epd_properties]=PLAYER_INLOGINDIALOG;
+		}
 	} else {
 		theplayer::sendMessage(playerid, COLOR_INFO1, "Witamy na serwerze "SCRIPT_PROJECTNAME"!");
 		theplayer::sendMessage(playerid, COLOR_INFO1, "System wykry³, ¿e nie posiadasz u nas konta. Aby je za³o¿yæ wpisz: <b>/rejestracja</b>");

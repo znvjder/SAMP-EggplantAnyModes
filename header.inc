@@ -16,6 +16,9 @@
 #define _DEBUG_NORMAL (2)
 #define _DEBUG_HARD (3)
 
+// natives SA-MP
+native GetPlayerClientId(playerid, const serial[], maxsize) = gpci;
+
 #define CheckVehicleBounds(%0) if((%0)>(MAX_VEHICLES-1)) return false
 #define CheckPlayerBounds(%0) if((%0)>(MAX_PLAYERS-1)) return false
 
@@ -152,6 +155,7 @@ enum e_ServerData {
 enum e_PlayerData {
 	epd_nickname[MAX_PLAYER_NAME],
 	epd_addressIP[16],
+	epd_serialID[32],
 	epd_accountID,
 	epd_loginAttempts,
 	epd_lastSkin,
