@@ -43,6 +43,7 @@
 #include "internal/CConfigData.p"
 #include "internal/CMessages.p"
 #include "internal/CAccounts.p"
+#include "internal/CVehicles.p"
 
 main() return 0;
 
@@ -75,6 +76,7 @@ public OnGameModeInit() {
 	
 	// Modules initialize
 	CAccounts_Init();
+	CVehicles_Init();
 	utility::addAllSkins();
 	
 	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
@@ -90,6 +92,7 @@ public OnGameModeExit() {
 	CLogging_Insert(CLOG_SERVER, "Terminating logging...");
 	CLogging_Exit();
 	CAccounts_Exit();
+	CVehicles_Exit();
 	CMySQL_Exit();
 	regex_delete_all();
 	djson_GameModeExit();

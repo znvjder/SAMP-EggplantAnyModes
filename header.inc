@@ -119,6 +119,29 @@ enum (<<=1) {
 	
 };
 
+enum (<<=1) {
+	// Vehicle property stuff
+	VEHICLE_NONE=0,
+	VEHICLE_NOTSPAWNED,
+	VEHICLE_SPAWNED, // pojazd jest zespawnowany na mapie
+	VEHICLE_ISOWNED, // pojazd ma wlasciciela
+	VEHICLE_DOOR_OPEN,
+	VEHICLE_DOOR_CLOSED,
+	VEHICLE_DESTROYED
+};
+
+enum e_VehicleData {
+	Float:evd_pos[4], // x,y,z,rot
+	evd_carid,
+	evd_modelid,
+	evd_properties,
+	evd_tuning[12],
+	evd_ownerID, // odpowiednik playerid
+	evd_color[2],
+	evd_doorEnterType, // wejscie do pojazdu jako kierowca/pasazer: 0=nikt, 1=znajomi, 2=czlonkowie gangu, 3=wszyscy
+	evd_paintjob
+};
+
 enum e_ServerData {
 	MySQL:esd_MySQLHandler,
 	esd_streamerTickRate,
@@ -148,4 +171,5 @@ enum e_PlayerData {
 new 
 	PlayerData[MAX_PLAYERS][e_PlayerData],
 	ServerData[e_ServerData],
+	VehicleData[MAX_VEHICLES][e_VehicleData],
 	ConfigColorData[MAX_COLORS_CHAT][2];
