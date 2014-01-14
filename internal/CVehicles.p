@@ -30,7 +30,7 @@ stock CVehicles_Exit() {
 stock thevehicle::create(modelid, owner=INVALID_PLAYER_ID, Float:x=0.0, Float:y=0.0, Float:z=1.0, Float:rot=90.0, color[2]) {
 	if(modelid<=400) return false;
 	
-	new carid=CreateVehicle(modelid, x, y, z, rot, color[0], color[1], 3*60);
+	new carid=CreateVehicle(modelid, x, y, z, rot, color[0], color[1], DURATION(3 hours));
 	VehicleData[carid-1][evd_carid]=carid;
 	VehicleData[carid-1][evd_modelid]=modelid;
 	VehicleData[carid-1][evd_pos][0]=x;
