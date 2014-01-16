@@ -123,7 +123,7 @@ public OnPlayerConnect(playerid) {
 		string::copy(ipLast, theplayer::getAccountDataString(playerid, "ip_last"));
 		string::copy(serialLast, theplayer::getAccountDataString(playerid, "serial_last"));
 		
-		if(!strcmp(PlayerData[playerid][epd_serialID], serialLast) && !strcmp(PlayerData[playerid][epd_addressIP], ipLast)) {
+		if(!strcmp(PlayerData[playerid][epd_serialID], serialLast, false) && strcmp(PlayerData[playerid][epd_addressIP], ipLast, false) == 0) {
 			theplayer::onEventLogin(playerid, "autologin", true);
 		} else {
 			theplayer::showLoginDialog(playerid);
