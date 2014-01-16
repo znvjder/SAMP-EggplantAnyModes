@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS accounts (
 	KEY `respect and money` (`respect`, `wallet_money`, `bank_money`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+INSERT INTO accounts (nickname, password, ip_register, ip_last, ts_register, ts_last, isonline, skin) VALUES ('dev', SHA1(MD5('dev-eggplant')), '127.0.0.1', '127.0.0.1', NOW(), NOW(), 0, 40);
+
 -- table players_weapons
 CREATE TABLE IF NOT EXISTS players_weapons (
 	`id` INT NOT NULL AUTO_INCREMENT,
