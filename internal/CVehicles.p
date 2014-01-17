@@ -69,10 +69,8 @@ stock thevehicle::create(modelid, owner=INVALID_PLAYER_ID, Float:x=0.0, Float:y=
 	VehicleData[carid-1][evd_color]=color[0];
 	VehicleData[carid-1][evd_color]=color[1];
 	
-	bit_set(VehicleData[carid-1][evd_properties], VEHICLE_DOOR_OPEN);
-	
 	if(owner==INVALID_PLAYER_ID) {
-		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_ISOWNED);
+		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_DOOR_OPEN);
 		VehicleData[carid-1][evd_ownerID]=INVALID_PLAYER_ID;
 	} else {
 		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_ISOWNED);

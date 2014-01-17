@@ -220,7 +220,7 @@ public OnPlayerSpawn(playerid) {
 public OnPlayerDeath(playerid, killerid, reason) {
 	CheckPlayerBounds(playerid);
 	if(killerid != INVALID_PLAYER_ID) {
-		CheckVehicleBounds(killerid);
+	
 	} else {
 	
 	}
@@ -231,6 +231,51 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger) {
 	CheckPlayerBounds(playerid);
 	CheckVehicleBounds(vehicleid);
 	
+	new Float:tmpPP[3], Float:tmpVP[3];
+	GetPlayerPos(playerid, tmpPP[0], tmpPP[1], tmpPP[2]);
+	GetVehiclePos(vehicleid, tmpVP[0], tmpVP[1], tmpVP[2]);
+	if(math::betweenDist3D(tmpPP[0], tmpPP[1], tmpPP[2], tmpVP[0], tmpVP[1], tmpVP[2])>=5.0) { // uniemozliwiamy wejscie jezeli gracz jest wiecej niz 5j od pojazdu
+		ClearAnimations(playerid);
+		return false;
+	}
+	
+	if(ispassenger) { // wchodzi jako pasazer
+		if(bit_if(thevehicle::getProperties(vehicleid), VEHICLE_ISOWNED) && thevehicle::getOwner(vehicleid) != playerid) { // pojazd jest prywatny
+			switch(thevehicle_getDoorEnterType(vehicleid)) {
+				case VEHICLE_ENTER_NOBODY: {
+					ClearAnimations(playerid);
+					return false;
+				}
+				case VEHICLE_ENTER_FRIENDS: {
+					
+				}
+				case VEHICLE_ENTER_GANGMEMBERS: {
+				
+				}
+				case VEHICLE_ENTER_ALL: {
+				
+				}
+			}
+		}
+	} else { // wchodzi jako kierowca
+		if(bit_if(thevehicle::getProperties(vehicleid), VEHICLE_ISOWNED) && thevehicle::getOwner(vehicleid) != playerid) { // pojazd jest prywatny
+			switch(thevehicle_getDoorEnterType(vehicleid)) {
+				case VEHICLE_ENTER_NOBODY: {
+					ClearAnimations(playerid);
+					return false;
+				}
+				case VEHICLE_ENTER_FRIENDS: {
+				
+				}
+				case VEHICLE_ENTER_GANGMEMBERS: {
+				
+				}
+				case VEHICLE_ENTER_ALL: {
+				
+				}
+			}
+		}
+	}
 	return true;
 }
 
@@ -245,8 +290,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 	CheckPlayerBounds(playerid);
 	switch(newstate) {
 		case PLAYER_STATE_NONE: {
-			// TODO:
-			// Poinformowac adminow o problemie
+		
 		}
 		case PLAYER_STATE_DRIVER: {
 		

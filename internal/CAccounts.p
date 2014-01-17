@@ -15,7 +15,7 @@
 #define MAX_LOGIN_ATTEMPTS (4)
 
 stock CAccounts_Init() {
-	new tmpResult[32];
+	new tmpResult[12];
 	CMySQL_Query("SELECT COUNT(*) FROM accounts;", -1);
 	mysql_store_result();
 	mysql_fetch_row(tmpResult);
@@ -86,6 +86,7 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 			theplayer::setAccountDataString(playerid, "NOW()", false, "ts_last");
 			theplayer::setAccountDataString(playerid, "visits+1", false, "visits");
 			theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_addressIP], true, "ip_last");
+			theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_serialID], true, "serial_last");
 			theplayer::sendMessage(playerid, COLOR_INFO1, "Zalogowano pomyœlnie. Ostatnia wizyta na serwerze: %s", theplayer::getAccountDataString(playerid, "ts_last"));
 			
 			bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);

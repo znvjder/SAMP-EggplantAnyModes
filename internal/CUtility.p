@@ -34,23 +34,23 @@ stock string::replace(subject[], const search[], const replace[]) { // w przyszl
 #define math:: math_ // taki tam stuff
 #define math_pi() (3.14159)
 
-stock math::length2D(Float:x, Float:y) {
+stock Float:math::length2D(Float:x, Float:y) {
 	return floatsqroot((x*x)+(y*y));
 }
 
-stock math::length3D(Float:x, Float:y, Float:z) {
+stock Float:math::length3D(Float:x, Float:y, Float:z) {
 	return floatsqroot((x*x)+(y*y)+(z*z));
 }
 
-stock math::betweenDist2D(Float:x1, Float:y1, Float:x2, Float:y2) {
+stock Float:math::betweenDist2D(Float:x1, Float:y1, Float:x2, Float:y2) {
 	return floatsqroot((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
 
-stock math::betweenDist3D(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2) {
+stock Float:math::betweenDist3D(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2) {
 	return floatsqroot((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)+(z1-z2)*(z1-z2));
 }
 
-stock math::calculateVelocity3D(Float:x, Float:y, Float:z, Float:mod) {
+stock Float:math::calculateVelocity3D(Float:x, Float:y, Float:z, Float:mod) {
 	return floatsqroot((x*x)+(y*y)+(z*z))*mod;
 }
 
