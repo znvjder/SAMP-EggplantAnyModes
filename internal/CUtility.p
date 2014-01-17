@@ -95,6 +95,10 @@ stock theplayer::removeWeapon(playerid, weaponid) {
 #define utility:: utility_
 #define utility_resetVariablesInEnum(%0,%1) for(new __rvine; %1:__rvine != %1; __rvine++) %0[%1:__rvine]=0
 
+stock utility::setColorAlpha(color, alpha) {
+	return (((color >> 24) & 0xFF) << 24 | ((color >> 16) & 0xFF) << 16 | ((color >> 8) & 0xFF) << 8 | floatround((float(color & 0xFF) / 255) * alpha));
+}
+
 stock utility::getWeaponSlot(weaponid)
 {
 	static const
