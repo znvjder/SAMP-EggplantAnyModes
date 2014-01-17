@@ -150,13 +150,11 @@ stock theplayer::showRegisterDialog(playerid) {
 		DIALOG_LOGIN, 
 		DIALOG_STYLE_PASSWORD, 
 		"Panel rejestracji konta", 
-		"Witamy w panelu rejestracji konta. Decydujac siê na rejestracje otrzymasz pe³ny dostêp do wszystkich funkcji serwera.\n\
-		Dodatkowo, gdy Twoje konto zostanie zarejestrowane - dostaniesz 500 RP nagrody - nie czekaj!\n\
-		Poni¿ej wpisz swoje has³o, za pomoc¹ którego bêdziesz móg³ siê logowaæ.\n\
-		Pamiêtaj, ¿e Twoje has³o MUSI mieæ co najmniej 6 do 16 znaków. Has³o mo¿e sk³adaæ siê ze znaków specjalnych.\n\
-		W razie, gdybyœ zapomnia³ has³a - serwer automatycznie powiadomi Ciê o próbie zalogowania na Twoje konto i w tej bêdzie znajdowaæ siê link, do mo¿liwego zresetowania has³a.",
-		"Rejestruj", "Anuluj");
+		"Witamy w panelu rejestracji konta! :)\nDecydujac siê na rejestracje otrzymasz pe³ny dostêp do wszystkich funkcji serwera.\n\
+		Dodatkowo, gdy Twoje konto zostanie zarejestrowane - dostaniesz 500 RP nagrody - nie czekaj!\nPoni¿ej wpisz swoje has³o, za pomoc¹ którego bêdziesz móg³ siê logowaæ.\n\
+		Pamiêtaj, ¿e Twoje has³o MUSI mieæ co najmniej 6 do 16 znaków. Has³o mo¿e sk³adaæ siê ze znaków specjalnych.", "Rejestruj", "Anuluj");
 	
+	// W razie, gdybyœ zapomnia³ has³a - serwer automatycznie powiadomi Ciê o próbie zalogowania na Twoje konto i w tej bêdzie znajdowaæ siê link, do mo¿liwego zresetowania has³a.
 }
 
 stock theplayer::loadAccountData(playerid) {

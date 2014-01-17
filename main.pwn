@@ -46,6 +46,9 @@
 #include "internal/CAccounts.p"
 #include "internal/CVehicles.p"
 
+#include "internal/commands/cmds_header.p"
+
+
 main() return 0;
 
 public OnGameModeInit() {
