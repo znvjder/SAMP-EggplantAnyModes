@@ -35,6 +35,7 @@
 #include "external/regex"
 #include "external/djson"
 #include "external/YSI\y_va"
+#include "external/zcmd"
 
 #include "header"
 #include "internal/CLogging.p"

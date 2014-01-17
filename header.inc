@@ -138,7 +138,7 @@ enum e_VehicleData {
 	evd_carid,
 	evd_modelid,
 	evd_properties,
-	evd_tuning[12],
+	evd_tuning[13],
 	evd_ownerID, // odpowiednik playerid
 	evd_color[2],
 	evd_doorEnterType, // wejscie do pojazdu jako kierowca/pasazer: 0=nikt, 1=znajomi, 2=czlonkowie gangu, 3=wszyscy
