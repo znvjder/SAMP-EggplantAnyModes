@@ -13,6 +13,7 @@
 	TODO:
 	
 	1) Dodac czasowe zabezpieczenia do zapytan SQL, czyli lista znajomych, powiadomienia i dodawanie znajomego - na ok. 1 minute od ostatniego uzycia (zoptymalizujemy troche serwer mysql)
+	2) Wykonac usuwanie znajomego z listy znajomych
 */
 
 stock CFriends_ShowHomePage(playerid) {
