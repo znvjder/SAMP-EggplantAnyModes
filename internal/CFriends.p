@@ -9,6 +9,12 @@
 	(c) 2013-2014, <l0nger.programmer@gmail.com>
 */
 
+/*
+	TODO:
+	
+	1) Dodac czasowe zabezpieczenia do zapytan SQL, czyli lista znajomych, powiadomienia i dodawanie znajomego - na ok. 1 minute od ostatniego uzycia (zoptymalizujemy troche serwer mysql)
+*/
+
 stock CFriends_ShowHomePage(playerid) {
 	new tmpBuf[128], iloscPowiadomien;
 	CMySQL_Query("SELECT COUNT(*) FROM friends WHERE invited='%d' AND accepted=0 AND TIMESTAMPDIFF(DAY, ts_created, NOW())<=30", -1, PlayerData[playerid][epd_accountID]);
@@ -48,17 +54,17 @@ stock CFriends_SeeMyFriends(playerid) {
 	CMySQL_Query("SELECT a.nickname FROM friends f JOIN accounts a ON inviter=a.id WHERE invited='%d' AND accepted=1", -1, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
 	if(!mysql_num_rows()) {
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", "Nie masz jeszcze znajomych...", "", "Wróæ");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", "Nie masz jeszcze znajomych...", "Wróæ", "");
 		mysql_free_result();
 		return;
 	}
 	new tmpBuf[512], szNick[24], i=0;
 	while(mysql_fetch_row(szNick)) {
-		format(tmpBuf, sizeof(tmpBuf), "%s\n%d)\t%s", tmpBuf, (i+1), tmpBuf, szNick);
+		format(tmpBuf, sizeof(tmpBuf), "%s\n%d)\t%s", tmpBuf, (i+1), szNick);
 		i++;
 	}
 	mysql_free_result();
-	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "", "Wróæ");
+	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "Wróæ", "");
 }
 
 stock CFriends_InviteFriend(playerid, friendName[]) {
@@ -105,7 +111,7 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 			}
 		}
 		case DIALOG_FRIENDS_LIST: {
-			if(!response) {
+			if(response) {
 				CFriends_ShowHomePage(playerid);
 				return 1;
 			}
