@@ -54,7 +54,7 @@ stock CFriends_SeeMyFriends(playerid) {
 	}
 	new tmpBuf[512], szNick[24], i=0;
 	while(mysql_fetch_row(szNick)) {
-		format(tmpBuf, sizeof(tmpBuf), "%s\n%d)\t%s", (i+1), tmpBuf, szNick);
+		format(tmpBuf, sizeof(tmpBuf), "%s\n%d)\t%s", tmpBuf, (i+1), tmpBuf, szNick);
 		i++;
 	}
 	mysql_free_result();
