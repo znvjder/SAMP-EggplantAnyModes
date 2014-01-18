@@ -114,6 +114,14 @@ stock utility::getWeaponSlot(weaponid)
 
 }
 
+stock utility::getPlayerIDFromName(const name[]) {
+	if(isnull(name)) return INVALID_PLAYER_ID;
+	theplayer::foreach(i) {
+		if(!strcmp(name, PlayerData[i][epd_nickname], false)) return i;
+	}
+	return INVALID_PLAYER_ID;
+}
+
 stock utility::addAllSkins() {
 	for(new i=0; i<=298; i++) {
 		AddPlayerClass(i, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0);

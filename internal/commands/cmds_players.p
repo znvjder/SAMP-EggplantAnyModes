@@ -14,3 +14,8 @@ CMD:rejestracja(playerid) {
 }
 
 CMD:register(playerid) return cmd_rejestracja(playerid);
+
+CMD:znajomi(playerid) {
+	CFriends_ShowHomePage(playerid);
+	return 1;
+}

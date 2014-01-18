@@ -38,20 +38,30 @@ stock theplayer::isRegistered(playerid) {
 	return v;
 }
 
-stock theplayer::getAccountID(playerid) {
-	if(PlayerData[playerid][epd_accountID]>0) return PlayerData[playerid][epd_accountID];
-	CMySQL_Query("SELECT 1 FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
+stock theplayer::getAccountIDByName(szNick[]) {
+	CMySQL_Query("SELECT id FROM accounts WHERE nickname='%s' LIMIT 1;", -1, szNick);
 	mysql_store_result();
-	new tmpResult[12];
+	new tmpResult;
 	if(mysql_num_rows()) {
-		mysql_fetch_row(tmpResult);
+		tmpResult=mysql_fetch_int();
 	}
 	mysql_free_result();
-	return strval(tmpResult);
-	
+	return tmpResult;
 }
 
-stock theplayer::isAccountExists(playerid, szAccount[]) {
+stock theplayer::getAccountID(playerid) {
+	if(PlayerData[playerid][epd_accountID]>0) return PlayerData[playerid][epd_accountID];
+	CMySQL_Query("SELECT id FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
+	mysql_store_result();
+	new tmpResult;
+	if(mysql_num_rows()) {
+		tmpResult=mysql_fetch_int();
+	}
+	mysql_free_result();
+	return tmpResult;
+}
+
+stock theplayer::isAccountExists(szAccount[]) {
 	if(isnull(szAccount)) return false;
 	new bool:v=false;
 	CMySQL_Query("SELECT 1 FROM accounts WHERE nickname='%s' LIMIT 1;", -1, szAccount);

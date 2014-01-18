@@ -65,6 +65,14 @@ CREATE TABLE IF NOT EXISTS houses (
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- table friends
+CREATE TABLE IF NOT EXISTS friends (
+	ts_created TIMESTAMP,
+	inviter SMALLINT NOT NULL DEFAULT '0', -- zapraszajacy
+	invited SMALLINT NOT NULL DEFAULT '0', -- zaproszony
+	accepted TINYINT NOT NULL DEFAULT '0' -- status akceptacji 0-nie, 1-tak
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 -- table vehicles
 CREATE TABLE IF NOT EXISTS vehicles (
 	`id` INT NOT NULL AUTO_INCREMENT,

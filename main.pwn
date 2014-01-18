@@ -45,6 +45,8 @@
 #include "internal/CMessages.p"
 #include "internal/CAccounts.p"
 #include "internal/CVehicles.p"
+#include "internal/CTextdraws.p"
+#include "internal/CFriends.p"
 
 #include "internal/commands/cmds_header.p"
 
@@ -364,6 +366,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
 			theplayer::onEventRegister(playerid, inputtext);
 		}
 	}
+	CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext);
 	return false;
 }
 

@@ -77,6 +77,12 @@ enum {
 	DIALOG_LOGIN=1,
 	DIALOG_REGISTER,
 	DIALOG_INSERT_EMAIL, // TODO: wysylanie wiadomosci powitalnej na adres email
+	
+	DIALOG_FRIENDS_INDEX,
+	DIALOG_FRIENDS_LIST,
+	DIALOG_FRIENDS_ACCEPTING,
+	DIALOG_FRIENDS_INVITE,
+	
 };
 
 enum {
