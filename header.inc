@@ -29,6 +29,8 @@ native GetPlayerClientId(playerid, const serial[], maxsize) = gpci;
 #define bit_unset(%0,%1) (%0)&=~(%1)
 #define bit_if(%0,%1) ((%0) & (%1))
 
+#define CAC_SOBEIT_VERSION "0.3x"
+
 // Color chat
 #define COLOR_INFO1 (0)
 #define COLOR_INFO2 (1)

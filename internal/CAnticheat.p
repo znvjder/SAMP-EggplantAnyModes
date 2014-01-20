@@ -17,5 +17,10 @@ stock CAnticheat_Exit() {
 }
 
 stock CAnticheat_CheckPlayer(playerid) {
-
+	new tmpAC[16];
+	GetPlayerVersion(playerid, tmpAC, sizeof(tmpAC));
+	if(!strcmp(tmpAC, CAC_SOBEIT_VERSION)) {
+		return true;
+	}
+	return false;
 }

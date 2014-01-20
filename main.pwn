@@ -43,6 +43,7 @@
 #include "internal/CMySQL.p"
 #include "internal/CConfigData.p"
 #include "internal/CMessages.p"
+#include "internal/CAnticheat.p"
 #include "internal/CAccounts.p"
 #include "internal/CVehicles.p"
 #include "internal/CTextdraws.p"
@@ -106,6 +107,10 @@ public OnGameModeExit() {
 }
 
 public OnPlayerConnect(playerid) {
+	if(CAnticheat_CheckPlayer(playerid)) {
+		return false;
+	}
+	
 	if(playerid>MAX_PLAYERS) {
 		SendClientMessage(playerid, -1, "[PL]: Serwer osiagnal limit graczy.");
 		SendClientMessage(playerid, -1, "[ENG]: This server is full. Try again.");
