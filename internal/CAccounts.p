@@ -15,12 +15,12 @@
 #define MAX_LOGIN_ATTEMPTS (4)
 
 stock CAccounts_Init() {
-	new tmpResult[12];
+	new tmpResult;
 	CMySQL_Query("SELECT COUNT(*) FROM accounts;", -1);
 	mysql_store_result();
-	mysql_fetch_row(tmpResult);
+	tmpResult=mysql_fetch_int();
 	mysql_free_result();
-	printf("[CAccounts]: Number of registered accounts %d", strval(tmpResult));
+	printf("[CAccounts]: Number of registered accounts %d", tmpResult);
 }
 
 stock CAccounts_Exit() {
@@ -42,9 +42,7 @@ stock theplayer::getAccountIDByName(szNick[]) {
 	CMySQL_Query("SELECT id FROM accounts WHERE nickname='%s' LIMIT 1;", -1, szNick);
 	mysql_store_result();
 	new tmpResult;
-	if(mysql_num_rows()) {
-		tmpResult=mysql_fetch_int();
-	}
+	if(mysql_num_rows()) tmpResult=mysql_fetch_int();
 	mysql_free_result();
 	return tmpResult;
 }
@@ -54,9 +52,7 @@ stock theplayer::getAccountID(playerid) {
 	CMySQL_Query("SELECT id FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
 	mysql_store_result();
 	new tmpResult;
-	if(mysql_num_rows()) {
-		tmpResult=mysql_fetch_int();
-	}
+	if(mysql_num_rows()) tmpResult=mysql_fetch_int();
 	mysql_free_result();
 	return tmpResult;
 }
@@ -217,12 +213,12 @@ stock theplayer::setAccountDataString(playerid, data[], bool:useApostrofy=false,
 }
 
 stock theplayer::getAccountDataInt(playerid, column[]) {
-	new tmpResult[12];
+	new tmpResult;
 	CMySQL_Query("SELECT %s FROM accounts WHERE id='%d' LIMIT 1;", -1, column, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
-	if(mysql_num_rows()) mysql_fetch_row(tmpResult);
+	if(mysql_num_rows()) tmpResult=mysql_fetch_int();
 	mysql_free_result();
-	return strval(tmpResult);
+	return tmpResult;
 }
 
 stock theplayer::getAccountDataString(playerid, column[]) {

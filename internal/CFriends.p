@@ -17,7 +17,7 @@
 */
 
 stock CFriends_ShowHomePage(playerid) {
-	new tmpBuf[128], iloscPowiadomien;
+	new tmpBuf[100], iloscPowiadomien;
 	CMySQL_Query("SELECT COUNT(*) FROM friends WHERE invited='%d' AND accepted=0 AND TIMESTAMPDIFF(DAY, ts_created, NOW())<=30", -1, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
 	iloscPowiadomien=mysql_fetch_int();
@@ -39,6 +39,17 @@ stock CFriends_CheckOrAreFriendByUID(player_uid, friend_uid) {
 	if(mysql_num_rows()) areWeFriends=true;
 	mysql_free_result();
 	return areWeFriends;
+}
+
+stock CFriends_DeleteFriend(playerid, friendName[]) {
+	new accountid=theplayer::getAccountIDByName(friendName), friendid=utility::getPlayerIDFromName(friendName);
+	if(friendid==0xFFFF) {
+		CMySQL_Query("DELETE FROM friends WHERE invited='%d' AND inviter='%d'", -1, PlayerData[playerid][epd_accountID], accountid);
+	} else {
+		CMySQL_Query("DELETE FROM friends WHERE invited='%d' AND inviter='%d'", -1, PlayerData[playerid][epd_accountID], accountid);
+		// TODO:
+		// Gracz %s (playerid) usunal Cie z grona znajomych
+	}
 }
 
 stock CFriends_CheckOrAreFriend(playerid, friendid) {
@@ -65,7 +76,7 @@ stock CFriends_SeeMyFriends(playerid) {
 		i++;
 	}
 	mysql_free_result();
-	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "Wróæ", "");
+	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "Wiêcej", "Wróæ");
 }
 
 stock CFriends_InviteFriend(playerid, friendName[]) {
@@ -79,7 +90,7 @@ stock CFriends_InviteFriend(playerid, friendName[]) {
 	} else {
 		new accountid=theplayer::getAccountIDByName(friendName);
 		if(CFriends_CheckOrAreFriendByUID(PlayerData[playerid][epd_accountID], accountid)) {
-			ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.\nTa osoba jest ju¿ na liœcie znajomych.", "Dodaj", "Wróæ");
+			ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.\nTa osoba jest ju¿ na liœcie znajomych!", "Dodaj", "Wróæ");
 			return;
 		}
 		new friendid=utility::getPlayerIDFromName(friendName);
@@ -94,6 +105,7 @@ stock CFriends_InviteFriend(playerid, friendName[]) {
 }
 
 stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
+	printf("CFriendsDialog: (%d, %d, %d, %d, %s)", playerid, dialogid, response, listitem, inputtext);
 	switch(dialogid) {
 		case DIALOG_FRIENDS_INDEX: {
 			if(!response) return 1;
@@ -112,10 +124,13 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 			}
 		}
 		case DIALOG_FRIENDS_LIST: {
-			if(response) {
+			if(!response) {
 				CFriends_ShowHomePage(playerid);
 				return 1;
 			}
+			new partName[MAX_PLAYER_NAME], guiTitle[40];
+			string::copy(partName, inputtext[strfind(inputtext, ")\t")+1]), format(guiTitle, 40, "Znajomi > %s > Wiecej", partName);
+			ShowPlayerDialog(playerid, DIALOG_FRIENDS_PROPERTIES, DIALOG_STYLE_LIST, guiTitle, "Zobacz profil\nWyœlij wiadomoœæ\nUsun ze znajomych", "Wybierz", "Wróæ");
 		}
 		case DIALOG_FRIENDS_ACCEPTING: {
 			if(!response) {
