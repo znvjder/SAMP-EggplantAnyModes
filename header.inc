@@ -186,3 +186,6 @@ new
 	ServerData[e_ServerData],
 	VehicleData[MAX_VEHICLES][e_VehicleData],
 	ConfigColorData[MAX_COLORS_CHAT][2];
+
+	
+// trololo
