@@ -1,3 +1,0 @@
-/*
-	Testowy plik
-*/
