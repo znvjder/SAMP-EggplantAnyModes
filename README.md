@@ -12,6 +12,9 @@ Autorzy
 - _Bantu_, bantu3i5@tlen.pl
 - _l0stfake7_, barpon@gmail.com
 - _Macias_, maciekgl@o2.pl
+- _Failede_, kamilbacia28@gmail.com
+- _Zielony745_, szymongeek@gmail.com
+
 
 Dlaczego ten kod jest publiczny?
 ============
