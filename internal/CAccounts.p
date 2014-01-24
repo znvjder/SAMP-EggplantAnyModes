@@ -26,7 +26,9 @@ stock CAccounts_Init() {
 stock CAccounts_Exit() {
 	// TODO:
 	// Zapisywanie statystyk wszystkich graczy
-	//theplayer::CAccounts_saveData(playerid);
+	//theplayer::foreach(i) {
+	//	theplayer::CAccounts_saveData(playerid);
+	//}
 }
 
 stock theplayer::isRegistered(playerid) {
@@ -79,7 +81,7 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 			return false;
 		}
 		
-		new bool:success=false, esc_input[32];
+		new bool:success=false, esc_input[26];
 		mysql_real_escape_string(input, esc_input);
 		CMySQL_Query("SELECT (password=SHA1(MD5('%s'))) AS validpwd FROM accounts WHERE nickname='%s';", -1, esc_input, PlayerData[playerid][epd_nickname]);
 		mysql_store_result();
@@ -117,7 +119,7 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 		theplayer::setAccountDataString(playerid, "visits+1", false, "visits");
 		theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_addressIP], true, "ip_last");
 		theplayer::setAccountDataString(playerid, PlayerData[playerid][epd_serialID], true, "serial_last");
-		theplayer::sendMessage(playerid, COLOR_INFO1, "Zalogowano pomyœlnie. Ostatnia wizyta na serwerze: %s", theplayer::getAccountDataString(playerid, "ts_last"));
+		theplayer::sendMessage(playerid, COLOR_INFO1, "Zalogowano automatycznie. Ostatnia wizyta na serwerze: %s", theplayer::getAccountDataString(playerid, "ts_last"));
 			
 		bit_unset(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG);
 		bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
@@ -127,11 +129,36 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 }
 
 stock theplayer::onEventRegister(playerid, input[]) {
-	if(isnull(input)) return false;
+	if(isnull(input)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie wpisano has³a.");
+		theplayer::showRegisterDialog(playerid);
+		return false;
+	} else if(!(6<=strlen(input)<=16)) {
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest zbyt krótkie lub za d³ugie...");
+		theplayer::showRegisterDialog(playerid);
+		return false;
+	}
 	
-	// TODO:
-	// 1) Dokonczyc rejestracje konta
-	// 2) Przy rejestracji tworzyc rekord dla tabeli players_weapons - tylko podac id konta
+	new esc_passwd[26], cSerial[32];
+	mysql_real_escape_string(input, esc_passwd);
+	GetPlayerClientId(playerid, cSerial, 32);
+	CMySQL_Query("INSERT INTO accounts (nickname, password, ip_register, ip_last, ts_register, ts_last, serial_registered, serial_last, skin) VALUES ('%s', SHA1(MD5('%s')), '%s', '%s', NOW(), NOW(), '%s', '%s', %d);", -1,
+		PlayerData[playerid][epd_nickname], 
+		esc_passwd, 
+		PlayerData[playerid][epd_addressIP], 
+		PlayerData[playerid][epd_addressIP], 
+		cSerial, 
+		cSerial, 
+		GetPlayerSkin(playerid)
+	);
+	PlayerData[playerid][epd_accountID]=mysql_insert_id();
+	CMySQL_Query("INSERT INTO players_weapons SET owner='%d'", PlayerData[playerid][epd_accountID]);
+	
+	ShowPlayerDialog(playerid, DIALOG_BLANK, DIALOG_STYLE_MSGBOX, "Panel rejestracji", 
+		"Gratulacje! Dzisiejszego dnia dokona³eœ(aœ) dobrego wyboru, rejestruj¹c u nas konto.\nMamy nadzieje, ¿e bêdzie Ci siê dobrze graæ.\n\
+		Nic innego ¿yczyæ nie mo¿emy, prócz przyjmnej gry na naszym serwerze!\nW ramach nagrody za za³o¿enie u nas konta, dostajesz 500 RP + 1000$ na lekki start!", 
+		"Zamknij", ""
+	);
 	return true;
 }
 
@@ -153,7 +180,7 @@ stock theplayer::showLoginDialog(playerid) {
 
 stock theplayer::showRegisterDialog(playerid) {
 	ShowPlayerDialog(playerid, 
-		DIALOG_LOGIN, 
+		DIALOG_REGISTER, 
 		DIALOG_STYLE_PASSWORD, 
 		"Panel rejestracji konta", 
 		"Witamy w panelu rejestracji konta! :)\nDecydujac siê na rejestracje otrzymasz pe³ny dostêp do wszystkich funkcji serwera.\n\
@@ -237,6 +264,25 @@ stock theplayer:getAccountDataFloat(playerid, column[]) {
 	if(mysql_num_rows()) mysql_fetch_row(tmpResult);
 	mysql_free_result();
 	return floatstr(tmpResult);
+}
+
+stock theplayer::showProfileStat(playerid=INVALID_PLAYER_ID, playerName[]="") {
+	// TODO:
+	// Zaprogramowac
+	/*if(playerid != INVALID_PLAYER_ID) {	
+		new profileStat[512] = "Szczegó³y konta %s (Online/Offline):\n\n\
+			KONTO:\nIdentyfikator: %d, ranga: %s, ranga spo³eczna: %s,\
+			Ostatnio widziany(a): %s, u¿ywany skin: %d\n\
+			Ping: %dms, ilosc FPS: %d/s\n\n\
+			ZNAJOMI:\nLiczba znajomych: %d\n\n'
+			GANG:\nAktualny gang: %s, ranga w gangu: %s\n\n";
+	} else {
+		new profileStat[512] = "Szczegó³y konta %s (Online/Offline):\n\n\
+			KONTO:\nIdentyfikator: %d, ranga: %s, ranga spo³eczna: %s,\
+			Ostatnio widziany(a): %s, u¿ywany skin: %d\n\n\
+			ZNAJOMI:\nLiczba znajomych: %d\n\n'
+			GANG:\nAktualny gang: %s, ranga w gangu: %s\n\n";
+	}*/
 }
 
 #undef MAX_LOGIN_ATTEMPTS

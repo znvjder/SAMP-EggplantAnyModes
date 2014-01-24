@@ -17,6 +17,8 @@
 */
 
 stock CFriends_ShowHomePage(playerid) {
+	//if(GetPVarInt(playerid, "player:friendsHomePage:reduceTime")>gettime()) return;
+	
 	new tmpBuf[100], iloscPowiadomien;
 	CMySQL_Query("SELECT COUNT(*) FROM friends WHERE invited='%d' AND accepted=0 AND TIMESTAMPDIFF(DAY, ts_created, NOW())<=30", -1, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
@@ -24,10 +26,10 @@ stock CFriends_ShowHomePage(playerid) {
 	mysql_free_result();
 	
 	if(!iloscPowiadomien) {
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Znajomi", "Lista znajomych\nZaproszenia (brak nowych powiadomien)\nZaproœ do znajomych...", "Wybierz", "Anuluj");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Menu znajomych", "Lista znajomych\nZaproszenia (brak nowych powiadomien)\nZaproœ do znajomych...", "Wybierz", "Anuluj");
 	} else {
 		format(tmpBuf, sizeof(tmpBuf), "Lista znajomych\nZaproszenia (%d)\nZaproœ do znajomych...", iloscPowiadomien);
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Znajomi", tmpBuf, "Wybierz", "Anuluj");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Menu znajomych", tmpBuf, "Wybierz", "Anuluj");
 	}
 }
 
@@ -105,7 +107,6 @@ stock CFriends_InviteFriend(playerid, friendName[]) {
 }
 
 stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
-	printf("CFriendsDialog: (%d, %d, %d, %d, %s)", playerid, dialogid, response, listitem, inputtext);
 	switch(dialogid) {
 		case DIALOG_FRIENDS_INDEX: {
 			if(!response) return 1;
