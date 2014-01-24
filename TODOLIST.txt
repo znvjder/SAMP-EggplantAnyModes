@@ -1,0 +1,30 @@
+/**
+ *
+ * @file: TODOLIST.txt
+ * @licence: GPLv2
+ * @date created: 25-01-2014
+ * @package: https://github.com/l0nger/SAMP-EggplantDM
+ * (C) 2014, l0nger
+ **/
+
+=====================================================
+
+<A> #1: Zapis pojazdow przy wylaczaniu serwera (w CVehicles_Exit()). Glownie chodzi o uszkodzenia i pozycje pojazdu, ale reszta danych tez jest wazna
+<A> #2: Ograniczyc wysylanie zapytan MySQL (w celach optymalizacyjnych) w module CFriends
+<A> #3: Zaprogramowac wstepnie CHouses (wejscie poprzez checkpoint, wyjscie poprzez pickup), kazdy gracz bedzie mogl posiadac garaz w domu (z tym poczekamy na mappera - az wykona kilka). 
+	Garaz w zaleznosci od rodzaju domu - im wiekszy dom tym wiecej samochodow w garazu, jednak nalozymy limit. Maksymalna ilosc pojazdow w garazu: 5
+<A> #4: Zaprogramowac osiagniecia dla gracza
+
+
+
+
+
+Legenda:
+	<B> - BUG/PROBLEM
+	<F> - NAPRAWA
+	<A> - DODAC
+	<D> - USUNAC
+	<WIP> - W TRAKCIE PRZEGLADU
+	<DONE> - GOTOWE
+
+	
