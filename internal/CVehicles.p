@@ -63,8 +63,9 @@ stock CVehicles_loadAll() {
 stock CVehicles_Save( vehid )
 {
 	new tmp_format[100];
-	format(tmp_format, 100, "UPDATE vehicles SET fX=%f, fY=%f, fZ=%f, fANG=%f, doors=%i, dmgPanels=%i, dmgDoors=%i, dmgLights=%i, dmgTires=%i, color1=%i, color2=%i, tuning=%s, hp=%f, owner=%i WHERE id = %d", 
-	VehicleData[vehid][evd_pos][0], VehicleData[vehid][evd_pos][1], VehicleData[vehid][evd_pos][2], VehicleData[vehid][evd_pos][3], VehicleData[vehid][], vehid)
+	format(tmp_format, 100, "UPDATE vehicles SET fX=%f, fY=%f, fZ=%f, fANG=%f,  color1=%i, color2=%i, WHERE id = %d", VehicleData[vehid][evd_pos][0], VehicleData[vehid][evd_pos][1], VehicleData[vehid][evd_pos][2], VehicleData[vehid][evd_pos][3], VehicleData[vehid][evd_color][0], VehicleData[vehid][evd_color][1], vehid);
+	CMySQL_Query(tmp_format, -1);
+	mysql_free_result();
 }
 //
 
