@@ -17,10 +17,13 @@
 	@link package: https://github.com/l0nger/SAMP-EggplantDM
 */
 
+#pragma dynamic 4096
+#pragma semicolon true
+#pragma pack true
+
 #define SCRIPT_PROJECTNAME "Infinity-Gaming.net DM"
 #define SCRIPT_NAME	"EggplantDM"
 #define SCRIPT_VERSION "0.1 pre-alpha"
-#pragma dynamic 4096
 
 #include <a_samp>
 

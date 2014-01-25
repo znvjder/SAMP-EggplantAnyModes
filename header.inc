@@ -144,6 +144,7 @@ enum (<<=1) {
 
 enum e_VehicleData {
 	Float:evd_pos[4], // x,y,z,rot
+	evd_uid, // unique id
 	evd_carid,
 	evd_modelid,
 	evd_properties,
