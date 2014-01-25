@@ -2,6 +2,7 @@
 	@file: /internal/CVehicles.p
 	@author: 
 		l0nger <l0nger.programmer@gmail.com>
+		Zielony745 <SzymonGeek@gmail.com>
 		
 	@licence: GPLv2
 	
@@ -24,7 +25,10 @@ stock CVehicles_Init() {
 }
 
 stock CVehicles_Exit() {
-
+	for (new vehh; vehh < /*max_veh*/; vehh++)
+	{
+		CVehicles_Save( vehh );
+	}
 }
 
 stock CVehicles_loadAll() {
@@ -54,6 +58,15 @@ stock CVehicles_loadAll() {
 	mysql_free_result();
 	printf("[CVehicles]: Wczytano %d pojazdow.", i);
 }
+
+//Kod zostanie dokończony w najbliższym czasie!
+stock CVehicles_Save( vehid )
+{
+	new tmp_format[100];
+	format(tmp_format, 100, "UPDATE vehicles SET fX=%f, fY=%f, fZ=%f, fANG=%f, doors=%i, dmgPanels=%i, dmgDoors=%i, dmgLights=%i, dmgTires=%i, color1=%i, color2=%i, tuning=%s, hp=%f, owner=%i WHERE id = %d", 
+	VehicleData[vehid][evd_pos][0], VehicleData[vehid][evd_pos][1], VehicleData[vehid][evd_pos][2], VehicleData[vehid][evd_pos][3], VehicleData[vehid][], vehid)
+}
+//
 
 stock thevehicle::create(modelid, owner=INVALID_PLAYER_ID, Float:x=0.0, Float:y=0.0, Float:z=1.0, Float:rot=90.0, color[2]) {
 	if(modelid<400) return false;
