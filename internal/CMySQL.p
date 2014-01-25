@@ -10,7 +10,8 @@ static stock
 	string_MySQLBuffer[384];
 	
 // CMySQL_Init: Nawiazuje polaczenie z MySQL - handler zapisujemy do zmiennej globalnej
-stock CMySQL_Init(const hostname[], const username[], const password[], const dbname[], auto_reconnect=1) {
+stock CMySQL_Init(const hostname[], const username[], const password[], const dbname[], auto_reconnect=1) 
+{
 	if(ServerData[esd_codeDebugger]<=_DEBUG_NORMAL)
 		ServerData[esd_MySQLHandler]=mysql_init(LOG_ALL);
 	else
@@ -25,7 +26,8 @@ stock CMySQL_Init(const hostname[], const username[], const password[], const db
 }
 
 // CMySQL_Exit: Zamyka istniejace polaczenie z MySQL
-stock CMySQL_Exit() {
+stock CMySQL_Exit() 
+{
 	print(" [CMySQL]: Zamknieto polaczenie z MySQL");
 	mysql_close(ServerData[esd_MySQLHandler]);
 }
@@ -43,9 +45,11 @@ stock CMySQL_Exit() {
 		1 - jezeli nastapi blad
 		(standardowe wartosci z mysql_query)
 */
-stock CMySQL_Query(query[], resultid=(-1), va_args<>) {
+stock CMySQL_Query(query[], resultid=(-1), va_args<>) 
+{
 	string_MySQLBuffer[0]=EOS;
-	if(numargs()>2) {
+	if(numargs()>2) 
+	{
 		va_format(string_MySQLBuffer, sizeof(string_MySQLBuffer), query, va_start<2>);
 		return mysql_query(string_MySQLBuffer, resultid);
 	} else {
@@ -53,8 +57,10 @@ stock CMySQL_Query(query[], resultid=(-1), va_args<>) {
 	}
 }
 
-public OnMysqlQuery(resultid, spareid, MySQL:handle) {
-	switch(resultid) {
+public OnMysqlQuery(resultid, spareid, MySQL:handle) 
+{
+	switch(resultid) 
+	{
 		case -1: {
 			if(mysql_result_stored()) mysql_free_result();
 			return 1;
@@ -63,9 +69,11 @@ public OnMysqlQuery(resultid, spareid, MySQL:handle) {
 	return 1;
 }
 
-public OnMysqlError(error[], errorid, MySQL:handle) {
+public OnMysqlError(error[], errorid, MySQL:handle) 
+{
 	if(errorid == 8) return;
-	if(ServerData[esd_codeDebugger]>=_DEBUG_NORMAL) {
+	if(ServerData[esd_codeDebugger]>=_DEBUG_NORMAL) 
+	{
 		CLogging_Insert(CLOG_SQL, "Error MySQL: %s (%d)", error, errorid);
 	}
 }

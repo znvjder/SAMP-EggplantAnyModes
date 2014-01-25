@@ -29,8 +29,6 @@ native GetPlayerClientId(playerid, const serial[], maxsize) = gpci;
 #define bit_unset(%0,%1) (%0)&=~(%1)
 #define bit_if(%0,%1) ((%0) & (%1))
 
-#define CAC_SOBEIT_VERSION "0.3x"
-
 // Color chat
 #define COLOR_INFO1 (0)
 #define COLOR_INFO2 (1)
@@ -73,7 +71,8 @@ native GetPlayerClientId(playerid, const serial[], maxsize) = gpci;
 #define years%1:DURATION    * DURATION_YEAR
 
 // Variables
-enum {
+enum 
+{
 	// dialogid
 	DIALOG_BLANK=0,
 	DIALOG_LOGIN=1,
@@ -86,9 +85,11 @@ enum {
 	DIALOG_FRIENDS_INVITE,
 	DIALOG_FRIENDS_PROPERTIES,
 	
+	DIALOG_ATM_HOME
 };
 
-enum {
+enum 
+{
 	// Durations
 	DURATION_SECOND=1,
 	DURATION_MINUTE=60*DURATION_SECOND,
@@ -102,7 +103,8 @@ enum {
 	DURATION_EXPIRED = -1
 };
 
-enum {
+enum 
+{
 	// Weaponslots
 	WEAPONSLOT_NONE = 0xffffffff,
 	WEAPONSLOT_FIST,
@@ -122,16 +124,16 @@ enum {
 	MAX_WEAPON_SLOT	
 };
 
-enum (<<=1) {
+enum (<<=1) 
+{
 	// Properties player stuff
 	PLAYER_NULL=0,
 	PLAYER_INLOGINDIALOG=1,
 	PLAYER_ISLOGGED,
-	
-	
 };
 
-enum (<<=1) {
+enum (<<=1) 
+{
 	// Vehicle property stuff
 	VEHICLE_NONE=0,
 	VEHICLE_NOTSPAWNED,
@@ -142,7 +144,8 @@ enum (<<=1) {
 	VEHICLE_DESTROYED
 };
 
-enum e_VehicleData {
+enum e_VehicleData 
+{
 	Float:evd_pos[4], // x,y,z,rot
 	evd_uid, // unique id
 	evd_carid,
@@ -155,14 +158,16 @@ enum e_VehicleData {
 	evd_paintjob
 };
 
-enum e_ServerData {
+enum e_ServerData 
+{
 	MySQL:esd_MySQLHandler,
 	esd_streamerTickRate,
 	esd_codeDebugger,
 	esd_highestPlayerID
 };
 
-enum e_PlayerData {
+enum e_PlayerData 
+{
 	epd_nickname[MAX_PLAYER_NAME],
 	epd_addressIP[16],
 	epd_serialID[32],
@@ -180,6 +185,9 @@ enum e_PlayerData {
 	Float:epd_lastArmour,
 	Float:epd_lastHealth,
 	Float:epd_lastPos[4], // X, Y, Z, ROT
+	// CEntries
+	epd_entriesPickupDelay,
+	
 };
 
 new 

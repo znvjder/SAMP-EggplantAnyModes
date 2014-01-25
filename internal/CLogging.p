@@ -28,19 +28,23 @@ static stock
 	logDate[3];
 
 // CLogging_Init: inicjajcja klasy
-stock CLogging_Init() {
+stock CLogging_Init() 
+{
 	printf("[CLogging]: Loaded and recreated all logging files...");
 }
 
-stock CLogging_Exit() {
+stock CLogging_Exit() 
+{
 	if(logFile) {
 		fclose(logFile);
 	}
 	printf("[CLogging]: Deactived logging");
 }
 
-stock CLogging_Insert(logtype, txt[], va_args<>) {
-	if(isnull(txt)) {
+stock CLogging_Insert(logtype, txt[], va_args<>) 
+{
+	if(isnull(txt)) 
+	{
 		print("[CLogging]: Input text is null");
 		return;
 	}

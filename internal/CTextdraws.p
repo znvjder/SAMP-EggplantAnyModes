@@ -10,7 +10,8 @@
 
 #define CTextDrawPerPlayer_Destroy(%0,%1) PlayerTextDrawDestroyEx(%0,%1)
 
-enum {
+enum 
+{
 	// global textdraws
 	GLOBAL_TD_BOXMAIN=0,
 	GLOBAL_TD_BOXPASEK,
@@ -28,7 +29,8 @@ enum {
 	MAX_GLOBAL_TEXTDRAWS
 };
 
-enum {
+enum 
+{
 	// per player textdraws
 	PLAYER_TD_BOXPING=0,
 	PLAYER_TD_BOXFPS,
@@ -46,7 +48,8 @@ enum {
 new Text:globalTextDraws[MAX_GLOBAL_TEXTDRAWS],
 	PlayerText:playerTextDraws[MAX_PLAYERS][MAX_PLAYER_TEXTDRAWS];
 	
-stock CTextdraws_Init() {
+stock CTextdraws_Init() 
+{
 	globalTextDraws[GLOBAL_TD_BOXMAIN] = TextDrawCreate(0.000000, 432.000000, "box_glowny");
 	TextDrawBackgroundColor(globalTextDraws[GLOBAL_TD_BOXMAIN], 255);
 	TextDrawFont(globalTextDraws[GLOBAL_TD_BOXMAIN], 1);
@@ -136,15 +139,18 @@ stock CTextdraws_Init() {
 	
 }
 
-stock CTextdraws_Exit() {
-	for(new i; i<MAX_GLOBAL_TEXTDRAWS-1; i++) {
+stock CTextdraws_Exit() 
+{
+	for(new i; i<MAX_GLOBAL_TEXTDRAWS-1; i++) 
+	{
 		TextDrawHideForAll(globalTextDraws[i]);
 		TextDrawDestroy(globalTextDraws[i]);
 		globalTextDraws[i]=INVALID_TEXT_DRAW;
 	}
 }
 
-stock CTextdrawPerPlayer_Init(playerid) {
+stock CTextdrawPerPlayer_Init(playerid) 
+{
 	playerTextDraws[playerid][PLAYER_TD_BOXPING] = CreatePlayerTextDraw(playerid,2.000000, 410.000000, "LD_POKE:cdback");
 	PlayerTextDrawBackgroundColor(playerid,playerTextDraws[playerid][PLAYER_TD_BOXPING], 255);
 	PlayerTextDrawFont(playerid,playerTextDraws[playerid][PLAYER_TD_BOXPING], 4);
@@ -234,11 +240,13 @@ stock CTextdrawPerPlayer_Init(playerid) {
 	PlayerTextDrawSetSelectable(playerid,playerTextDraws[playerid][PLAYER_TD_NOTIFICATION], 0);
 }
 
-stock CTextdrawPerPlayer_Exit(playerid) {
+stock CTextdrawPerPlayer_Exit(playerid) 
+{
 
 }
 
-stock CTextDrawPerPlayer_Destroy(playerid, PlayerText:ptd) {
+stock CTextDrawPerPlayer_Destroy(playerid, PlayerText:ptd) 
+{
 	PlayerTextDrawDestroy(playerid, ptd);
 	ptd=INVALID_TEXT_DRAW;
 }

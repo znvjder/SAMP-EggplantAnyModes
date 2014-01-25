@@ -12,8 +12,10 @@
 #define djGetBoolean(%0,%1) !!djInt(%0,%1)
 
 // CConfig_Init - jezeli pliku nie ma - tworzy nowy i nadaje mu domyslne wartosci
-stock CConfigData_Init() {
-	if(!fexist(PATH_cfg)) {
+stock CConfigData_Init() 
+{
+	if(!fexist(PATH_cfg)) 
+	{
 		djCreateFile(PATH_cfg);
 	}
 	
@@ -48,10 +50,12 @@ stock CConfigData_Init() {
 }
 
 // CConfig_LoadData - wczytuje dane z pliku i zapisuje do zmiennych
-stock CConfigData_Load() {
+stock CConfigData_Load() 
+{
 	CExecTick_begin(startLoading);
 	
-	enum e_tmpData {
+	enum e_tmpData 
+	{
 		// Server infos
 		srv_host[64],
 		srv_mapname[32],
@@ -83,12 +87,14 @@ stock CConfigData_Load() {
 	
 	ServerData[esd_codeDebugger]=djInt(PATH_cfg, "server/debugger");
 	
-	for(new i=sizeof(tmpColorNormal)-1; i>=0; i--) {
+	for(new i=sizeof(tmpColorNormal)-1; i>=0; i--) 
+	{
 		format(s_buf, sizeof(s_buf), "chat_colors/%s", tmpColorNormal[i]);
 		sscanf(dj(PATH_cfg, s_buf), "x", ConfigColorData[i][0]);
 	}
 	
-	for(new i=sizeof(tmpColorHighlight)-1; i>=0; i--) {
+	for(new i=sizeof(tmpColorHighlight)-1; i>=0; i--) 
+	{
 		format(s_buf, sizeof(s_buf), "chat_colors/%s", tmpColorHighlight[i]);
 		sscanf(dj(PATH_cfg, s_buf), "x", ConfigColorData[i][1]);
 	}
@@ -103,12 +109,14 @@ stock CConfigData_Load() {
 	ServerData[esd_streamerTickRate]=djInt(PATH_cfg, "misc/streamer_tickrate");
 	
 	printf("[CConfigData]: Get all config data in %.2f ms", float(CExecTick_end(startLoading))/1000.0);
-	if(strlen(tmpData[mysql_host])<=0 || strlen(tmpData[mysql_user])<=0 || strlen(tmpData[mysql_pass])<=0) {
+	if(strlen(tmpData[mysql_host])<=0 || strlen(tmpData[mysql_user])<=0 || strlen(tmpData[mysql_pass])<=0) 
+	{
 		printf("[CConfigData}: Sprawdz dane konfiguracyjne - ktoras z wartosci jest pusta!");
 		SendRconCommand("exit");
 	}
 	
-	if(CMySQL_Init(tmpData[mysql_host], tmpData[mysql_user], tmpData[mysql_pass], tmpData[mysql_db], tmpData[mysql_arec])) {
+	if(CMySQL_Init(tmpData[mysql_host], tmpData[mysql_user], tmpData[mysql_pass], tmpData[mysql_db], tmpData[mysql_arec])) 
+	{
 		printf("[CMySQL]: Connected to database MySQL!");
 	} else {
 		printf("[CConfigData | CMySQL > ERROR]: Dane dostepowe do bazy MySQL sa nieprawidlowe - sprawdz poprawnosc...");

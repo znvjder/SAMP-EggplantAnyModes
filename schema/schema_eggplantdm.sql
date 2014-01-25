@@ -73,6 +73,62 @@ CREATE TABLE IF NOT EXISTS friends (
 	accepted TINYINT NOT NULL DEFAULT '0' -- status akceptacji 0-nie, 1-tak
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+-- table entries and exits
+CREATE TABLE IF NOT EXISTS entries (
+	id INT NOT NULL AUTO_INCREMENT,
+	eClosed TINYINT(1) NOT NULL DEFAULT '0', -- (wejscie zamkniete) (jezeli wartosc tej kolumny bedzie wynosic 1 - nie wczytujemy do danych)
+	eType TINYINT(1) NOT NULL DEFAULT '0', -- 0=pickup, 1=checkpoint
+	enter TINYINT(1) NOT NULL DEFAULT '1', -- (wejscie) 1=otwarte, 0=zamkniete
+	pickupid INT NOT NULL DEFAULT '19135',
+	cpSize DECIMAL(3,2) NOT NULL DEFAULT '3.0', -- (wielkosc checkpointa)
+	enterX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	enterY DECIMAL(10,6) NOT NULL DEFAULT '1.0',
+	enterZ DECIMAL(10,6) NOT NULL DEFAULT '3.0',
+	enterAng DECIMAL(4,3) NOT NULL DEFAULT '90.0', -- rotacja peda
+	exitX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	exitY DECIMAL(10,6) NOT NULL DEFAULT '1.0',
+	exitZ DECIMAL(10,6) NOT NULL DEFAULT '3.0',
+	exitAng DECIMAL(4,3) NOT NULL DEFAULT '180.0', -- rotacja peda
+	enterI SMALLINT NOT NULL DEFAULT '0', -- interior
+	enterVW SMALLINT NOT NULL DEFAULT '0', -- virtual world\
+	exitI SMALLINT NOT NULL DEFAULT '0', -- interior
+	exitVW SMALLINT NOT NULL DEFAULT '0', -- virtual world
+	label VARCHAR(128) NOT NULL DEFAULT 'brak', -- opis
+	labelView DECIMAL(10,6) NOT NULL DEFAULT '50.0', -- streamdist labelu
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+-- table atms
+CREATE TABLE IF NOT EXISTS atms (
+	id INT NOT NULL AUTO_INREMENT,
+	fX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fY DECIMAL(10,6) NOT NULL DEFAULT '1.0',
+	fZ DECIMAL(10,6) NOT NULL DEFAULT '3.0',
+	fRX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fRY DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fRZ DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	interior SMALLINT NOT NULL DEFAULT '1',
+	vw SMALLINT NOT NULL DEFAULT '0',
+	opis VARCHAR(32) NOT NULL DEFAULT 'brak opisu',
+	spawned TINYINT(1) NOT NULL DEFAULT '1', -- 0-pomijamy 1-tworzymy
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
+-- table mapicons
+CREATE TABLE IF NOT EXISTS mapicons (
+	id INT NOT NULL AUTO_INREMENT,
+	fX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fY DECIMAL(10,6) NOT NULL DEFAULT '1.0',
+	fZ DECIMAL(10,6) NOT NULL DEFAULT '3.0',
+	iconType SMALLINT NOT NULL,
+	iconColor TINYINT NOT NULL DEFAULT '0',
+	iconView DECIMAL(6,4) NOT NULL DEFAULT '8500,0',
+	interior SMALLINT NOT NULL DEFAULT '0',
+	vw SMALLINT NOT NULL DEFAULT '0',
+	opis VARCHAR(32) NOT NULL DEFAULT 'brak opisu',
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
 -- table vehicles
 CREATE TABLE IF NOT EXISTS vehicles (
 	`id` INT NOT NULL AUTO_INCREMENT,

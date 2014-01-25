@@ -16,7 +16,8 @@
 	2) Wykonac usuwanie znajomego z listy znajomych
 */
 
-stock CFriends_ShowHomePage(playerid) {
+stock CFriends_ShowHomePage(playerid) 
+{
 	//if(GetPVarInt(playerid, "player:friendsHomePage:reduceTime")>gettime()) return;
 	
 	new tmpBuf[100], iloscPowiadomien;
@@ -25,7 +26,8 @@ stock CFriends_ShowHomePage(playerid) {
 	iloscPowiadomien=mysql_fetch_int();
 	mysql_free_result();
 	
-	if(!iloscPowiadomien) {
+	if(!iloscPowiadomien) 
+	{
 		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Menu znajomych", "Lista znajomych\nZaproszenia (brak nowych powiadomien)\nZaproœ do znajomych...", "Wybierz", "Anuluj");
 	} else {
 		format(tmpBuf, sizeof(tmpBuf), "Lista znajomych\nZaproszenia (%d)\nZaproœ do znajomych...", iloscPowiadomien);
@@ -33,7 +35,8 @@ stock CFriends_ShowHomePage(playerid) {
 	}
 }
 
-stock CFriends_CheckOrAreFriendByUID(player_uid, friend_uid) {
+stock CFriends_CheckOrAreFriendByUID(player_uid, friend_uid) 
+{
 	if(friend_uid<0) return false;
 	CMySQL_Query("SELECT 1 FROM friends WHERE inviter='%d' AND invited='%d' OR inviter='%d' AND invited='%d' LIMIT 1;", -1, friend_uid, player_uid, player_uid, friend_uid);
 	mysql_store_result();
@@ -43,9 +46,11 @@ stock CFriends_CheckOrAreFriendByUID(player_uid, friend_uid) {
 	return areWeFriends;
 }
 
-stock CFriends_DeleteFriend(playerid, friendName[]) {
+stock CFriends_DeleteFriend(playerid, friendName[]) 
+{
 	new accountid=theplayer::getAccountIDByName(friendName), friendid=utility::getPlayerIDFromName(friendName);
-	if(friendid==0xFFFF) {
+	if(friendid==0xFFFF) 
+	{
 		CMySQL_Query("DELETE FROM friends WHERE invited='%d' AND inviter='%d'", -1, PlayerData[playerid][epd_accountID], accountid);
 	} else {
 		CMySQL_Query("DELETE FROM friends WHERE invited='%d' AND inviter='%d'", -1, PlayerData[playerid][epd_accountID], accountid);
@@ -54,7 +59,8 @@ stock CFriends_DeleteFriend(playerid, friendName[]) {
 	}
 }
 
-stock CFriends_CheckOrAreFriend(playerid, friendid) {
+stock CFriends_CheckOrAreFriend(playerid, friendid) 
+{
 	if(!IsPlayerConnected(friendid)) return false;
 	CMySQL_Query("SELECT 1 FROM friends WHERE inviter='%d' AND invited='%d' OR inviter='%d' AND invited='%d' LIMIT 1;", -1, PlayerData[friendid][accountID], PlayerData[playerid][accountID], PlayerData[playerid][accountID], PlayerData[friendid][accountID]);
 	mysql_store_result();
@@ -81,22 +87,27 @@ stock CFriends_SeeMyFriends(playerid) {
 	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "Wiêcej", "Wróæ");
 }
 
-stock CFriends_InviteFriend(playerid, friendName[]) {
-	if(isnull(friendName) || !(3<=strlen(friendName)<=MAX_PLAYER_NAME-1)) {
+stock CFriends_InviteFriend(playerid, friendName[]) 
+{
+	if(isnull(friendName) || !(3<=strlen(friendName)<=MAX_PLAYER_NAME-1)) 
+	{
 		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.", "Dodaj", "Wróæ");
 		return;
 	}
-	if(!theplayer::isAccountExists(friendName)) {
+	if(!theplayer::isAccountExists(friendName)) 
+	{
 		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.\nNie znaleziono osoby o takiej nazwie... Spróbuj jeszcze raz.", "Dodaj", "Wróæ");
 		return;
 	} else {
 		new accountid=theplayer::getAccountIDByName(friendName);
-		if(CFriends_CheckOrAreFriendByUID(PlayerData[playerid][epd_accountID], accountid)) {
+		if(CFriends_CheckOrAreFriendByUID(PlayerData[playerid][epd_accountID], accountid)) 
+		{
 			ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.\nTa osoba jest ju¿ na liœcie znajomych!", "Dodaj", "Wróæ");
 			return;
 		}
 		new friendid=utility::getPlayerIDFromName(friendName);
-		if(friendid==0xFFFF) {
+		if(friendid==0xFFFF) 
+		{
 			CMySQL_Query("INSERT INTO friends (ts_created, inviter, invited) VALUES (NOW(), '%d', '%d');", -1, PlayerData[playerid][epd_accountID], accountid);
 		} else {
 			CMySQL_Query("INSERT INTO friends (ts_created, inviter, invited) VALUES (NOW(), '%d', '%d');", -1, PlayerData[playerid][epd_accountID], PlayerData[friendid][epd_accountID]);
@@ -106,26 +117,35 @@ stock CFriends_InviteFriend(playerid, friendName[]) {
 	}
 }
 
-stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[]) {
-	switch(dialogid) {
-		case DIALOG_FRIENDS_INDEX: {
+stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[]) 
+{
+	switch(dialogid) 
+	{
+		case DIALOG_FRIENDS_INDEX: 
+		{
 			if(!response) return 1;
-			switch(listitem) {
-				case 0: {
+			switch(listitem) 
+			{
+				case 0: 
+				{
 					// lista znajomych
 					CFriends_SeeMyFriends(playerid);
 				} 
-				case 1: {
+				case 1: 
+				{
 					// powiadomienia/akceptowanie zaproszen
 				}
-				case 2: {
+				case 2: 
+				{
 					// dodawanie znajomego/zapraszanie
 					ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.", "Dodaj", "Wróæ");
 				}
 			}
 		}
-		case DIALOG_FRIENDS_LIST: {
-			if(!response) {
+		case DIALOG_FRIENDS_LIST: 
+		{
+			if(!response) 
+			{
 				CFriends_ShowHomePage(playerid);
 				return 1;
 			}
@@ -133,15 +153,19 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 			string::copy(partName, inputtext[strfind(inputtext, ")\t")+1]), format(guiTitle, 40, "Znajomi > %s > Wiecej", partName);
 			ShowPlayerDialog(playerid, DIALOG_FRIENDS_PROPERTIES, DIALOG_STYLE_LIST, guiTitle, "Zobacz profil\nWyœlij wiadomoœæ\nUsun ze znajomych", "Wybierz", "Wróæ");
 		}
-		case DIALOG_FRIENDS_ACCEPTING: {
-			if(!response) {
+		case DIALOG_FRIENDS_ACCEPTING: 
+		{
+			if(!response) 
+			{
 				CFriends_ShowHomePage(playerid);
 				return 1;
 			}
 			// todo
 		}
-		case DIALOG_FRIENDS_INVITE: {
-			if(!response) {
+		case DIALOG_FRIENDS_INVITE: 
+		{
+			if(!response) 
+			{
 				CFriends_ShowHomePage(playerid);
 				return 1;
 			}

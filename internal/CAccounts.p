@@ -14,7 +14,8 @@
 
 #define MAX_LOGIN_ATTEMPTS (4)
 
-stock CAccounts_Init() {
+stock CAccounts_Init() 
+{
 	new tmpResult;
 	CMySQL_Query("SELECT COUNT(*) FROM accounts;", -1);
 	mysql_store_result();
@@ -23,7 +24,8 @@ stock CAccounts_Init() {
 	printf("[CAccounts]: Number of registered accounts %d", tmpResult);
 }
 
-stock CAccounts_Exit() {
+stock CAccounts_Exit() 
+{
 	// TODO:
 	// Zapisywanie statystyk wszystkich graczy
 	//theplayer::foreach(i) {
@@ -31,7 +33,8 @@ stock CAccounts_Exit() {
 	//}
 }
 
-stock theplayer::isRegistered(playerid) {
+stock theplayer::isRegistered(playerid) 
+{
 	new bool:v=false;
 	CMySQL_Query("SELECT 1 FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
 	mysql_store_result();
@@ -40,7 +43,8 @@ stock theplayer::isRegistered(playerid) {
 	return v;
 }
 
-stock theplayer::getAccountIDByName(szNick[]) {
+stock theplayer::getAccountIDByName(szNick[]) 
+{
 	CMySQL_Query("SELECT id FROM accounts WHERE nickname='%s' LIMIT 1;", -1, szNick);
 	mysql_store_result();
 	new tmpResult;
@@ -49,7 +53,8 @@ stock theplayer::getAccountIDByName(szNick[]) {
 	return tmpResult;
 }
 
-stock theplayer::getAccountID(playerid) {
+stock theplayer::getAccountID(playerid) 
+{
 	if(PlayerData[playerid][epd_accountID]>0) return PlayerData[playerid][epd_accountID];
 	CMySQL_Query("SELECT id FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
 	mysql_store_result();
@@ -59,7 +64,8 @@ stock theplayer::getAccountID(playerid) {
 	return tmpResult;
 }
 
-stock theplayer::isAccountExists(szAccount[]) {
+stock theplayer::isAccountExists(szAccount[]) 
+{
 	if(isnull(szAccount)) return false;
 	new bool:v=false;
 	CMySQL_Query("SELECT 1 FROM accounts WHERE nickname='%s' LIMIT 1;", -1, szAccount);
@@ -70,12 +76,16 @@ stock theplayer::isAccountExists(szAccount[]) {
 }
 
 stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
-	if(!autologin) {
-		if(isnull(input)) {
+	if(!autologin) 
+	{
+		if(isnull(input)) 
+		{
 			theplayer::sendMessage(playerid, COLOR_ERROR, "Nie wpisano has³a.");
 			theplayer::showLoginDialog(playerid);
 			return false;
-		} else if(!(6<=strlen(input)<=16)) {
+		} 
+		else if(!(6<=strlen(input)<=16)) 
+		{
 			theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest zbyt krótkie lub za d³ugie...");
 			theplayer::showLoginDialog(playerid);
 			return false;
@@ -88,7 +98,8 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 		success=!!mysql_fetch_int();
 		mysql_free_result();
 		
-		if(success) {
+		if(success)
+		{
 			theplayer::loadAccountData(playerid);
 			PlayerData[playerid][epd_accountID]=theplayer::getAccountID(playerid);
 			theplayer::setAccountDataString(playerid, "NOW()", false, "ts_last");
@@ -101,7 +112,8 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 			bit_set(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED);
 			OnPlayerRequestClass(playerid, 0);
 		} else {
-			if(++PlayerData[playerid][epd_loginAttempts]>=MAX_LOGIN_ATTEMPTS) {
+			if(++PlayerData[playerid][epd_loginAttempts]>=MAX_LOGIN_ATTEMPTS) 
+			{
 				theplayer::hideDialog(playerid);
 				theplayer::sendMessage(playerid, COLOR_ERROR, "Wykorzysta³eœ maksymaln¹ iloœæ prób zalogowañ na to konto.");
 				// TODO: Informowanie administracji o tym przypadku
@@ -128,12 +140,16 @@ stock theplayer::onEventLogin(playerid, input[], bool:autologin=false) {
 	return true;
 }
 
-stock theplayer::onEventRegister(playerid, input[]) {
-	if(isnull(input)) {
+stock theplayer::onEventRegister(playerid, input[]) 
+{
+	if(isnull(input)) 
+	{
 		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie wpisano has³a.");
 		theplayer::showRegisterDialog(playerid);
 		return false;
-	} else if(!(6<=strlen(input)<=16)) {
+	} 
+	else if(!(6<=strlen(input)<=16))
+	{
 		theplayer::sendMessage(playerid, COLOR_ERROR, "Wprowadzone has³o jest zbyt krótkie lub za d³ugie...");
 		theplayer::showRegisterDialog(playerid);
 		return false;
@@ -162,11 +178,13 @@ stock theplayer::onEventRegister(playerid, input[]) {
 	return true;
 }
 
-stock theplayer::hideDialog(playerid) {
+stock theplayer::hideDialog(playerid) 
+{
 	ShowPlayerDialog(playerid, DIALOG_BLANK, 0, "", "", "", "");
 }
 
-stock theplayer::showLoginDialog(playerid) {
+stock theplayer::showLoginDialog(playerid) 
+{
 	ShowPlayerDialog(playerid, 
 		DIALOG_LOGIN, 
 		DIALOG_STYLE_PASSWORD, 
@@ -178,7 +196,8 @@ stock theplayer::showLoginDialog(playerid) {
 		"Zaloguj", "Wyjdz");
 }
 
-stock theplayer::showRegisterDialog(playerid) {
+stock theplayer::showRegisterDialog(playerid) 
+{
 	ShowPlayerDialog(playerid, 
 		DIALOG_REGISTER, 
 		DIALOG_STYLE_PASSWORD, 
@@ -190,7 +209,8 @@ stock theplayer::showRegisterDialog(playerid) {
 	// W razie, gdybyœ zapomnia³ has³a - serwer automatycznie powiadomi Ciê o próbie zalogowania na Twoje konto i w tej bêdzie znajdowaæ siê link, do mo¿liwego zresetowania has³a.
 }
 
-stock theplayer::loadAccountData(playerid) {
+stock theplayer::loadAccountData(playerid) 
+{
 	new tmpBuf[128], tmpPos[32], haveVIP;
 	CMySQL_Query("SELECT skin, respect, level, hp, armour, pos, bank_money, wallet_money, spawnType, admin, IFNULL(DATEDIFF(vip, NOW()), '-1') FROM accounts WHERE nickname='%s' LIMIT 1;", -1, PlayerData[playerid][epd_nickname]);
 	mysql_store_result();
@@ -213,7 +233,8 @@ stock theplayer::loadAccountData(playerid) {
 	if(haveVIP>0) PlayerData[playerid][epd_haveVip]=true;
 }
 
-stock theplayer::loadWeaponsData(playerid) {
+stock theplayer::loadWeaponsData(playerid) 
+{
 	new tmpBuf[64+128];
 	CMySQL_Query("SELECT weapons, ammo FROM players_weapons WHERE owner='%d' LIMIT 1;", -1, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
@@ -224,22 +245,26 @@ stock theplayer::loadWeaponsData(playerid) {
 	sscanf(tmpBufWeapons, "p<;>a<d>[13]", tmpWeapons);
 	sscanf(tmpBufAmmo, "p<;>a<d>[13]", tmpAmmo);
 	
-	for(new i; i<=sizeof(tmpWeapons)-1; i++) {
+	for(new i; i<=sizeof(tmpWeapons)-1; i++) 
+	{
 		GivePlayerWeapon(playerid, tmpWeapons[i], tmpAmmo[i]);
 	}
 	SetPlayerArmedWeapon(playerid, 0);
 }
 
-stock theplayer::setAccountDataInt(playerid, data, column[]) {
+stock theplayer::setAccountDataInt(playerid, data, column[]) 
+{
 	CMySQL_Query("UPDATE accounts SET %s='%d' WHERE id='%d';", -1, column, data, PlayerData[playerid][epd_accountID]);
 }
 
-stock theplayer::setAccountDataString(playerid, data[], bool:useApostrofy=false, column[]) {
+stock theplayer::setAccountDataString(playerid, data[], bool:useApostrofy=false, column[]) 
+{
 	if(useApostrofy) CMySQL_Query("UPDATE accounts SET %s='%s' WHERE id='%d';", -1, column, data, PlayerData[playerid][epd_accountID]);
 	else CMySQL_Query("UPDATE accounts SET %s=%s WHERE id='%d';", -1, column, data, PlayerData[playerid][epd_accountID]);
 }
 
-stock theplayer::getAccountDataInt(playerid, column[]) {
+stock theplayer::getAccountDataInt(playerid, column[]) 
+{
 	new tmpResult;
 	CMySQL_Query("SELECT %s FROM accounts WHERE id='%d' LIMIT 1;", -1, column, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
@@ -248,7 +273,8 @@ stock theplayer::getAccountDataInt(playerid, column[]) {
 	return tmpResult;
 }
 
-stock theplayer::getAccountDataString(playerid, column[]) {
+stock theplayer::getAccountDataString(playerid, column[]) 
+{
 	new tmpResult[32];
 	CMySQL_Query("SELECT %s FROM accounts WHERE id='%d' LIMIT 1;", -1, column, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
@@ -257,7 +283,8 @@ stock theplayer::getAccountDataString(playerid, column[]) {
 	return tmpResult;
 }
 
-stock theplayer:getAccountDataFloat(playerid, column[]) {
+stock theplayer:getAccountDataFloat(playerid, column[]) 
+{
 	new tmpResult[22];
 	CMySQL_Query("SELECT %s FROM accounts WHERE id='%d' LIMIT 1;", -1, column, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
@@ -266,7 +293,8 @@ stock theplayer:getAccountDataFloat(playerid, column[]) {
 	return floatstr(tmpResult);
 }
 
-stock theplayer::showProfileStat(playerid=INVALID_PLAYER_ID, playerName[]="") {
+stock theplayer::showProfileStat(playerid=INVALID_PLAYER_ID, playerName[]="") 
+{
 	// TODO:
 	// Zaprogramowac
 	/*if(playerid != INVALID_PLAYER_ID) {	

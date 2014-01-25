@@ -6,7 +6,8 @@
 	(c) 2013-2014, <l0nger.programmer@gmail.com>
 */
 
-CMD:rejestracja(playerid) {
+CMD:rejestracja(playerid) 
+{
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED)) return theplayer::sendMessage(playerid, COLOR_ERROR, "Jesteœ ju¿ zarejestrowany.");
 	
 	theplayer::showRegisterDialog(playerid);
@@ -15,7 +16,8 @@ CMD:rejestracja(playerid) {
 
 CMD:register(playerid) return cmd_rejestracja(playerid);
 
-CMD:znajomi(playerid) {
+CMD:znajomi(playerid) 
+{
 	if(!bit_if(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED)) return theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej komendy musisz zarejestrowaæ konto.");
 	CFriends_ShowHomePage(playerid);
 	return 1;

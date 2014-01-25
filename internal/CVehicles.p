@@ -26,25 +26,30 @@
 #define thevehicle_getProperties(%0) VehicleData[(%0)-1][evd_properties]
 #define thevehicle_getUniqueID(%0) VehicleData[(%0)-1][evd_uid]
 
-stock CVehicles_Init() {
+stock CVehicles_Init() 
+{
 	CVehicles_loadAll();
 }
 
-stock CVehicles_Exit() {
+stock CVehicles_Exit() 
+{
 	new count;
-	for(new vehicleid=0; vehicleid<MAX_VEHICLES; vehicleid++) {
+	for(new vehicleid=0; vehicleid<MAX_VEHICLES; vehicleid++) 
+	{
 		thevehicle::save(vehicleid);
 		count++;
 	}
 	printf("[CVehicles]: Zapisano %d pojazdow", count);
 }
 
-stock CVehicles_loadAll() {
+stock CVehicles_loadAll() 
+{
 	new buf[128], tmpTuning[128], addData[12], tmpColor[2];
 	CMySQL_Query("SELECT id, modelid, fX, fY, fZ, fAng, doors, dmgPanels, dmgDoors, dmgLights, dmgTires, color1, color2, tuning, hp FROM vehicles WHERE owner=0;", -1);
 	mysql_store_result();
 	new i, vid;
-	while(mysql_fetch_row(buf, "|")) {
+	while(mysql_fetch_row(buf, "|")) 
+	{
 		sscanf(buf, "p<|>dffffddddddds[128]f", 
 			addData[0], addData[1], 
 			Float:addData[2], Float:addData[3], 
@@ -83,7 +88,8 @@ stock thevehicle::save(vehid)
 }
 //
 
-stock thevehicle::create(modelid, vuid=-1, owner=INVALID_PLAYER_ID, Float:x=0.0, Float:y=0.0, Float:z=1.0, Float:rot=90.0, color[2]) {
+stock thevehicle::create(modelid, vuid=-1, owner=INVALID_PLAYER_ID, Float:x=0.0, Float:y=0.0, Float:z=1.0, Float:rot=90.0, color[2]) 
+{
 	if(modelid<400) return false;
 	
 	new carid=CreateVehicle(modelid, x, y, z, rot, color[0], color[1], DURATION(3 hours));
@@ -99,7 +105,8 @@ stock thevehicle::create(modelid, vuid=-1, owner=INVALID_PLAYER_ID, Float:x=0.0,
 	VehicleData[carid-1][evd_color][0]=color[0];
 	VehicleData[carid-1][evd_color][1]=color[1];
 	
-	if(owner==INVALID_PLAYER_ID) {
+	if(owner==INVALID_PLAYER_ID) 
+	{
 		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_DOOR_OPEN);
 		VehicleData[carid-1][evd_ownerID]=INVALID_PLAYER_ID;
 	} else {
@@ -111,7 +118,8 @@ stock thevehicle::create(modelid, vuid=-1, owner=INVALID_PLAYER_ID, Float:x=0.0,
 	return carid;
 }
 
-CMD:addpojazd(playerid, params[]) {
+CMD:addpojazd(playerid, params[]) 
+{
 	if(!theplayer::isAdmin(playerid, RANK_DEV)) return theplayer::sendMessage(playerid, COLOR_ERROR, "[E] Brak uprawnien do uzywania tej komendy!");
 	
 	new Float:PP[4], tmpColor[2];
