@@ -25,7 +25,7 @@ static stock
 
 stock CAtms_Init() 
 {
-	printf("[CAmts]: Loading ATMS please wait...");
+	printf("[CAmts]: Loading ATMs please wait...");
 	CAtms_Load();
 }
 
@@ -59,7 +59,7 @@ stock CAtms_Load()
 	}
 	mysql_free_result();
 	AtmsLoadedElements=i;
-	printf("[CAtms]: Loaded %d ATMs", i+1);
+	printf("[CAtms]: Loaded %d ATMs", i);
 }
 
 stock CAtms_EnterPlayerInElement(playerid, elementid) 

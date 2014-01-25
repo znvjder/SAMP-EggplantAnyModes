@@ -8,6 +8,15 @@
 	(c) 2013-2014, <l0nger.programmer@gmail.com>
 */
 
+/*
+	Zapytanie do insertowania:
+	INSERT INTO entries 
+	(eType, enter, enterX, enterY, enterZ, enterAng, exitX, exitY, exitZ, exitAng, enterI, enterVW, exitI, exitVW, label, labelView) 
+	VALUES 
+	(0, 1, '4.0', '4.0', '2.0', '90.0', '12.0', '12.0', '3.0', '180.0', 0, 0, 0, 0, 'Wejscie testowe', 50.0);
+	
+*/
+
 #define MAX_ENTRIES (100)
 
 #define ENTRIES_TYPE_PICKUP (0)
@@ -15,7 +24,7 @@
 
 #define ENTRIES_LABEL_COLOR (0x7E8894FF)
 
-#define ENTRIES_ENTER_DELAY (5000)
+#define ENTRIES_ENTER_DELAY (3000)
 
 #define ENTRIES_EXIT_PICKUPID (19135)
 
@@ -44,6 +53,13 @@ stock CEntries_Init()
 
 stock CEntries_Exit() 
 {
+	for(new i; i<EntriesLoadedElements; i++) 
+	{
+		if(IsValidDynamicPickup(EntriesData[i][eed_enterElement])) DestroyDynamicPickup(EntriesData[i][eed_enterElement]);
+		if(IsValidDynamicCP(EntriesData[i][eed_enterElement])) DestroyDynamicCP(EntriesData[i][eed_enterElement]);
+		if(IsValidDynamicPickup(EntriesData[i][eed_exitElement])) DestroyDynamicPickup(EntriesData[i][eed_exitElement]);
+		if(IsValidDynamic3DTextLabel(EntriesData[i][edd_label])) DestroyDynamic3DTextLabel(EntriesData[i][edd_label]);
+	}
 	printf("[CEntries]: Unloading all entries!");
 }
 
@@ -55,7 +71,7 @@ stock CEntries_Load()
 	new i, buf[128], labelText[48], Float:labelView, Float:cpSize, pickupid;
 	while(mysql_fetch_row(buf, "|")) 
 	{
-		if(sscanf(buf, "p<|>dddfffffffffdds[48]f", 
+		if(sscanf(buf, "p<|>dddfffffffffdddds[48]f", 
 			EntriesData[i][eed_type], EntriesData[i][eed_enter], pickupid, cpSize, 
 			EntriesData[i][eed_enterPos][0], EntriesData[i][eed_enterPos][1], EntriesData[i][eed_enterPos][2], EntriesData[i][eed_enterPos][3],
 			EntriesData[i][eed_exitPos][0], EntriesData[i][eed_exitPos][1], EntriesData[i][eed_exitPos][2], EntriesData[i][eed_exitPos][3],
@@ -82,13 +98,13 @@ stock CEntries_Load()
 	}
 	mysql_free_result();
 	EntriesLoadedElements=i;
-	printf("[CEntries]: Loaded %d entries in map", EntriesLoadedElements+1);
+	printf("[CEntries]: Loaded %d entries in map", EntriesLoadedElements);
 }
 
 stock CEntries_EnterPlayerInElement(playerid, checkpoint=-1, pickupid=-1) 
 {
 	new delayElement=false;
-	if((tickcount()-PlayerData[playerid][epd_entriesPickupDelay]) > ENTRIES_ENTER_DELAY) delayElement=true;
+	if((GetTickCount()-PlayerData[playerid][epd_entriesPickupDelay]) < ENTRIES_ENTER_DELAY) delayElement=true;
 	
 	if(!delayElement) 
 	{
@@ -105,14 +121,20 @@ stock CEntries_EnterPlayerInElement(playerid, checkpoint=-1, pickupid=-1)
 							theplayer::sendMessage(playerid, COLOR_INFO1, "Zamkniete!");
 							return true;
 						}
+						
+						new Float:fVelocity[3];
+						GetPlayerVelocity(playerid, fVelocity[0], fVelocity[1], fVelocity[2]);
+						PlayerData[playerid][epd_entriesVelocity][0]=(fVelocity[0]*3);
+						PlayerData[playerid][epd_entriesVelocity][1]=(fVelocity[1]*3);
+						PlayerData[playerid][epd_entriesVelocity][2]=(fVelocity[2]*1.5);
 						theplayer::teleport(playerid, true, utility::unpackXYZ(EntriesData[i][eed_exitPos]), EntriesData[i][eed_exitPos][3], EntriesData[i][eed_interior][1], EntriesData[i][eed_vw][1]);
-						PlayerData[playerid][epd_entriesPickupDelay]=tickcount();
+						PlayerData[playerid][epd_entriesPickupDelay]=GetTickCount();
 						return true;
 					} 
 					else if(pickupid==EntriesData[i][eed_exitElement]) 
 					{
-						theplayer::teleport(playerid, true, utility::unpackXYZ(EntriesData[i][eed_enterPos]), EntriesData[i][eed_enterPos][3], EntriesData[i][eed_interior][0], EntriesData[i][eed_vw][0]);
-						PlayerData[playerid][epd_entriesPickupDelay]=tickcount();
+						theplayer::teleport(playerid, true, EntriesData[i][eed_enterPos][0]-PlayerData[playerid][epd_entriesVelocity][0], EntriesData[i][eed_enterPos][1]-PlayerData[playerid][epd_entriesVelocity][1], EntriesData[i][eed_enterPos][2]-PlayerData[playerid][epd_entriesVelocity][2], EntriesData[i][eed_exitPos][3]-180.0, EntriesData[i][eed_interior][0], EntriesData[i][eed_vw][0]);
+						PlayerData[playerid][epd_entriesPickupDelay]=GetTickCount();
 						return true;
 					}
 				}
@@ -125,14 +147,20 @@ stock CEntries_EnterPlayerInElement(playerid, checkpoint=-1, pickupid=-1)
 							theplayer::sendMessage(playerid, COLOR_INFO1, "Zamkniete!");
 							return true;
 						}
+						
+						new Float:fVelocity[3];
+						GetPlayerVelocity(playerid, fVelocity[0], fVelocity[1], fVelocity[2]);
+						PlayerData[playerid][epd_entriesVelocity][0]=(fVelocity[0]*3);
+						PlayerData[playerid][epd_entriesVelocity][1]=(fVelocity[1]*3);
+						PlayerData[playerid][epd_entriesVelocity][2]=(fVelocity[2]*1.5);
 						theplayer::teleport(playerid, true, utility::unpackXYZ(EntriesData[i][eed_exitPos]), EntriesData[i][eed_exitPos][3], EntriesData[i][eed_interior][1], EntriesData[i][eed_vw][1]);
-						PlayerData[playerid][epd_entriesPickupDelay]=tickcount();
+						PlayerData[playerid][epd_entriesPickupDelay]=GetTickCount();
 						return true;
 					} 
 					else if(pickupid==EntriesData[i][eed_exitElement]) 
 					{
-						theplayer::teleport(playerid, true, utility::unpackXYZ(EntriesData[i][eed_enterPos]), EntriesData[i][eed_enterPos][3], EntriesData[i][eed_interior][0], EntriesData[i][eed_vw][0]);
-						PlayerData[playerid][epd_entriesPickupDelay]=tickcount();
+						theplayer::teleport(playerid, true, EntriesData[i][eed_enterPos][0]-PlayerData[playerid][epd_entriesVelocity][0], EntriesData[i][eed_enterPos][1]-PlayerData[playerid][epd_entriesVelocity][1], EntriesData[i][eed_enterPos][2]-PlayerData[playerid][epd_entriesVelocity][2], EntriesData[i][eed_exitPos][3]-180.0, EntriesData[i][eed_interior][0], EntriesData[i][eed_vw][0]);
+						PlayerData[playerid][epd_entriesPickupDelay]=GetTickCount();
 						return true;
 					}
 				}

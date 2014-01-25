@@ -50,7 +50,7 @@ stock CVehicles_loadAll()
 	new i, vid;
 	while(mysql_fetch_row(buf, "|")) 
 	{
-		sscanf(buf, "p<|>dffffddddddds[128]f", 
+		sscanf(buf, "p<|>ddffffddddddds[128]f", 
 			addData[0], addData[1], 
 			Float:addData[2], Float:addData[3], 
 			Float:addData[4], Float:addData[5], 

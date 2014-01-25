@@ -19,7 +19,7 @@
 
 #pragma dynamic 4096
 #pragma semicolon true
-#pragma pack true
+#pragma pack false
 
 #define SCRIPT_PROJECTNAME "Infinity-Gaming.net DM"
 #define SCRIPT_NAME	"EggplantDM"

@@ -187,6 +187,7 @@ enum e_PlayerData
 	Float:epd_lastPos[4], // X, Y, Z, ROT
 	// CEntries
 	epd_entriesPickupDelay,
+	Float:epd_entriesVelocity[3]
 	
 };
 
