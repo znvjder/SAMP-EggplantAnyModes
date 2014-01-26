@@ -46,3 +46,5 @@ stock CMapicons_Exit()
 		if(IsValidDynamicMapIcon(MapiconsHandler[i])) DestroyDynamicMapIcon(MapiconsHandler[i]);
 	}
 }
+
+#undef MAX_MAPICONS

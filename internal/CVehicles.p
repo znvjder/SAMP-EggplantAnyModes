@@ -36,7 +36,7 @@ stock CVehicles_Exit()
 	new count;
 	for(new vehicleid=0; vehicleid<MAX_VEHICLES; vehicleid++) 
 	{
-		thevehicle::save(vehicleid);
+		//thevehicle::save(vehicleid);
 		count++;
 	}
 	printf("[CVehicles]: Zapisano %d pojazdow", count);

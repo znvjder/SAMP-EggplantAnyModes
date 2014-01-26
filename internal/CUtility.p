@@ -36,6 +36,23 @@ stock string::replace(subject[], const search[], const replace[])  // w przyszlo
 #define math:: math_ // taki tam stuff
 #define math_pi() (3.14159)
 
+stock Float:math::toRadians(Float:val)
+{
+	return (val * math::pi()) / 180.0;
+}
+
+stock Float:math::toDegrees(Float:val)
+{
+	return (val * 180.0) / math::pi();
+}
+
+stock math::getPointFromDistRot(&Float:x, &Float:y, Float:dist, Float:angle)
+{
+	new Float:a = math::toRadians(90 + angle);
+	x += floatcos(-a) * dist; 
+	y += floatsin(-a) * dist;
+}
+
 stock Float:math::length2D(Float:x, Float:y) 
 {
 	return floatsqroot((x*x)+(y*y));

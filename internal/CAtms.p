@@ -60,16 +60,8 @@ stock CAtms_Load()
 		
 		AtmsCP[i][eatm_object]=CreateDynamicObject(ATM_OBJECTID, data[0], data[1], data[2], data[3], data[4], data[5], vw, interior, -1, 200, 200);
 		AtmsCP[i][eatm_mapicon]=CreateDynamicMapIcon(data[0], data[1], data[2], ATM_MAPICON, 6, vw, interior, -1, 400);
-		
-		// do lekkich poprawek, odgleglosc (0.40) jest dobra
-		new Float:moveCP[2]; // przesuwanie checkpointa wzgledem rotacji obiektu, koncept opiera sie na tym, zeby CP nie byl w samym srodku obiektu,
-		if(0<data[5]<90) moveCP[1]-=0.40; // sprawdzic
-		else if(90<data[5]<180) moveCP[1]+=0.40; // sprawdzic
-		else if(180<data[5]<270) moveCP[0]+=0.40; // sprawdzic
-		else moveCP[0]-=0.40; // tu chodzi dobrze, sprawdzic w innych rotacjach typu -180, -270 itp.
-		
-		printf("angle: %f, moveCP[0]: %f, moveCP[1]: %f", data[5], moveCP[0], moveCP[1]);
-		AtmsCP[i][eatm_CP]=CreateDynamicCP(data[0]+moveCP[0], data[1]+moveCP[1], data[2], 1.2, vw, interior, -1, 25.0);
+		AtmsCP[i][eatm_CP]=CreateDynamicCP(data[0], data[1], data[2], 1.5, vw, interior, -1, 25.0);
+		i++;
 	}
 	mysql_free_result();
 	AtmsLoadedElements=i;
