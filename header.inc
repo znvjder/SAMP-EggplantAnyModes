@@ -84,6 +84,8 @@ enum
 	DIALOG_FRIENDS_ACCEPTING,
 	DIALOG_FRIENDS_INVITE,
 	DIALOG_FRIENDS_PROPERTIES,
+	DIALOG_FRIENDS_PW,
+	DIALOG_FRIENDS_PW_WARNING,
 	
 	DIALOG_ATM_HOME
 };
@@ -173,6 +175,7 @@ enum e_PlayerData
 	epd_serialID[32],
 	epd_accountID,
 	epd_loginAttempts,
+	epd_lastidmess,
 	epd_lastSkin,
 	epd_respect,
 	epd_levelRP,
