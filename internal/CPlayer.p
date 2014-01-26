@@ -12,6 +12,23 @@
 #define theplayer_kick(%0) SetTimerEx("KickCalled", 150, false, "d", %0)
 #define theplayer_foreach(%0) for(new %0; %0<=ServerData[esd_highestPlayerID] && IsPlayerConnected(%0); %0++) 
 
+stock theplayer::getFPS(playerid) 
+{
+	PlayerData[playerid][epd_fpsDrunkL]=GetPlayerDrunkLevel(playerid);
+	if(PlayerData[playerid][epd_fpsDrunkL]<100) 
+	{
+		SetPlayerDrunkLevel(playerid, 2000);
+	} else {
+		if(PlayerData[playerid][epd_fpsLastDrunkL] != PlayerData[playerid][epd_fpsDrunkL])
+		{
+			PlayerData[playerid][epd_fpsValue]=(PlayerData[playerid][epd_fpsLastDrunkL]-PlayerData[playerid][epd_fpsDrunkL]);
+			PlayerData[playerid][epd_fpsLastDrunkL]=PlayerData[playerid][epd_fpsDrunkL];
+			return (0<PlayerData[playerid][epd_fpsValue]<200)? PlayerData[playerid][epd_fpsValue]-1: 0;
+		}
+	}
+	return false;
+}
+
 stock theplayer::isGamemaster(playerid) 
 {
 	if(!IsPlayerConnected(playerid)) return false;
@@ -61,7 +78,8 @@ stock theplayer::teleport(playerid, bool:streamerSync=true, Float:x, Float:y, Fl
 
 stock theplayer::isSpawned(playerid) 
 {
-
+	new pState=GetPlayerState(playerid);
+	return (pState != PLAYER_STATE_NONE && pState != PLAYER_STATE_WASTED && pState != PLAYER_STATE_SPECTATING);
 }
 
 stock theplayer::showATMDialog(playerid) 

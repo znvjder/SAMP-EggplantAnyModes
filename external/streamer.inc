@@ -136,7 +136,7 @@ native Streamer_CountVisibleItems(playerid, type);
 
 // Natives (Objects)
 
-native CreateDynamicObject(modelid, Float:x, Float:y, Float:z, Float:rx, Float:ry, Float:rz, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = 200.0);
+native CreateDynamicObject(modelid, Float:x, Float:y, Float:z, Float:rx, Float:ry, Float:rz, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = 300.0);
 native DestroyDynamicObject(objectid);
 native IsValidDynamicObject(objectid);
 native SetDynamicObjectPos(objectid, Float:x, Float:y, Float:z);

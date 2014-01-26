@@ -126,3 +126,18 @@ public KickCalled(pid)
 	if(!IsPlayerConnected(pid)) return; // sprawdzamy, czy gracz do tego momentu nie wyszedl xD
 	Kick(pid);
 }
+
+// Streamer streaming objects fix
+stock FIX_CreateDynamicObject(modelid, Float:x, Float:y, Float:z, Float:rx, Float:ry, Float:rz, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = 300.0, Float:drawdist = 300.0)
+{
+	new objectid=CreateDynamicObject(modelid, x, y, z, rx, ry, rz, worldid, interiorid, playerid, streamdistance);
+	Streamer_SetFloatData(STREAMER_TYPE_OBJECT, objectid, E_STREAMER_DRAW_DISTANCE, drawdist);
+	return objectid;
+}
+
+#if defined _ALS_CreateDynamicOBJ
+	#undef CreateDynamicObject
+#else
+	#define _ALS_CreateDynamicOBJ
+#endif
+#define CreateDynamicObject FIX_CreateDynamicObject
