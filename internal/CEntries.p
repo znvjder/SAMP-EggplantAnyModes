@@ -22,7 +22,7 @@
 #define ENTRIES_TYPE_PICKUP (0)
 #define ENTRIES_TYPE_CP (1)
 
-#define ENTRIES_LABEL_COLOR (0x7E8894FF)
+#define ENTRIES_LABEL_COLOR (0x7E8894FF) // zmienic kolor labela na jakis bardziej jasny i widoczny
 
 #define ENTRIES_ENTER_DELAY (3000)
 
