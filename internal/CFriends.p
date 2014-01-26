@@ -3,6 +3,7 @@
 	@author: 
 		l0nger <l0nger.programmer@gmail.com>,
 		Andrew <andx98@wp.pl>
+		Failed <kamilbacia28@gmail.com>
 		
 	@licence: GPLv2
 	
@@ -28,9 +29,9 @@ stock CFriends_ShowHomePage(playerid)
 	
 	if(!iloscPowiadomien) 
 	{
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Menu znajomych", "Lista znajomych\nZaproszenia (brak nowych powiadomien)\nZaproœ do znajomych...", "Wybierz", "Anuluj");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Menu znajomych", "Lista znajomych\nZaproszenia (brak nowych powiadomien)\nZaproï¿½ do znajomych...", "Wybierz", "Anuluj");
 	} else {
-		format(tmpBuf, sizeof(tmpBuf), "Lista znajomych\nZaproszenia (%d)\nZaproœ do znajomych...", iloscPowiadomien);
+		format(tmpBuf, sizeof(tmpBuf), "Lista znajomych\nZaproszenia (%d)\nZaproï¿½ do znajomych...", iloscPowiadomien);
 		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INDEX, DIALOG_STYLE_LIST, "Menu znajomych", tmpBuf, "Wybierz", "Anuluj");
 	}
 }
@@ -74,7 +75,7 @@ stock CFriends_SeeMyFriends(playerid) {
 	CMySQL_Query("SELECT a.nickname FROM friends f JOIN accounts a ON inviter=a.id WHERE invited='%d' AND accepted=1", -1, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
 	if(!mysql_num_rows()) {
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", "Nie masz jeszcze znajomych...", "Wróæ", "");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", "Nie masz jeszcze znajomych...", "Wrï¿½ï¿½", "");
 		mysql_free_result();
 		return;
 	}
@@ -84,25 +85,25 @@ stock CFriends_SeeMyFriends(playerid) {
 		i++;
 	}
 	mysql_free_result();
-	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "Wiêcej", "Wróæ");
+	ShowPlayerDialog(playerid, DIALOG_FRIENDS_LIST, DIALOG_STYLE_LIST, "Znajomi > Lista znajomych", tmpBuf, "Wiï¿½cej", "Wrï¿½ï¿½");
 }
 
 stock CFriends_InviteFriend(playerid, friendName[]) 
 {
 	if(isnull(friendName) || !(3<=strlen(friendName)<=MAX_PLAYER_NAME-1)) 
 	{
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.", "Dodaj", "Wróæ");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproï¿½ znajomego", "W poniï¿½sze okienko wpisz nick osoby, ktï¿½rï¿½ chcesz zaprosiï¿½ do grona swoich znajomych.", "Dodaj", "Wrï¿½ï¿½");
 		return;
 	}
 	if(!theplayer::isAccountExists(friendName)) 
 	{
-		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.\nNie znaleziono osoby o takiej nazwie... Spróbuj jeszcze raz.", "Dodaj", "Wróæ");
+		ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproï¿½ znajomego", "W poniï¿½sze okienko wpisz nick osoby, ktï¿½rï¿½ chcesz zaprosiï¿½ do grona swoich znajomych.\nNie znaleziono osoby o takiej nazwie... Sprï¿½buj jeszcze raz.", "Dodaj", "Wrï¿½ï¿½");
 		return;
 	} else {
 		new accountid=theplayer::getAccountIDByName(friendName);
 		if(CFriends_CheckOrAreFriendByUID(PlayerData[playerid][epd_accountID], accountid)) 
 		{
-			ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.\nTa osoba jest ju¿ na liœcie znajomych!", "Dodaj", "Wróæ");
+			ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproï¿½ znajomego", "W poniï¿½sze okienko wpisz nick osoby, ktï¿½rï¿½ chcesz zaprosiï¿½ do grona swoich znajomych.\nTa osoba jest juï¿½ na liï¿½cie znajomych!", "Dodaj", "Wrï¿½ï¿½");
 			return;
 		}
 		new friendid=utility::getPlayerIDFromName(friendName);
@@ -138,7 +139,7 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 				case 2: 
 				{
 					// dodawanie znajomego/zapraszanie
-					ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproœ znajomego", "W poni¿sze okienko wpisz nick osoby, któr¹ chcesz zaprosiæ do grona swoich znajomych.", "Dodaj", "Wróæ");
+					ShowPlayerDialog(playerid, DIALOG_FRIENDS_INVITE, DIALOG_STYLE_INPUT, "Znajomi > Zaproï¿½ znajomego", "W poniï¿½sze okienko wpisz nick osoby, ktï¿½rï¿½ chcesz zaprosiï¿½ do grona swoich znajomych.", "Dodaj", "Wrï¿½ï¿½");
 				}
 			}
 		}
@@ -151,7 +152,49 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 			}
 			new partName[MAX_PLAYER_NAME], guiTitle[40];
 			string::copy(partName, inputtext[strfind(inputtext, ")\t")+1]), format(guiTitle, 40, "Znajomi > %s > Wiecej", partName);
-			ShowPlayerDialog(playerid, DIALOG_FRIENDS_PROPERTIES, DIALOG_STYLE_LIST, guiTitle, "Zobacz profil\nWyœlij wiadomoœæ\nUsun ze znajomych", "Wybierz", "Wróæ");
+			ShowPlayerDialog(playerid, DIALOG_FRIENDS_PROPERTIES, DIALOG_STYLE_LIST, guiTitle, "Zobacz profil\nWyï¿½lij wiadomoï¿½ï¿½\nUsun ze znajomych", "Wybierz", "Wrï¿½ï¿½");
+		}
+		case DIALOG_FRIENDS_PROPERTIES:
+		{
+		    if(!response)
+			{
+				CFriends_ShowHomePage(playerid);
+				return 1;
+			}
+			switch(listitem)
+			{
+			    case 0:
+			    {
+			        //PrzeglÄ…danie profilu (pÃ³Åºniej dokoÅ„cze Failed)
+			    }
+			    case 1:
+			    {
+			        new string[250], text[250] = inputtext;
+			        format(string, sizeof(string), "Znajomy (%s) > PW", partName);
+			        ShowPlayerDialog(playerid, DIALOG_FRIENDS_PW, DIALOG_STYLE_INPUT, string, "Wpisz w poniÅ¼sze pole zawartoÅ›Ä‡ wiadomoÅ›ci", "Ok", "Anuluj");
+			    }
+			}
+		}
+		
+		case DIALOG_FRIENDS_PW:
+		{
+		    if(!response)
+			{
+				CFriends_ShowHomePage(playerid);
+				return 1;
+			}
+			new idlm = utility::getPlayerIDFromName(partName);
+			new string[250], string2[250];
+			PlayerData[playerid][epd_lastidmess] = idlm;
+			if(text < 0)
+			{
+			    ShowPlayerDialog(playerid, DIALOG_FRIENDS_PW_WARNING, DIALOG_STYLE_MSGBOX, "PW", "Nie wpisaÅ‚eÅ› treÅ›ci wiadomoÅ›ci!", "Ok", "");
+			}
+			format(string, sizeof(string), "%s >>> %s", PlayerData[playerid][epd_nickname], text);
+			format(string2, sizeof(string2), "%s <<< %s", text, PlayerData[idml][epd_nickname]);
+			SendClientMessage(idml, COLOR_PM, string);
+			SendClientMessage(playerid, COLOR_PM, string2);
+			
 		}
 		case DIALOG_FRIENDS_ACCEPTING: 
 		{
