@@ -84,8 +84,9 @@ enum
 	DIALOG_FRIENDS_ACCEPTING,
 	DIALOG_FRIENDS_INVITE,
 	DIALOG_FRIENDS_PROPERTIES,
-	DIALOG_FRIENDS_PW,
-	DIALOG_FRIENDS_PW_WARNING,
+	DIALOG_FRIENDS_MESSAGE,
+	DIALOG_FRIENDS_FDELETE,
+	DIALOG_FRIENDS_FSHOWSTAT,
 	
 	DIALOG_ATM_HOME
 };
@@ -175,7 +176,6 @@ enum e_PlayerData
 	epd_serialID[32],
 	epd_accountID,
 	epd_loginAttempts,
-	epd_lastidmess,
 	epd_lastSkin,
 	epd_respect,
 	epd_levelRP,
@@ -197,7 +197,9 @@ enum e_PlayerData
 	// FPS
 	epd_fpsDrunkL,
 	epd_fpsLastDrunkL,
-	epd_fpsValue
+	epd_fpsValue,
+	// CFriends
+	epd_lastMessageIDSender, // ostatnie ID piszacego PM
 };
 
 new 
