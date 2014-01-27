@@ -187,6 +187,9 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 		}
 		case DIALOG_FRIENDS_MESSAGE:
 		{
+			new partName[MAX_PLAYER_NAME], guiTitle[80];
+			GetPVarString(playerid, "player.friends.storenick", partName, MAX_PLAYER_NAME);
+			
 			if(!response)
 			{
 				CFriends_ShowHomePage(playerid);
@@ -195,13 +198,13 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 			if(isnull(inputtext))
 			{
 				theplayer::sendMessage(playerid, COLOR_ERROR, "Nie możesz wysłać pustej wiadomości.");
+				format(guiTitle, sizeof(guiTitle), "Znajomi > %s > Wiadomość", partName);
 				ShowPlayerDialog(playerid, DIALOG_FRIENDS_MESSAGE, DIALOG_STYLE_INPUT, guiTitle, "Wpisz w poniższe pole zawartość wiadomości", "Wyślij", "Wróć");
 				return 1;
 			}
 			
-			new partName[MAX_PLAYER_NAME], guiTitle[80];
-			GetPVarString(playerid, "player.friends.storenick", partName, MAX_PLAYER_NAME), DeletePVar(playerid, "player.friends.storenick");
-			format(guiTitle, sizeof(guiTitle), "Znajomi > %s > Wiadomość", partName);
+			// wypieprzamy pvar, gdy wyslemy wiadomosc
+			DeletePVar(playerid, "player.friends.storenick"), format(guiTitle, sizeof(guiTitle), "Znajomi > %s > Wiadomość", partName);
 			
 			new friendID=utility::getPlayerIDFromName(partName);
 			if(friendID==INVALID_PLAYER_ID)

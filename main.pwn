@@ -454,6 +454,24 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 	return true;
 }
 
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
+{
+
+	return true;
+}
+
+public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
+{
+	
+	return true;
+}
+
+public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+{
+
+	return true;
+}
+
 public OnPlayerStreamIn(playerid, forplayerid) 
 {
 	CheckPlayerBounds(playerid);
