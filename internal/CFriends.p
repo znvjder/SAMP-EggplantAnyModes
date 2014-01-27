@@ -168,8 +168,7 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 			{
 				case 0:
 				{
-					// DIALOG_FRIENDS_FSHOWSTAT
-			        // Przeglądanie profilu (później dokończe Failed)
+					//DIALOG_FRIENDS_FSHOWSTAT
 				}
 				case 1:
 				{
@@ -180,10 +179,35 @@ stock CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext[
 				}
 				case 2:
 				{
-					// DIALOG_FRIENDS_FDELETE
-					// Usuwanie znajomego z listy znajomych 
+					new partName[MAX_PLAYER_NAME], guiTitle[80], value[50];
+					format(guiTitle, sizeof(guiTitle), "Znajomi > %s > Usuwanie z listy znajomych", partName, MAX_PLAYER_NAME);
+					format(value, sizeof(value), "Czy chcesz usunąć %s z listy znajomych?", partName, MAX_PLAYER_NAME);
+					ShowPlayerDialog(playerid, DIALOG_FRIENDS_FDELETE, DIALOG_STYLE_INPUT,  guiTitle, value, "Tak", "Nie");
 				}
 			}
+		}
+		case DIALOG_FRIENDS_FDELETE:
+		{
+			new partName[MAX_PLAYER_NAME], guiTitle[80], value[50];
+			if(!response)
+			{
+				CFriends_ShowHomePage(playerid);
+				return 1;
+			}
+			format(guiTitle, sizeof(guiTitle), "Znajomi > %s > Usuwanie z listy znajomych", partName, MAX_PLAYER_NAME);
+			format(value, sizeof(value), "Usunąłeś %s z listy znajomych", partName, MAX_PLAYER_NAME);
+			ShowPlayerDialog(playerid, DIALOG_FRIENDS_FDELETE, DIALOG_STYLE_MSGBOX, guiTitle, value, "Ok", "");
+			CFriends_DeleteFriend(playerid, partName);
+			new friendID = utility::getPlayerIDFromName(partName);
+			if(friendID == INVALID_PLAYER_ID)
+			{
+				ShowPlayerDialog(playerid, DIALOG_FRIENDS_FDELETE, DIALOG_STYLE_MSGBOX, guiTitle, "Znajomego nie ma w aktualnej sesji\nNie otrzyma powiadomienia o usunięciu go ze znajomych", "Ok", "");
+			}
+			theplayer::sendMessage(friendID, COLOR_INFO1, "%s usunął Cię z listy swoich znajomych", partName);
+		}
+		case DIALOG_FRIENDS_FSHOWSTAT:
+		{
+		CFriends_ShowHomePage(playerid);
 		}
 		case DIALOG_FRIENDS_MESSAGE:
 		{
