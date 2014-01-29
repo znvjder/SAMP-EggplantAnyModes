@@ -46,6 +46,7 @@
 #include "internal/CUtility.p"
 #include "internal/CMySQL.p"
 #include "internal/CConfigData.p"
+#include "internal/CAudio.p"
 #include "internal/CMessages.p"
 #include "internal/CAnticheat.p"
 #include "internal/CAccounts.p"
@@ -95,6 +96,7 @@ public OnGameModeInit()
 	CEntries_Init();
 	CAtms_Init();
 	CMapicons_Init();
+	CAudio_Init();
 	
 	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
 	CLogging_Insert(CLOG_SERVER, "Starting logging...");
@@ -115,6 +117,7 @@ public OnGameModeExit()
 	CAtms_Exit();
 	CEntries_Exit();
 	CMapicons_Exit();
+	CAudio_Exit();
 	CMySQL_Exit();
 	regex_delete_all();
 	djson_GameModeExit();
@@ -258,6 +261,16 @@ public OnPlayerSpawn(playerid)
 	}
 	
 	SetCameraBehindPlayer(playerid);
+	
+	if(!bit_if(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN)) 
+	{
+		bit_set(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN);
+		if(bit_if(PlayerData[playerid][epd_properties], PLAYER_HASCAP))
+		{
+			bit_set(PlayerData[playerid][epd_properties], PLAYER_SYNCACP);
+			Audio_TransferPack(playerid);
+		}
+	}
 	return 1;
 }
 
@@ -628,12 +641,12 @@ public OnPlayerLeaveDynamicRaceCP(playerid, checkpointid)
 
 public OnPlayerEnterDynamicArea(playerid, areaid)
 {
-
+	if(CAudio_IsPlayerInZone(playerid, true, areaid)) return true;
 	return false;
 }
 
 public OnPlayerLeaveDynamicArea(playerid, areaid)
 {
-
+	if(CAudio_IsPlayerInZone(playerid, false, areaid)) return true;
 	return false;
 }

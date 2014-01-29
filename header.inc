@@ -133,6 +133,9 @@ enum (<<=1)
 	PLAYER_NULL=0,
 	PLAYER_INLOGINDIALOG=1,
 	PLAYER_ISLOGGED,
+	PLAYER_FIRSTSPAWN,
+	PLAYER_HASCAP, // ma client audioplugin
+	PLAYER_SYNCACP, // synchronizacja plikow audio - w tym czasie nie uwzgledniamy tego gracza przy "sprawdzaniu" pingu
 };
 
 enum (<<=1) 
@@ -198,6 +201,9 @@ enum e_PlayerData
 	epd_fpsDrunkL,
 	epd_fpsLastDrunkL,
 	epd_fpsValue,
+	// CAudio
+	epd_audioBgHandle,
+	epd_audioAZHandle,
 	// CFriends
 	epd_lastMessageIDSender, // ostatnie ID piszacego PM
 };
