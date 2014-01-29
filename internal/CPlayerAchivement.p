@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS userachievement(
 
 #define MAX_ARCHIVEMENTS (10) // Max osiągniec
 
+#define AVT_REGISTERACCOUNT (1)
+
 enum e_AchievementData 
 {
 	evd_avtID,
@@ -61,11 +63,11 @@ stock theplayer::avtCheck( playerid, avtid )
 {
 	switch(avtid)
 	{
-		case 0: // zarejestrowal konto
+		case AVT_REGISTERACCOUNT: // zarejestrowal konto
 		{
-			if(!theplayer::avtCheckPasssed(playerid, 0))
+			if(!theplayer::avtCheckPasssed(playerid, AVT_REGISTERACCOUNT))
 			{
-				theplayer::sendMessage(playerid, COLOR_INFO1, "Gratulacje! Ukonczyles wlasnie osiagniecie <b>%d</b>: <b>%s</b>!", AchievementData[0][evd_avtID], AchievementData[0][evd_avtTitle]);
+				theplayer::sendMessage(playerid, COLOR_INFO1, "Gratulacje! Ukonczyles wlasnie osiagniecie <b>%d</b>: <b>%s</b>!", AchievementData[AVT_REGISTERACCOUNT-1][evd_avtID], AchievementData[AVT_REGISTERACCOUNT-1][evd_avtTitle]);
 				// na razie testowa wiadomosc
 				theplayer::avtRecord(playerid, avtid);
 				return true;
