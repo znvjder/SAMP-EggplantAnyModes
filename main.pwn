@@ -468,7 +468,8 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-
+	//printf("Player shoot (%d): weapon: %d, hittype: %d, hitid: %d, fX: %f, fY: %f, fZ: %f", playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	//printf("GetPlayerAspectRatio: %f, GetPlayerCameraZoom: %f", GetPlayerCameraAspectRatio(playerid), GetPlayerCameraZoom(playerid));
 	return true;
 }
 

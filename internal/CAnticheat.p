@@ -23,8 +23,18 @@ stock CAnticheat_Exit()
 
 stock CAnticheat_CheckConnectPlayer(playerid) 
 {
-	new tmpAC[16], numPlayersOnIP=0;
+	new tmpAC[25], numPlayersOnIP=0;
 	
+	/*printf("\nPobieranie informacji o graczu %d", playerid);
+	NetStats_GetIpPort(playerid, tmpAC, sizeof(tmpAC));
+	printf("GetPlayerPort: %s", tmpAC);
+	printf("BytesReceived: %d", NetStats_BytesReceived(playerid));
+	printf("BytesSent: %d", NetStats_BytesSent(playerid));
+	printf("MessagesSent: %d", NetStats_MessagesSent(playerid));
+	printf("MessagesReceived: %d", NetStats_BytesReceived(playerid));
+	printf("GetConnectedTime: %d", NetStats_GetConnectedTime(playerid));
+	printf("ConnectionSatatus: %d", NetStats_ConnectionStatus(playerid));
+	printf("--------------------------");*/
 	GetPlayerVersion(playerid, tmpAC, sizeof(tmpAC));
 	if(!strcmp(tmpAC, CAC_SOBEIT_VERSION)) 
 	{
