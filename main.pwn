@@ -145,12 +145,12 @@ public OnPlayerConnect(playerid)
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
 	GetPlayerClientId(playerid, PlayerData[playerid][epd_serialID], 32);
+	bit_set(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN);
 	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) 
 	{
 		CLogging_Insert(CLOG_DEBUG, "Player %s (ID: %d) (IP: %s) has connect to the server", PlayerData[playerid][epd_nickname], playerid, PlayerData[playerid][epd_addressIP]);
 	}
-	
 	if(theplayer::isRegistered(playerid))
 	{
 		new serialLast[32], ipLast[16];
@@ -243,34 +243,38 @@ public OnPlayerSpawn(playerid)
 	new tmpSkin=GetPlayerSkin(playerid);
 	if(PlayerData[playerid][epd_lastSkin]!=tmpSkin) PlayerData[playerid][epd_lastSkin]=tmpSkin;
 	
-	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED)) 
+	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN)) 
 	{
-		if(PlayerData[playerid][epd_spawnType]==0) {
-			SetPlayerHealth(playerid, PlayerData[playerid][epd_lastHealth]);
-			if(PlayerData[playerid][epd_lastArmour]>0) SetPlayerArmour(playerid, PlayerData[playerid][epd_lastArmour]);
-			
-			SetPlayerSkin(playerid, PlayerData[playerid][epd_lastSkin]);
-			SetPlayerPos(playerid, PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2]);
-			SetPlayerFacingAngle(playerid, PlayerData[playerid][epd_lastPos][3]);
+		if(bit_if(PlayerData[playerid][epd_properties], PLAYER_ISLOGGED)) 
+		{
+			if(PlayerData[playerid][epd_spawnType]==0) {
+				SetPlayerHealth(playerid, PlayerData[playerid][epd_lastHealth]);
+				if(PlayerData[playerid][epd_lastArmour]>0) SetPlayerArmour(playerid, PlayerData[playerid][epd_lastArmour]);
+				
+				SetPlayerSkin(playerid, PlayerData[playerid][epd_lastSkin]);
+				SetPlayerPos(playerid, PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2]);
+				SetPlayerFacingAngle(playerid, PlayerData[playerid][epd_lastPos][3]);
+			} else {
+				// TODO: Wyszukanie domu i zespawnowanie gracza w domu
+			}
+			theplayer::loadWeaponsData(playerid);
 		} else {
-			// TODO: Wyszukanie domu i zespawnowanie gracza w domu
+			// wywolac dla niezarejestrowanego gracza "nowa gre" i krotki tutorial
+			SetPlayerPos(playerid, 0.0, 0.0, 3.0);
+			// startowy spawn - lotnisko LS
 		}
-		theplayer::loadWeaponsData(playerid);
-	} else {
-		SetPlayerPos(playerid, 0.0, 0.0, 3.0);
-	}
-	
-	SetCameraBehindPlayer(playerid);
-	
-	if(!bit_if(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN)) 
-	{
-		bit_set(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN);
+		
+		bit_unset(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN);
 		if(bit_if(PlayerData[playerid][epd_properties], PLAYER_HASCAP))
 		{
 			bit_set(PlayerData[playerid][epd_properties], PLAYER_SYNCACP);
 			Audio_TransferPack(playerid);
 		}
+	} else {
+		SetPlayerPos(playerid, PlayerData[playerid][epd_lastPos][0], PlayerData[playerid][epd_lastPos][1], PlayerData[playerid][epd_lastPos][2]);
+		SetPlayerFacingAngle(playerid, PlayerData[playerid][epd_lastPos][3]);
 	}
+	SetCameraBehindPlayer(playerid);
 	return 1;
 }
 
