@@ -13,86 +13,119 @@
 
 CREATE TABLE IF NOT EXISTS achievements(
 	avtID INT NOT NULL AUTO_INCREMENT,
+	title VARCHAR(32) NOT NULL, -- tytul osiagniecia
 	description VARCHAR(64) NOT NULL, -- opis
 	PRIMARY KEY (avtID)
 );
 
+INSERT INTO achievements SET title='Odwazny krok - rejestracja konta', description='Zarejestruj konto na serwerze.';
+
 CREATE TABLE IF NOT EXISTS userachievement(
 	avtID INT NOT NULL AUTO_INCREMENT,
 	userID INT NOT NULL,
-	date TIMESTAMP,
-	remark VARCHAR(64), -- uwagi
+	date TIMESTAMP NOT NULL, -- jezeli zaliczyl - zapisujemy czas
+	passed TINYINT(1) NOT NULL DEFAULT '0', -- 0=nie zaliczyl, 1=zaliczyl
 	PRIMARY KEY (`avtID`),
 	FOREIGN KEY (avtID) REFERENCES achievements(avtID)
 );
-TODO: Dodać dodawanie osiągnięcia do konta.
+
 */
 
-#define MAX_ARCHIVEMENTS 10 //Max osiągnięc
-enum archivements_Info {
-	id,
-	description[100]
-}
+#define MAX_ARCHIVEMENTS (10) // Max osiągniec
 
-enum playerArchivements_Info {
-	avtid[4],
-	date[4],
-	remark[4]
-}
-new Archivment_Info[MAX_ARCHIVEMENTS][archivements_Info];
-new PlayerArchivment[MAX_PLAYERS][playerArchivements_Info];
-
-stock theplayer::getArchivment(playerid, arch_id)
+enum e_AchievementData 
 {
-	switch(arch_id)
+	evd_avtID,
+	evd_avtTitle[32],
+	evd_avtDesc[64]
+};
+
+static stock 
+	AchievementData[MAX_ARCHIVEMENTS][e_AchievementData];
+
+stock CAchievement_LoadAll()
+{
+	new i=0, tmpBuf[128];
+	CMySQL_Query("SELECT avtID, title, description FROM achievements;", -1);
+	mysql_store_result();
+	while(mysql_fetch_row(tmpBuf, "|"))
 	{
-	case 0:
+		if(sscanf(tmpBuf, "p<|>ds[32]s[64]", AchievementData[i][evd_avtID], AchievementData[i][evd_avtTitle], AchievementData[i][evd_avtDesc])) continue;
+		i++;
+	}
+	mysql_free_result();
+	printf("[CPlayerAchievement]: Loaded %d achievements!", i);
+}
+
+stock theplayer::avtCheck( playerid, avtid )
+{
+	switch(avtid)
 	{
-		//Osiągnięcie nowe konto//
-		if (PlayerData[playerid][epd_walletMoney] > 1000 && theplayer::getArchivementsByPlayer( playerid, 0 ) != true)//Sprawdzanie według ilości pieniędzy i czy osiągnięcie już jest.
+		case 0: // zarejestrowal konto
 		{
-			SendClientMessage("[Ukonczono]Gratulacje! Ukończyłeś osiągnięcie jakieś tam...");
-			theplayer::addNewArchivementsByPlayer( playerid, archid, "Data", "Uwagi");
-			//I coś tam jescze :)
+			if(!theplayer::avtCheckPasssed(playerid, 0))
+			{
+				theplayer::sendMessage(playerid, COLOR_INFO1, "Gratulacje! Ukonczyles wlasnie osiagniecie <b>%d</b>: <b>%s</b>!", AchievementData[0][evd_avtID], AchievementData[0][evd_avtTitle]);
+				// na razie testowa wiadomosc
+				theplayer::avtRecord(playerid, avtid);
+				return true;
+			}
 		}
-	}
-	}
-}
-
-stock theplayer::getArchivements( userid, new_avtid )
-{
-	for (new i = 0; i < MAX_ARCHIVEMENTS; i++)
-	{
-		//Sprawdzanie czy osiągnięcie istnieje
-		if (PlayerArchivment[playerid][avtid][i] == new_avtid) return true;
 	}
 	return false;
 }
 
-stock theplayer::addNewArchivements( userid, avtid, date[], remark[] )
+stock theplayer::avtCheckPasssed( playerid, avtid )
 {
-	//TO DO: Zrobić dodanie nowego osiągnięcia dla konta.
+	CMySQL_Query("SELECT passed FROM userachievement WHERE avtID='%d' AND userID='%d' LIMIT 1;", -1, avtid, PlayerData[playerid][epd_accountID]);
+	mysql_store_result();
+	new bool:wykonal=!!mysql_fetch_int();
+	mysql_free_result();
+	return wykonal;
 }
 
-stock theplayer::loadArchivements( userid )
+stock theplayer::avtAdd( playerid, avtid )
 {
-	//Dzięki tej funkcji można pobrać wszystkie osiągnięcia danego gracza.
-	//Wczytywanie danych.
-	new arch_query[30], count;
-	CMySQL_Query("SELECT avtID date, remark FROM userachievement WHERE userID = '%d'", -1, PlayerData[userid][epd_accountID]);
-	mysql_store_result();
-	count = 0;
-	while(mysql_fetch_rows(arch_query, "|"))
+	CMySQL_Query("INSERT INTO userachievement (avtID, userID, date, passed) VALUES ('%d', '%d', NOW(), 1);", -1, avtid, PlayerData[playerid][epd_accountID]);
+}
+
+stock theplayer::avtListing( playerid, type_listing=0 )
+{
+	/*
+		listowanie osiagniec:
+			0) osiagniecia wykonane
+			1) osiagniecia niewykonane
+			2) (nad tym trzeba pomyslec) wszystkie(?)
+			
+		TODO: sortowanie wedlug daty?
+	*/
+	// Pobieranie wszystkich osiagniec - nawet tych nie zaliczonych
+	new i, longBuf[512], tmpBuf[128], avtID, avtTitle[32], avtDate[24];
+	
+	if(type_listing==0)
 	{
-		sscanf(arch_query, "p<|>ds[30]s[64]",
-			PlayerArchivment[userid][avtid][count],
-			PlayerArchivment[userid][date][count],
-			PlayerArchivment[userid][remark][count]);
-		if (!PlayerArchivment[userid][avtid][count])
-			break;
-		count++;
+	
+		CMySQL_Query("SELECT a.avtID, a.title, ap.date FROM userachievement ap JOIN achievements a ON ap.avtID=a.avtID WHERE userid='%d' AND passed='1';", -1, PlayerData[playerid][epd_accountID], type_listing);
+		mysql_store_result();
+		while(mysql_fetch_row(tmpBuf, "|"))
+		{
+			if(sscanf(tmpBuf, "p<|>s[32]s[64]", avtID, avtTitle, avtDate)) continue;
+			format(longBuf, sizeof(longBuf), "%s\n(%d:%d)\t%s", longBuf, (i+1), avtID, avtTitle);
+			i++;
+		}
+		mysql_free_result();
+	} else if(type_listing==1) {
+		// trzeba wykominic jakies zapytanko, ktore nie beda w userachievements
+	} else {
+	
 	}
-	mysql_free_result();
-	if (!PlayerArchivment[userid][avtid][count]) return false;
+	/*
+	if(!i)
+	{
+		ShowPlayerDialog(playerid, DIALOG_AVT_LIST, DIALOG_STYLE_MSGBOX, "Osiagniecia", "Nie udalo się pobrać listy osiągnieć, sprobuj ponownie.", "Zamknij");
+	} else {
+		ShowPlayerDialog(playerid, DIALOG_AVT_LIST, DIALOG_STYLE_LIST, "Osiagniecia", longBuf, "Wybierz", "Zamknij");
+	}
+	*/
 	return true;
 }
