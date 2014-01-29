@@ -42,7 +42,7 @@ enum playerArchivements_Info {
 new Archivment_Info[MAX_ARCHIVEMENTS][archivements_Info];
 new PlayerArchivment[MAX_PLAYERS][playerArchivements_Info];
 
-stock theplayer::getPlayerArchivment(playerid, arch_id)
+stock theplayer::getArchivment(playerid, arch_id)
 {
 	switch(arch_id)
 	{
@@ -59,9 +59,9 @@ stock theplayer::getPlayerArchivment(playerid, arch_id)
 	}
 }
 
-stock theplayer::getArchivementsByPlayer( userid, new_avtid )
+stock theplayer::getArchivements( userid, new_avtid )
 {
-	for (new i = 0; i < 10; i++)//Powiecmy że jest 10 osiągnięć.
+	for (new i = 0; i < MAX_ARCHIVEMENTS; i++)
 	{
 		//Sprawdzanie czy osiągnięcie istnieje
 		if (PlayerArchivment[playerid][avtid][i] == new_avtid) return true;
@@ -69,12 +69,12 @@ stock theplayer::getArchivementsByPlayer( userid, new_avtid )
 	return false;
 }
 
-stock theplayer::addNewArchivementsByPlayer( userid, avtid, date[], remark[] )
+stock theplayer::addNewArchivements( userid, avtid, date[], remark[] )
 {
 	//TO DO: Zrobić dodanie nowego osiągnięcia dla konta.
 }
 
-stock theplayer::loadArchivementsByPlayer( userid )
+stock theplayer::loadArchivements( userid )
 {
 	//Dzięki tej funkcji można pobrać wszystkie osiągnięcia danego gracza.
 	//Wczytywanie danych.
