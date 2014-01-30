@@ -82,14 +82,6 @@ static stock CTimers_Call(timerid, funcname[])
 }
  
 // Timers callbacks
-timer:Weather()
-{
-	CTIMER_LOCKCALL(1);
-	
-	
-	CTIMER_FREECALL(1, @Weather);
-}
-
 timer:GameLoop()
 {
 	CTIMER_LOCKCALL(0);
@@ -98,6 +90,14 @@ timer:GameLoop()
 	
 	
 	CTIMER_FREECALL(0, @GameLoop);
+}
+
+timer:Weather()
+{
+	CTIMER_LOCKCALL(1);
+	
+	
+	CTIMER_FREECALL(1, @Weather);
 }
 
 #undef MAX_CTIMERS

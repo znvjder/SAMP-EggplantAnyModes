@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS atms (
 -- table audiozones
 CREATE TABLE IF NOT EXISTS audiozones(
 	id INT NOT NULL AUTO_INCREMENT,
-	zoneType TINYINT(1) NOT NULL DEFUAULT '0', -- 0=circle, 1=rectangle, 2=sphere
+	zoneType TINYINT(1) NOT NULL DEFAULT '0', -- 0=circle, 1=rectangle, 2=sphere
 	rectanglePos VARCHAR(52) NOT NULL DEFAULT '-0.0;-0.0;1.0;1.0;', -- minx, miny, maxx, maxy
 	circlePos VARCHAR(48) NOT NULL DEFAULT '0.0;0.0;40.0;', -- x, y, r
 	spherePos VARCHAR(48) NOT NULL DEFAULT '0.0;0.0;1.0;40.0;', -- x, y, z, r

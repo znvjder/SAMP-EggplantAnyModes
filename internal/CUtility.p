@@ -99,6 +99,16 @@ stock utility::setColorAlpha(color, alpha) {
 	return (((color >> 24) & 0xFF) << 24 | ((color >> 16) & 0xFF) << 16 | ((color >> 8) & 0xFF) << 8 | floatround((float(color & 0xFF) / 255) * alpha));
 }
 
+stock utility::getPlayersCount()
+{
+	new count=0;
+	theplayer::foreach(i)
+	{
+		count++;
+	}
+	return count;
+}
+
 stock utility::getWeaponSlot(weaponid)
 {
 	static const

@@ -47,6 +47,7 @@
 #include "internal/CMySQL.p"
 #include "internal/CConfigData.p"
 #include "internal/CAudio.p"
+#include "internal/CNetwork.p"
 #include "internal/CMessages.p"
 #include "internal/CAnticheat.p"
 #include "internal/CAccounts.p"
@@ -145,6 +146,7 @@ public OnPlayerConnect(playerid)
 	
 	if(ServerData[esd_highestPlayerID]<playerid) ServerData[esd_highestPlayerID]=playerid;
 	
+	network::setServerSyncRate(utility::getPlayersCount());
 	utility::resetVariablesInEnum(PlayerData[playerid], e_PlayerData);
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
