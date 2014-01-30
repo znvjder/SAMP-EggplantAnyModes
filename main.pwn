@@ -56,6 +56,7 @@
 #include "internal/CEntries.p"
 #include "internal/CAtms.p"
 #include "internal/CMapicons.p"
+#include "internal/CTimers.p"
 
 #include "internal/commands/cmds_header.p"
 
@@ -97,6 +98,7 @@ public OnGameModeInit()
 	CAtms_Init();
 	CMapicons_Init();
 	CAudio_Init();
+	CTimers_Init();
 	
 	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
 	CLogging_Insert(CLOG_SERVER, "Starting logging...");
@@ -105,6 +107,7 @@ public OnGameModeInit()
 		CLogging_Insert(CLOG_DEBUG, "Debugging mode enabled...");
 		printf("["SCRIPT_NAME" - Debugger]: Debug mode enabled. Level debugging: %d", ServerData[esd_codeDebugger]);
 	}
+	
 	return 1;
 }
 
@@ -118,6 +121,7 @@ public OnGameModeExit()
 	CEntries_Exit();
 	CMapicons_Exit();
 	CAudio_Exit();
+	CTimers_Exit();
 	CMySQL_Exit();
 	regex_delete_all();
 	djson_GameModeExit();
