@@ -101,12 +101,11 @@ stock utility::setColorAlpha(color, alpha) {
 
 stock utility::getPlayersCount()
 {
-	new count=0;
+	ServerData[esd_countPlayersOnline]=0;
 	theplayer::foreach(i)
 	{
-		count++;
+		ServerData[esd_countPlayersOnline]++;
 	}
-	return count;
 }
 
 stock utility::getWeaponSlot(weaponid)

@@ -146,7 +146,8 @@ public OnPlayerConnect(playerid)
 	
 	if(ServerData[esd_highestPlayerID]<playerid) ServerData[esd_highestPlayerID]=playerid;
 	
-	network::setServerSyncRate(utility::getPlayersCount());
+	utility::getPlayersCount();
+	network::setServerSyncRate(ServerData[esd_countPlayersOnline]);
 	utility::resetVariablesInEnum(PlayerData[playerid], e_PlayerData);
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
@@ -187,6 +188,8 @@ public OnPlayerDisconnect(playerid, reason)
 			break;
 		}
 	}
+	utility::getPlayersCount();
+	network::setServerSyncRate(ServerData[esd_countPlayersOnline]);
 	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) 
 	{

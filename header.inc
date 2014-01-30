@@ -169,7 +169,8 @@ enum e_ServerData
 	MySQL:esd_MySQLHandler,
 	esd_streamerTickRate,
 	esd_codeDebugger,
-	esd_highestPlayerID
+	esd_highestPlayerID,
+	esd_countPlayersOnline,
 };
 
 enum e_PlayerData 
