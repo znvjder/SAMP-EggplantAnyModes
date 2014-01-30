@@ -23,10 +23,17 @@ stock network::setServerSyncRate(playersCount)
 	new bufPath[128];
 	switch(playersCount)
 	{
+		case 0:
+		{
+			format(bufPath, sizeof(bufPath), "exec %s", PATH_minimal);
+			SendRconCommand(bufPath);
+			SendRconCommand("sleep 100");
+		}
 		case 1, 49:
 		{
 			format(bufPath, sizeof(bufPath), "exec %s", PATH_vhigh);
 			SendRconCommand(bufPath);
+			SendRconCommand("sleep 5");
 		}
 		case 50, 99:
 		{

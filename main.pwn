@@ -91,7 +91,10 @@ public OnGameModeInit()
 	ShowPlayerMarkers(PLAYER_MARKERS_MODE_GLOBAL);
 	SendRconCommand("unbanip *.*.*.*");
 	
+	// Variables settings
+	ServerData[esd_countPlayersOnline]=0;
 	// Modules initialize
+	network::setServerSyncRate(ServerData[esd_countPlayersOnline]);
 	utility::addAllSkins();
 	CAccounts_Init();
 	CVehicles_Init();
