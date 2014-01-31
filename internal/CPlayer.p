@@ -75,6 +75,11 @@ stock theplayer::teleport(playerid, bool:streamerSync=true, Float:x, Float:y, Fl
 	SetCameraBehindPlayer(playerid);
 }
 
+stock theplayer::isAFK(playerid)
+{
+	if(IsPlayerConnected(playerid)) return (GetTickCount()-PlayerData[playerid][epd_ticklastUpdate])>AFK_TIME;
+	return false;
+}
 
 stock theplayer::isSpawned(playerid) 
 {

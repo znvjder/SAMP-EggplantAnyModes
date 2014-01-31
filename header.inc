@@ -29,6 +29,9 @@ native GetPlayerClientId(playerid, const serial[], maxsize) = gpci;
 #define bit_unset(%0,%1) (%0)&=~(%1)
 #define bit_if(%0,%1) ((%0) & (%1))
 
+// AFK time
+#define AFK_TIME (10000)
+
 // Color chat
 #define COLOR_INFO1 (0)
 #define COLOR_INFO2 (1)
@@ -127,7 +130,7 @@ enum
 	MAX_WEAPON_SLOT	
 };
 
-enum (<<=1) 
+enum PlayerProperties: (<<=1) 
 {
 	// Properties player stuff
 	PLAYER_NULL=0,
@@ -138,7 +141,7 @@ enum (<<=1)
 	PLAYER_SYNCACP, // synchronizacja plikow audio - w tym czasie nie uwzgledniamy tego gracza przy "sprawdzaniu" pingu
 };
 
-enum (<<=1) 
+enum VehicleProperties: (<<=1) 
 {
 	// Vehicle property stuff
 	VEHICLE_NONE=0,
@@ -156,7 +159,7 @@ enum e_VehicleData
 	evd_uid, // unique id
 	evd_carid,
 	evd_modelid,
-	evd_properties,
+	VehicleProperties:evd_properties,
 	evd_tuning[13],
 	evd_ownerID, // odpowiednik playerid
 	evd_color[2],
@@ -179,6 +182,7 @@ enum e_PlayerData
 	epd_addressIP[16],
 	epd_serialID[32],
 	epd_accountID,
+	epd_ticklastUpdate,
 	epd_loginAttempts,
 	epd_lastSkin,
 	epd_respect,
@@ -186,7 +190,7 @@ enum e_PlayerData
 	epd_walletMoney,
 	epd_bankMoney,
 	epd_spawnType, // 0=ostatnie miejsce, 1=dom jezeli go ma ;-)
-	epd_properties, // stuff do przechowywania wartosci 'specjalnych'
+	PlayerProperties:epd_properties, // stuff do przechowywania wartosci 'specjalnych'
 	epd_admin, // 0=nic, 1=mod, 2=admin, 3=master admin, 4=owner/developer
 	bool:epd_haveVip,
 	Float:epd_lastArmour,

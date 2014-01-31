@@ -93,6 +93,7 @@ public OnGameModeInit()
 	
 	// Variables settings
 	ServerData[esd_countPlayersOnline]=0;
+	
 	// Modules initialize
 	network::setServerSyncRate(ServerData[esd_countPlayersOnline]);
 	utility::addAllSkins();
@@ -155,6 +156,10 @@ public OnPlayerConnect(playerid)
 	GetPlayerName(playerid, PlayerData[playerid][epd_nickname], MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, PlayerData[playerid][epd_addressIP], 16);
 	GetPlayerClientId(playerid, PlayerData[playerid][epd_serialID], 32);
+	PlayerData[playerid][epd_ticklastUpdate]=GetTickCount();
+	PlayerData[playerid][epd_lastArmour]=99.9;
+	PlayerData[playerid][epd_lastArmour]=0.0;
+	PlayerData[playerid][epd_properties]=PlayerProperties:PLAYER_NULL;
 	bit_set(PlayerData[playerid][epd_properties], PLAYER_FIRSTSPAWN);
 	
 	if(ServerData[esd_codeDebugger] >= _DEBUG_NORMAL) 
@@ -287,6 +292,7 @@ public OnPlayerSpawn(playerid)
 		SetPlayerFacingAngle(playerid, PlayerData[playerid][epd_lastPos][3]);
 	}
 	SetCameraBehindPlayer(playerid);
+	PlayerData[playerid][epd_ticklastUpdate]=GetTickCount();
 	return 1;
 }
 
@@ -424,6 +430,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 public OnPlayerText(playerid, text[]) 
 {
 	CheckPlayerBounds(playerid);
+	PlayerData[playerid][epd_ticklastUpdate]=GetTickCount();
 	
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) 
 	{
@@ -436,7 +443,8 @@ public OnPlayerText(playerid, text[])
 
 public OnPlayerUpdate(playerid) 
 {
-
+	PlayerData[playerid][epd_ticklastUpdate]=GetTickCount();
+	
 	return 1;
 }
 
