@@ -29,6 +29,14 @@ Polskie tłumaczenie licencji znajdziecie tutaj: http://gnu.org.pl/text/licencja
 
 Istnieje możliwość otrzymania kodu na innej licencji - aby dowiedzieć się coś więcej na ten temat - skontaktuj się z nami.
 
+Współpraca
+============
+Od dnia 30.01.2014 umożliwiamy współpracę z konkretnymi osobami, lub projektami.
+Jeżeli masz jakieś sugestie dotyczące naszego/naszych projektu/projektów. Bądź chcesz uzyskać kolaborację - skontaktuj się z nami! :-)
+
+Partnerzy:
+- http://Infinity-Gaming.net/
+- http://MyOtherWorld.net/
 
 Strona naszego projektu
 ============
