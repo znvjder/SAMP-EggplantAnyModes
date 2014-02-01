@@ -98,26 +98,32 @@ stock theplayer::avtListing( playerid, type_listing=0 )
 			0) osiagniecia wykonane
 			1) osiagniecia niewykonane
 			2) (nad tym trzeba pomyslec) wszystkie(?)
-			
-		TODO: sortowanie wedlug daty?
 	*/
 	// Pobieranie wszystkich osiagniec - nawet tych nie zaliczonych
-	new i, longBuf[512], tmpBuf[128], avtID, avtTitle[32], avtDate[24];
+	new i, longBuf[512], tmpBuf[128], avtID, avtTitle[32];
 	
 	if(type_listing==0)
 	{
-	
-		CMySQL_Query("SELECT a.avtID, a.title, ap.date FROM userachievement ap JOIN achievements a ON ap.avtID=a.avtID WHERE userid='%d' AND passed='1';", -1, PlayerData[playerid][epd_accountID], type_listing);
+		// TODO: Sortowanie wedlug daty(?)
+		CMySQL_Query("SELECT a.avtID, a.title FROM userachievement uv JOIN achievements a ON uv.avtID=a.avtID WHERE uv.userid='%d' AND passed='1';", -1, PlayerData[playerid][epd_accountID]);
 		mysql_store_result();
 		while(mysql_fetch_row(tmpBuf, "|"))
 		{
-			if(sscanf(tmpBuf, "p<|>s[32]s[64]", avtID, avtTitle, avtDate)) continue;
+			if(sscanf(tmpBuf, "p<|>ds[32]s[18]", avtID, avtTitle)) continue;
 			format(longBuf, sizeof(longBuf), "%s\n(%d:%d)\t%s", longBuf, (i+1), avtID, avtTitle);
 			i++;
 		}
 		mysql_free_result();
 	} else if(type_listing==1) {
-		// trzeba wykominic jakies zapytanko, ktore nie beda w userachievements
+		CMySQL_Query("SELECT a.avtID, a.title FROM achievements a WHERE avtID>0 AND NOT EXISTS (SELECT 1 FROM userachievement uv WHERE a.avtID=uv.avtID AND uv.userID='%d')", -1, PlayerData[playerid][epd_accountID]);
+		mysql_store_result();
+		while(mysql_fetch_row(tmpBuf, "|"))
+		{
+			if(sscanf(tmpBuf, "p<|>ds[32]", avtID, avtTitle)) continue;
+			format(longBuf, sizeof(longBuf), "%s\n(%d:%d)\t%s", longBuf, (i+1), avtID, avtTitle);
+			i++;
+		}
+		mysql_free_result();
 	} else {
 	
 	}
