@@ -129,6 +129,39 @@ CREATE TABLE IF NOT EXISTS audiozones(
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS objects(
+	id INT NOT NULL AUTO_INCREMENT,
+	spawn TINYINT(1) NOT NULL DEFAULT '1', -- 0=nie tworzymy, 1=tworzymy
+	modelid SMALLINT UNSIGNED NOT NULL DEFAULT '1',
+	fX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fY DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fZ DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fRX DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fRY DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	fRZ DECIMAL(10,6) NOT NULL DEFAULT '0.0',
+	-- object material
+	mt_idx TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	mt_modelid SMALLINT UNSIGNED NOT NULL DEFAULT '1',
+	mt_txdname VARCHAR(32) NOT NULL DEFAULT 'none',
+	mt_texture VARCHAR(32) NOT NULL DEFAULT 'none',
+	mt_color INT NOT NULL DEFAULT '0',
+	-- text material
+	mtxt_idx TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	mtxt_text VARCHAR(64) NOT NULL DEFAULT 'unkown',
+	mtxt_msize TINYINT UNSIGNED NOT NULL DEFAULT '90', -- wartosci rzedu 10-140 (default: OBJECT_MATERIAL_SIZE_256x128)
+	mtxt_font VARCHAR(18) NOT NULL DEFAULT 'Arial',
+	mtxt_fsize TINYINT UNSIGNED NOT NULL DEFAULT '24',
+	mtxt_fbold TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	mtxt_fcolor VARCHAR(17) NOT NULL DEFAULT '0xffffffff', -- argb
+	mtxt_fbcolor VARCHAR(17) NOT NULL DEFAULT '0xffffffff', -- argb
+	mtxt_falign TINYINT UNSIGNED NOT NULL DEFAULT '0', -- align type: 0=left, 1=center, 2=right
+	--
+	worlid TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	interior TINYINT UNSIGNED NOT NULL DEFAULT '0',
+	owningHouseID SMALLINT UNSIGNED NOT NULL DEFAULT '0', -- tworzenie obiektu w domu(?)
+	PRIMARY KEY (`id`)
+);
+
 -- table mapicons
 CREATE TABLE IF NOT EXISTS mapicons (
 	id INT NOT NULL AUTO_INCREMENT,
