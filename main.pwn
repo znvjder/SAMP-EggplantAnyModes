@@ -58,6 +58,7 @@
 #include "internal/CAtms.p"
 #include "internal/CMapicons.p"
 #include "internal/CTimers.p"
+#include "internal/CObjects.p"
 
 #include "internal/commands/cmds_header.p"
 
@@ -104,6 +105,7 @@ public OnGameModeInit()
 	CMapicons_Init();
 	CAudio_Init();
 	CTimers_Init();
+	CObjects_Init();
 	
 	printf("["SCRIPT_NAME" "SCRIPT_VERSION"]: Loaded successfully in %.2f ms!", float(CExecTick_end(scriptInit))/1000.0);
 	CLogging_Insert(CLOG_SERVER, "Starting logging...");
@@ -127,6 +129,7 @@ public OnGameModeExit()
 	CMapicons_Exit();
 	CAudio_Exit();
 	CTimers_Exit();
+	CObjects_Exit();
 	CMySQL_Exit();
 	regex_delete_all();
 	djson_GameModeExit();
@@ -275,6 +278,7 @@ public OnPlayerSpawn(playerid)
 				// TODO: Wyszukanie domu i zespawnowanie gracza w domu
 			}
 			theplayer::loadWeaponsData(playerid);
+			theplayer::loadAttachedObjects(playerid);
 		} else {
 			// wywolac dla niezarejestrowanego gracza "nowa gre" i krotki tutorial
 			SetPlayerPos(playerid, 0.0, 0.0, 3.0);
@@ -480,7 +484,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			theplayer::onEventRegister(playerid, inputtext);
 		}
 	}
-	CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext);
+	if(CFriends_DialogResponse(playerid, dialogid, response, listitem, inputtext)) return true;
 	return false;
 }
 
@@ -611,6 +615,18 @@ public OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat) 
 {
 
+}
+
+// Objects callbacks
+public OnPlayerEditObject(playerid, playerobject, objectid, response, Float:fX, Float:fY, Float:fZ, Float:fRotX, Float:fRotY, Float:fRotZ)
+{
+	//printf("fX: %f, fy: %f, fz: %f, frx: %f, fry: %f, frz: %f", fX, fY, fZ, fRotX, fRotY, fRotZ);
+	return true;
+}
+
+public OnPlayerEditAttachedObject(playerid, response, index, modelid, boneid, Float:fOffsetX, Float:fOffsetY, Float:fOffsetZ, Float:fRotX, Float:fRotY, Float:fRotZ, Float:fScaleX, Float:fScaleY, Float:fScaleZ)
+{
+	return true;
 }
 
 // Streamer callbacks

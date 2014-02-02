@@ -91,3 +91,24 @@ stock theplayer::showATMDialog(playerid)
 {
 	ShowPlayerDialog(playerid, DIALOG_ATM_HOME, DIALOG_STYLE_LIST, "Bankomat", "DO_UZUPELNIENIA", "Wybierz", "Anuluj");
 }
+
+// Attached object per player
+
+#define CPLAYER_ATTACH_OBJECT_HAT (0)
+#define CPLAYER_ATTACH_OBJECT_GLASS (1)
+
+stock theplayer::loadAttachedObjects(playerid)
+{
+	if(PlayerData[playerid][epd_accountID]<=0) return;
+	new tmpBuf[100], idx, modelid, bone, fPos[9], mcolor[2];
+	CMySQL_Query("SELECT idx, modelid, bone, fX, fY, fZ, fRX, fRY, fRZ, fSX, fSY, fSZ, mcolor1, mcolor2 FROM attachedObjectsPlayer WHERE userID='%d'", -1, PlayerData[playerid][epd_accountID]);
+	mysql_store_result();
+	if(!mysql_num_rows()) return;
+	while(mysql_fetch_row(tmpBuf, "|"))
+	{
+		if(sscanf(tmpBuf, "p<|>dddfffffffffxx", idx, modelid, bone, fPos[0], fPos[1], fPos[2], fPos[3], fPos[4], fPos[5], fPos[6], fPos[7], fPos[8], mcolor[0], mcolor[1])) continue;
+		if(IsPlayerAttachedObjectSlotUsed(playerid, idx)) RemovePlayerAttachedObject(playerid, idx);
+		SetPlayerAttachedObject(playerid, idx, modelid, bone, fPos[0], fPos[1], fPos[2], fPos[3], fPos[4], fPos[5], fPos[6], fPos[7], fPos[8], mcolor[0], mcolor[1]);
+	}
+	mysql_free_result();
+}
