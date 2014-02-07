@@ -101,7 +101,7 @@ stock theplayer::loadAttachedObjects(playerid)
 {
 	if(PlayerData[playerid][epd_accountID]<=0) return;
 	new tmpBuf[100], idx, modelid, bone, fPos[9], mcolor[2];
-	CMySQL_Query("SELECT idx, modelid, bone, fX, fY, fZ, fRX, fRY, fRZ, fSX, fSY, fSZ, mcolor1, mcolor2 FROM attachedObjectsPlayer WHERE userID='%d'", -1, PlayerData[playerid][epd_accountID]);
+	CMySQL_Query("SELECT idx, modelid, bone, fX, fY, fZ, fRX, fRY, fRZ, fSX, fSY, fSZ, mcolor1, mcolor2 FROM playerClothes WHERE userID='%d'", -1, PlayerData[playerid][epd_accountID]);
 	mysql_store_result();
 	if(!mysql_num_rows()) return;
 	while(mysql_fetch_row(tmpBuf, "|"))

@@ -53,10 +53,12 @@
 #include "internal/CAccounts.p"
 #include "internal/CVehicles.p"
 #include "internal/CTextdraws.p"
+#include "internal/attractions/header.p"
 #include "internal/CFriends.p"
 #include "internal/CEntries.p"
 #include "internal/CAtms.p"
 #include "internal/CMapicons.p"
+#include "internal/CWeather.p"
 #include "internal/CTimers.p"
 #include "internal/CObjects.p"
 
@@ -104,6 +106,7 @@ public OnGameModeInit()
 	CAtms_Init();
 	CMapicons_Init();
 	CAudio_Init();
+	CAttractions_Init();
 	CTimers_Init();
 	CObjects_Init();
 	
@@ -128,8 +131,9 @@ public OnGameModeExit()
 	CEntries_Exit();
 	CMapicons_Exit();
 	CAudio_Exit();
-	CTimers_Exit();
+	CAttraction_Exit();
 	CObjects_Exit();
+	CTimers_Exit();
 	CMySQL_Exit();
 	regex_delete_all();
 	djson_GameModeExit();
@@ -689,4 +693,37 @@ public OnPlayerLeaveDynamicArea(playerid, areaid)
 {
 	if(CAudio_IsPlayerInZone(playerid, false, areaid)) return true;
 	return false;
+}
+
+// Timers callbacks
+timer:GameLoop()
+{
+	ServerData[interval_gameLoop]=GetTickCount();
+	#define diff_ms(%0,%1) (ServerData[interval_%0]-ServerData[interval_%1])
+	
+	if(diff_ms(gameLoop,attractionUpdate) >= DURATION_MS(1 second))
+	{
+		printf("attractionUpdate: %d", diff_ms(gameLoop,saveStats)/1000);
+		ServerData[interval_attractionUpdate]=GetTickCount();
+	}
+	if(diff_ms(gameLoop,statsUpdate) >= ((ServerData[esd_countPlayersOnline]>=90)? DURATION_MS(16 second): (ServerData[esd_countPlayersOnline]>=50)? DURATION_MS(12 second): DURATION_MS(6 second)))
+	{
+		printf("statsUpdate: %d", diff_ms(gameLoop,saveStats)/1000);
+		ServerData[interval_statsUpdate]=GetTickCount();
+	}
+	if(diff_ms(gameLoop,saveStats) >= ((ServerData[esd_countPlayersOnline]>=90)? DURATION_MS(20 minutes): (ServerData[esd_countPlayersOnline]>=50)? DURATION_MS(15 minutes): DURATION_MS(10 minutes)))
+	{
+		printf("savestats: %d", diff_ms(gameLoop,saveStats)/1000);
+		ServerData[interval_saveStats]=GetTickCount();
+	}
+	#undef diff_ms
+}
+
+timer:Weather()
+{
+	// odpalamy timer minute po rownej godzinie
+	new minutes;
+	gettime(_, minutes);
+	CWeather_Update();
+	CTimers_Call(TIMER_WEATHER, #@Weather, math::abs(minutes-60)+1*60*1000, false); 
 }

@@ -174,6 +174,11 @@ enum e_ServerData
 	esd_codeDebugger,
 	esd_highestPlayerID,
 	esd_countPlayersOnline,
+	
+	interval_gameLoop,
+	interval_statsUpdate,
+	interval_saveStats,
+	interval_attractionUpdate,
 };
 
 enum e_PlayerData 

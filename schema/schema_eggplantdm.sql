@@ -129,8 +129,8 @@ CREATE TABLE IF NOT EXISTS audiozones(
 	PRIMARY KEY (`id`)
 );
 
--- table attachedObjectsPlayer
-CREATE TABLE IF NOT EXISTS attachedObjectsPlayer(
+-- table playerClothes
+CREATE TABLE IF NOT EXISTS playerClothes(
 	id INT NOT NULL AUTO_INCREMENT,
 	userID INT NOT NULL DEFAULT '0',
 	attached TINYINT(1) NOT NULL DEFAULT '1',

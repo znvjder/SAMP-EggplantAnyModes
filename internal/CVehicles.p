@@ -11,11 +11,6 @@
 
 #define thevehicle:: thevehicle_
 
-#define VEHICLE_ENTER_NOBODY (0)
-#define VEHICLE_ENTER_FRIENDS (1)
-#define VEHICLE_ENTER_GANGMEMBERS (2)
-#define VEHICLE_ENTER_ALL (3)
-
 #define thevehicle_unpackXYZ(%0) VehicleData[%0-1][evd_pos][0],VehicleData[%0-1][evd_pos][1],VehicleData[%0-1][evd_pos][2]
 #define thevehicle_unpackXYZR(%0) VehicleData[(%0)-1][evd_pos][0],VehicleData[(%0)-1][evd_pos][1],VehicleData[(%0)-1][evd_pos][2],VehicleData[(%0)-1][evd_pos][3]
 #define thevehicle_unpackpos(%0,%1,%2,%3) %0[%1],%0[%2],%0[%3]
@@ -25,6 +20,14 @@
 #define thevehicle_getOwner(%0) VehicleData[(%0)-1][evd_ownerID]
 #define thevehicle_getProperties(%0) VehicleData[(%0)-1][evd_properties]
 #define thevehicle_getUniqueID(%0) VehicleData[(%0)-1][evd_uid]
+
+enum
+{
+	VEHICLE_ENTER_NOBODY=0,
+	VEHICLE_ENTER_FRIENDS,
+	VEHICLE_ENTER_GANGMEMBERS,
+	VEHICLE_ENTER_ALL
+};
 
 stock CVehicles_Init() 
 {
@@ -39,7 +42,7 @@ stock CVehicles_Exit()
 		//thevehicle::save(vehicleid);
 		count++;
 	}
-	printf("[CVehicles]: Zapisano %d pojazdow", count);
+	printf("[CVehicles]: Saved %d vehicles", count);
 }
 
 stock CVehicles_loadAll() 
@@ -66,18 +69,22 @@ stock CVehicles_loadAll()
 		for(new j; j<12; j++) {
 			AddVehicleComponent(vid, VehicleData[vid-1][evd_tuning][j]);
 		}
-		
+		UpdateVehicleDamageStatus(vid, addData[7], addData[8], addData[9], addData[10]);
 		i++;
 	}
 	mysql_free_result();
-	printf("[CVehicles]: Wczytano %d pojazdow.", i);
+	printf("[CVehicles]: Loaded %d vehicles", i);
 }
 
 //Kod zostanie dokończony w najbliższym czasie!
 stock thevehicle::save(vehid)
 {
-	// TODO:
-	// Dodac pobieranie zniszczen pojazdu i tym podobne
+	new Float:hp, dmgStatus[4];
+	
+	GetVehicleHealth(vehid, hp);
+	GetVehicleDamageStatus(vehid, dmgStatus[0], dmgStatus[1], dmgStatus[2], dmgStatus[3]);
+	
+	if(hp<300) hp=300.0;
 	CMySQL_Query(
 		"UPDATE vehicles SET fX='%f', fY='%f', fZ='%f', fAng='%f', color1=%d, color2=%d WHERE id=%d", 
 		-1, // resultid 
@@ -90,6 +97,7 @@ stock thevehicle::save(vehid)
 
 stock thevehicle::create(modelid, vuid=-1, owner=INVALID_PLAYER_ID, Float:x=0.0, Float:y=0.0, Float:z=1.0, Float:rot=90.0, color[2]) 
 {
+	// Jezeli vuid ma wartosc -1 to pojazd jest tworzony jako 'anonim' i nie zostaje zapisywany do bazy danych
 	if(modelid<400) return false;
 	
 	new carid=CreateVehicle(modelid, x, y, z, rot, color[0], color[1], DURATION(3 hours));
@@ -109,6 +117,7 @@ stock thevehicle::create(modelid, vuid=-1, owner=INVALID_PLAYER_ID, Float:x=0.0,
 	{
 		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_DOOR_OPEN);
 		VehicleData[carid-1][evd_ownerID]=INVALID_PLAYER_ID;
+		VehicleData[carid-1][evd_doorEnterType]=VEHICLE_ENTER_ALL;
 	} else {
 		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_ISOWNED);
 		bit_set(VehicleData[carid-1][evd_properties], VEHICLE_DOOR_CLOSED); // zamykamy pojazd przed innymi osobnikami
