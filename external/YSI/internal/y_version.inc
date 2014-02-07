@@ -208,40 +208,6 @@ Natives:
 			YSI_gLockData[0] -= 1;
 			YSI_gLockData[1] = YSI_gLockData[0] + 7;
 		#endif
-		print(" ");
-		print(" ");
-		print(" ");
-		print(" ======================================= ");
-		print(" |                                     | ");
-		print(" |        YSI version " YSI_VERSION "        | ");
-		print(" |        By Alex \"Y_Less\" Cole        | ");
-		//print(" |                                     | ");
-		//print(" |  Checking the latest YSI version..  | ");
-		print(" |                                     | ");
-		print(" ======================================= ");
-		print(" ");
-		// Call my server to check the current public YSI version.  v is the
-		// current version and c is the version of data response which this code
-		// can parse.  Note that the response data SHOULD be backward compatible
-		// , but may not always be - hence the accept parameter.  This will
-		// never send any data except the current version for targeted replies
-		// (e.g. to ignore minor updates which aren't critical).  It MAY in the
-		// future send what libraries are in use so that it only tells you to
-		// upgrade if the libraries you are using have changed, but that will
-		// take more work and I'm not going to do that for now (I'm not entirely
-		// sure exactly how to do it (though I have an idea - note to self:
-		// chain callbacks from repeated inclusions of this file in the same way
-		// as ALS then call them BEFORE sending the HTTP)).  Note that due to
-		// the way the internet works the server will know the IP of the server
-		// which sent the request, but the ENTIRE current contents of the remote
-		// page are (note: I won't update this comment every time the version
-		// updates, but that's the gist of it):
-		//  
-		//  1
-		//  1.01.0000
-		//  
-		// This remote script has now been updated to include changelog
-		// information and keeps a record of what IPs are connecting.
 		HTTP(0, HTTP_GET, "ysi-version.y-less.com/index.php?c=" #YSI_VERSION_RESPO "&v=" YSI_VERSION, "", "YVers_Callback");
 		#if defined YVers_OnScriptInit
 			YVers_OnScriptInit();
@@ -275,72 +241,6 @@ Natives:
 	
 	public YVers_Callback(index, code, data[])
 	{
-		if (code == 200)
-		{
-			// Got the remote page.
-			// The first line is the version data version.  This should be
-			// forward compatible, so new data is always added to the end of the
-			// file. Skip the first line - contains the response version.
-			new
-				pos = strfind(data, "\n") + 1;
-			if (strcmp(data[pos], YSI_VERSION, false, 9))
-			{
-				//data[pos + 9] = '\0';
-				print(" ");
-				print(" ========================================== ");
-				print(" |                                        | ");
-				printf(" |  A new version (v%.9s) of YSI is  | ", data[pos]);
-				print(" |            available from:             | ");
-				print(" |                                        | ");
-				print(" |     www.y-less.com/YSI/YSI_1.0.zip     | ");
-				//printf("data[0]: %c", data[0]);
-				if (data[0] == '2')
-				{
-					print(" |                                        | ");
-					print(" | Changelog:                             | ");
-					// Print the changelog.
-					new
-						last = pos + 13;
-					for ( ; ; )
-					{
-						pos = strfind(data[last], "\n", false);
-						//printf("%d %d %s", last, pos, data[last]);
-						if (pos == -1)
-						{
-							// To break out in the middle of a loop.
-							break;
-						}
-						pos += last;
-						data[pos - 1] = '\0';
-						printf(" | %38s | ", data[last]);
-						last = pos + 1;
-					}
-				}
-				print(" |                                        | ");
-				print(" ========================================== ");
-				print(" ");
-			}
-			//else
-			//{
-				//print(" ====================================== ");
-				//print(" |                                    | ");
-				//print(" |  Congratulations! You are running  | ");
-				//print(" |     the latest version of YSI!     | ");
-				//print(" |                                    | ");
-				//print(" ====================================== ");
-			//}
-		}
-		//else
-		//{
-			// Didn't get the remote page.
-			//print(" ======================================== ");
-			//print(" |                                      | ");
-			//print(" |  Could not connect to update server  | ");
-			//print(" |    at this time, (your code will     | ");
-			//printf(" |   still work (response was %03d)).    | ", code);
-			//print(" |                                      | ");
-			//print(" ======================================== ");
-		//}
 	}
 	
 #endif
