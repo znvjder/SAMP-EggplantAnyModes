@@ -703,17 +703,17 @@ timer:GameLoop()
 	
 	if(diff_ms(gameLoop,attractionUpdate) >= DURATION_MS(1 second))
 	{
-		printf("attractionUpdate: %d", diff_ms(gameLoop,saveStats)/1000);
+		//printf("attractionUpdate: %d", diff_ms(gameLoop,saveStats)/1000);
 		ServerData[interval_attractionUpdate]=GetTickCount();
 	}
 	if(diff_ms(gameLoop,statsUpdate) >= ((ServerData[esd_countPlayersOnline]>=90)? DURATION_MS(16 second): (ServerData[esd_countPlayersOnline]>=50)? DURATION_MS(12 second): DURATION_MS(6 second)))
 	{
-		printf("statsUpdate: %d", diff_ms(gameLoop,saveStats)/1000);
+		//printf("statsUpdate: %d", diff_ms(gameLoop,saveStats)/1000);
 		ServerData[interval_statsUpdate]=GetTickCount();
 	}
 	if(diff_ms(gameLoop,saveStats) >= ((ServerData[esd_countPlayersOnline]>=90)? DURATION_MS(20 minutes): (ServerData[esd_countPlayersOnline]>=50)? DURATION_MS(15 minutes): DURATION_MS(10 minutes)))
 	{
-		printf("savestats: %d", diff_ms(gameLoop,saveStats)/1000);
+		//printf("savestats: %d", diff_ms(gameLoop,saveStats)/1000);
 		ServerData[interval_saveStats]=GetTickCount();
 	}
 	#undef diff_ms
