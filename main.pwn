@@ -727,3 +727,24 @@ timer:Weather()
 	CWeather_Update();
 	CTimers_Call(TIMER_WEATHER, #@Weather, math::abs(minutes-60)+1*60*1000, false); 
 }
+
+// CAC callbacks
+forward OnPlayerCheatDetected(playerid, cheatType);
+public OnPlayerCheatDetected(playerid, cheatType)
+{
+	switch(cheatType)
+	{
+		case CHEAT_TYPE_s0beit:
+		{
+			printf("Cheat detected - %d > cheat type: s0beit", playerid); 
+		}
+		case CHEAT_TYPE_raksamp:
+		{
+			printf("Cheat detected - %d > cheat type: raksamp", playerid); 
+		}
+		case CHEAT_TYPE_cleo:
+		{
+			printf("Cheat detected - %d > cheat type: cleo", playerid); 
+		}
+	}
+}

@@ -9,7 +9,14 @@
 */
 
 #define MAX_CONNECTIONS_FROM_IP (2)
-#define CAC_SOBEIT_VERSION "0.3x"
+
+enum (<<=1) // from fs_cheat
+{
+	CHEAT_TYPE_unkown=1,
+	CHEAT_TYPE_s0beit,
+	CHEAT_TYPE_raksamp,
+	CHEAT_TYPE_cleo
+};
 
 stock CAnticheat_Init() 
 {
@@ -35,11 +42,6 @@ stock CAnticheat_CheckConnectPlayer(playerid)
 	printf("GetConnectedTime: %d", NetStats_GetConnectedTime(playerid));
 	printf("ConnectionSatatus: %d", NetStats_ConnectionStatus(playerid));
 	printf("--------------------------");*/
-	GetPlayerVersion(playerid, tmpAC, sizeof(tmpAC));
-	if(!strcmp(tmpAC, CAC_SOBEIT_VERSION)) 
-	{
-		return true;
-	}
 	
 	GetPlayerIp(playerid, tmpAC, 16);
 	numPlayersOnIP=CAC_GetNumPlayerFromOnIP(tmpAC);
