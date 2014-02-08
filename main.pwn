@@ -188,7 +188,7 @@ public OnPlayerConnect(playerid)
 		}
 	} else {
 		theplayer::sendMessage(playerid, COLOR_INFO1, "Witamy na serwerze "SCRIPT_PROJECTNAME"!");
-		theplayer::sendMessage(playerid, COLOR_INFO1, "System wykry³, ¿e nie posiadasz u nas konta. Aby je za³o¿yæ wpisz: <b>/rejestracja</b>");
+		theplayer::sendMessage(playerid, COLOR_INFO1, "System wykryï¿½, ï¿½e nie posiadasz u nas konta. Aby je zaï¿½oï¿½yï¿½ wpisz: <b>/rejestracja</b>");
 	}
 	return 1;
 }
@@ -237,7 +237,7 @@ public OnPlayerRequestSpawn(playerid)
 	CheckPlayerBounds(playerid);
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) 
 	{
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaï¿½ z tej funkcji musisz siï¿½ pierw zalogowaï¿½.");
 		return false;
 	}
 	
@@ -254,7 +254,7 @@ public OnPlayerSpawn(playerid)
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) 
 	{
 		theplayer::hideDialog(playerid);
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie ma tak ³atwo!");
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Nie ma tak ï¿½atwo!");
 		theplayer::kick(playerid);
 		return false;
 	}
@@ -442,7 +442,7 @@ public OnPlayerText(playerid, text[])
 	
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) 
 	{
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaï¿½ z tej funkcji musisz siï¿½ pierw zalogowaï¿½.");
 		return false;
 	}
 	
@@ -471,7 +471,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			if(!response) 
 			{
 				theplayer::hideDialog(playerid);
-				theplayer::sendMessage(playerid, COLOR_INFO1, "Anulowa³eœ logowanie - do zobaczenia ponownie!");
+				theplayer::sendMessage(playerid, COLOR_INFO1, "Anulowaï¿½eï¿½ logowanie - do zobaczenia ponownie!");
 				theplayer::kick(playerid);
 				return true;
 			}
@@ -481,7 +481,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			if(!response) 
 			{
-				theplayer::sendMessage(playerid, COLOR_INFO1, "Anulowa³eœ rejestracje konta, pomyœl o tym jeszcze!");
+				theplayer::sendMessage(playerid, COLOR_INFO1, "Anulowaï¿½eï¿½ rejestracje konta, pomyï¿½l o tym jeszcze!");
 				theplayer::hideDialog(playerid);
 				return true;
 			}
@@ -569,7 +569,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 	CheckPlayerBounds(playerid);
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) 
 	{
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaï¿½ z tej funkcji musisz siï¿½ pierw zalogowaï¿½.");
 		return false;
 	}
 	return true;
@@ -580,7 +580,7 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	CheckPlayerBounds(playerid);
 	if(bit_if(PlayerData[playerid][epd_properties], PLAYER_INLOGINDIALOG)) 
 	{
-		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaæ z tej funkcji musisz siê pierw zalogowaæ.");
+		theplayer::sendMessage(playerid, COLOR_ERROR, "Aby skorzystaï¿½ z tej funkcji musisz siï¿½ pierw zalogowaï¿½.");
 		return false;
 	}
 	return true;
@@ -732,6 +732,10 @@ timer:Weather()
 forward OnPlayerCheatDetected(playerid, cheatType);
 public OnPlayerCheatDetected(playerid, cheatType)
 {
+	/*
+		Funkcja bez dodania skryptu fs_cheat, ktory znajduje sie w katalogu filterscript
+		nie bedzie dzialac poprawnie.
+	*/
 	switch(cheatType)
 	{
 		case CHEAT_TYPE_s0beit:
