@@ -1,4 +1,4 @@
-SAMP-EggplantDM
+SAMP-EggplantAnyModes
 ============
 Gamemod na wszystkie tryby gry, pod platformę San Andreas Multiplayer gry GTA San Andreas. Napisany głównie w języku PAWN, z użyciem baz relacyjnych MySQL. Stworzono z nudów.
 
