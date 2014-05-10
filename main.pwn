@@ -1,6 +1,6 @@
 /*
 	@name project: EggplantDM
-	@desc: Stworzono na potrzeby serwera Infinity-Gaming.net DM
+	@desc: Projekt "nuda".
 	
 	@authors:
 		- l0nger <l0nger.programmer@gmail.com>
