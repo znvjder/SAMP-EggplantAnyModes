@@ -76,7 +76,7 @@ stock CTextdraws_Init()
 	TextDrawTextSize(globalTextDraws[GLOBAL_TD_BOXPASEK], 640.000000, 0.000000);
 	TextDrawSetSelectable(globalTextDraws[GLOBAL_TD_BOXPASEK], 0);
 	
-	globalTextDraws[GLOBAL_TD_LOGO] = TextDrawCreate(530.000000, 433.000000, "~y~Infinity~w~Gaming");
+	globalTextDraws[GLOBAL_TD_LOGO] = TextDrawCreate(530.000000, 433.000000, "~y~Your~w~Server");
 	TextDrawBackgroundColor(globalTextDraws[GLOBAL_TD_LOGO], 32);
 	TextDrawFont(globalTextDraws[GLOBAL_TD_LOGO], 1);
 	TextDrawLetterSize(globalTextDraws[GLOBAL_TD_LOGO], 0.280000, 1.200000);
@@ -85,7 +85,7 @@ stock CTextdraws_Init()
 	TextDrawSetProportional(globalTextDraws[GLOBAL_TD_LOGO], 1);
 	TextDrawSetSelectable(globalTextDraws[GLOBAL_TD_LOGO], 0);
 
-	globalTextDraws[GLOBAL_TD_ENDINGURL] = TextDrawCreate(599.000000, 438.000000, "~w~.NET");
+	globalTextDraws[GLOBAL_TD_ENDINGURL] = TextDrawCreate(599.000000, 438.000000, "~w~.Domain");
 	TextDrawBackgroundColor(globalTextDraws[GLOBAL_TD_ENDINGURL], 32);
 	TextDrawFont(globalTextDraws[GLOBAL_TD_ENDINGURL], 1);
 	TextDrawLetterSize(globalTextDraws[GLOBAL_TD_ENDINGURL], 0.170000, 0.699998);
