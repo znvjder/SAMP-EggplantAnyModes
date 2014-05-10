@@ -21,7 +21,7 @@
 #pragma semicolon true
 #pragma pack false
 
-#define SCRIPT_PROJECTNAME "Infinity-Gaming.net DM"
+#define SCRIPT_PROJECTNAME "Server Name"
 #define SCRIPT_NAME	"EggplantDM"
 #define SCRIPT_VERSION "0.1 pre-alpha"
 
