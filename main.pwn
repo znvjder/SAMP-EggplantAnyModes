@@ -1,5 +1,5 @@
 /*
-	@name project: EggplantDM
+	@name project: EggplantAnyModes
 	@desc: Projekt "nuda".
 	
 	@authors:
@@ -14,7 +14,7 @@
 	
 	@version: 0.1 pre-alpha
 	@licence: GPLv2
-	@link package: https://github.com/l0nger/SAMP-EggplantDM
+	@link package: https://github.com/l0nger/SAMP-EggplantAnyModes
 */
 
 #pragma dynamic 4096
@@ -22,7 +22,7 @@
 #pragma pack false
 
 #define SCRIPT_PROJECTNAME "Server Name"
-#define SCRIPT_NAME	"EggplantDM"
+#define SCRIPT_NAME	"EggplantAnyModes"
 #define SCRIPT_VERSION "0.1 pre-alpha"
 
 #include <a_samp>
